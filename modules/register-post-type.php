@@ -41,10 +41,10 @@ function vkpdc_register_post_type() {
 			'description'     => 'Stores publicly shared Block Patterns (predefined block layouts, ready to insert and tweak).',
 			'public'          => true,
 			'show_in_rest'    => true,
+			'has_archive'     => true,
+			'menu_icon'       => 'dashicons-screenoptions',
 			'rewrite'         => array( 'slug' => 'pattern' ),
-			'supports'        => array( 'title', 'editor', 'author', 'custom-fields', 'revisions' ),
-			'capability_type' => array( 'pattern', 'patterns' ),
-			'map_meta_cap'    => true,
+			'supports'        => array( 'title', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'editor' ),
 		)
 	);
 }
