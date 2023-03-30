@@ -1,0 +1,33 @@
+{
+	"name": "vk-pattern-directory-creator",
+	"version": "0.1.0",
+	"description": "Support Filtering Search of keyword, post-type and taxonomy.",
+	"main": "gulpfile.js",
+	"scripts": {
+		"start:first": "npm install && composer install && wp-env start",
+		"start": "wp-env start",
+		"stop": "wp-env stop",
+		"update": "npx ncu -u && rm -rf node_modules package-lock.json && npm install",
+		"dist": "composer install --no-dev && npx gulp dist",
+		"phpunit": "composer install && bash bin/install-theme.sh && npx wp-env run phpunit \"phpunit -c /var/www/html/wp-content/plugins/vk-pattern-directory-creator/.phpunit.xml --testsuite default --verbose\""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/vektor-inc/vk-pattern-directory-creator.git"
+	},
+	"author": "Vektor, Inc.",
+	"license": "GPL-2.0-or-later",
+	"bugs": {
+		"url": "https://github.com/vektor-inc/vk-pattern-directory-creator/issues"
+	},
+	"homepage": "https://github.com/vektor-inc/vk-pattern-directory-creator#readme",
+	"devDependencies": {
+		"@playwright/test": "^1.32.1",
+		"@wordpress/env": "^5.15.0",
+		"npm-check-updates": "^16.9.0"
+	},
+	"volta": {
+		"node": "16.15.1",
+		"npm": "8.12.1"
+	}
+}

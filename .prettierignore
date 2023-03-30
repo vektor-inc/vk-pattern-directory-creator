@@ -1,0 +1,6 @@
+**/build/**
+languages/
+library/
+node_modules/
+temp/
+vendor/

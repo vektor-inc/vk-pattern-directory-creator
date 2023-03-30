@@ -1,0 +1,10 @@
+node_modules/
+build/
+dist/
+temp/
+vendor/
+*.override.json
+.vscode/
+/test-results/
+/playwright-report/
+/playwright/.cache/
