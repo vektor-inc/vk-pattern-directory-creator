@@ -1,0 +1,73 @@
+name: Deploy to WordPress.org
+on:
+    push:
+        tags:
+            - '[0-9]+.[0-9]+.[0-9]+'
+env:
+    plugin_name: vk-pattern-directory-creator
+jobs:
+    tag:
+        name: deploy to plugin directory
+        runs-on: ubuntu-latest
+        steps:
+            - uses:
+                  actions/checkout@master
+                  # get the node version from the .node-version file
+            - name: Read .node-version
+              run: echo "##[set-output name=NODEVERSION;]$(cat .node-version)"
+              id: nodenv
+
+            # setup node based on the version from the .node-version file, fetched in the previous step
+            - name: Setup Node.js (.node-version)
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '${{ steps.nodenv.outputs.NODEVERSION }}'
+            - run: npm install
+            - run: bash bin/deploy.sh
+            - name: WordPress Plugin Deploy
+              uses: 10up/action-wordpress-plugin-deploy@master
+              env:
+                  SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+                  SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+                  SLUG: ${{ env.plugin_name }}
+    release:
+        name: release
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            # get the node version from the .node-version file
+            - name: Read .node-version
+              run: echo "##[set-output name=NODEVERSION;]$(cat .node-version)"
+              id: nodenv
+
+            # setup node based on the version from the .node-version file, fetched in the previous step
+            - name: Setup Node.js (.node-version)
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '${{ steps.nodenv.outputs.NODEVERSION }}'
+            - run: npm install
+            - run: npm run build
+            - run: bash bin/dist.sh
+            - run: echo "DIST_VERSION=$(echo ${{ github.ref }} | sed -E 's/^refs\/tags\/v?(.*)$/\1/')" >> $GITHUB_ENV
+            - run: test -e dist/${{ env.plugin_name }}.zip
+            - name: Create Release
+              id: create_release
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tag_name: ${{ github.ref }}
+                  release_name: Release ${{ github.ref }}
+                  draft: false
+                  prerelease: false
+            - run: test -e dist/${{ env.plugin_name }}.zip
+            - name: Upload Release Asset
+              id: upload-release-asset
+              uses: actions/upload-release-asset@v1.0.1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  upload_url: ${{ steps.create_release.outputs.upload_url }}
+                  asset_path: ./dist/${{ env.plugin_name }}.zip
+                  asset_name: ${{ env.plugin_name }}.zip
+                  asset_content_type: application/zip
