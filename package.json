@@ -6,8 +6,6 @@
 	"scripts": {
 		"start:first": "npm install && composer install && wp-env start",
 		"wp-env": "wp-env",
-		"start": "wp-env start",
-		"stop": "wp-env stop",
 		"update": "npx ncu -u && rm -rf node_modules package-lock.json && npm install",
 		"dist": "composer install --no-dev && npx gulp dist",
 		"phpunit": "composer install && bash bin/install-theme.sh && npx wp-env run phpunit \"phpunit -c /var/www/html/wp-content/plugins/vk-pattern-directory-creator/.phpunit.xml --testsuite default --verbose\""
