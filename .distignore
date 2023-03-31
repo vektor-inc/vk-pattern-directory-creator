@@ -6,6 +6,7 @@ docs/
 node_modules/
 temp/
 tests/
+vendor/
 .distignore
 .eslintignore
 .eslintrc.js
