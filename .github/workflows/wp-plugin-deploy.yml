@@ -120,7 +120,7 @@ jobs:
                   chmod +x wp-cli.phar
                   mv wp-cli.phar /usr/local/bin/wp
             - name: Make Distribution
-            - run: bash bin/dist.sh
+              run: bash bin/dist.sh
             - name: Test ZIP
               run:  test -e dist/${{ env.plugin_name }}.zip
             - name: Create Release
