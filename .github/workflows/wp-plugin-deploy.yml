@@ -65,9 +65,8 @@ jobs:
         runs-on: ubuntu-latest
         needs: [php_unit]
         steps:
-            - uses:
-                  actions/checkout@master
-                  # get the node version from the .node-version file
+            - uses: actions/checkout@master
+            # get the node version from the .node-version file
             - name: Read .node-version
               run: echo "##[set-output name=NODEVERSION;]$(cat .node-version)"
               id: nodenv
@@ -99,7 +98,7 @@ jobs:
         runs-on: ubuntu-latest
         needs: [php_unit]
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@master
             # get the node version from the .node-version file
             - name: Read .node-version
               run: echo "##[set-output name=NODEVERSION;]$(cat .node-version)"
