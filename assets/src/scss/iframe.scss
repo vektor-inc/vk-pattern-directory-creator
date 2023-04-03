@@ -9,7 +9,7 @@ body {
     background-color: unset !important;
 
 }
-.vk-patterns-container {
+.vkpdc-container {
     width: 100%;
     margin: 0 auto;
     padding-right: 15px;
@@ -17,25 +17,25 @@ body {
 }
 
 @media ( min-width: 576px ) {
-    .vk-patterns-container {
+    .vkpdc-container {
         max-width: 540px;
     }
 }
 
 @media ( min-width: 768px ) {
-    .vk-patterns-container {
+    .vkpdc-container {
         max-width: 720px;
     }
 }
 
 @media ( min-width: 992px ) {
-    .vk-patterns-container {
+    .vkpdc-container {
         max-width: 960px;
     }
 }
 
 @media ( min-width: 1200px ) {
-    .vk-patterns-container {
+    .vkpdc-container {
         max-width: 1140px;
     }
 }
