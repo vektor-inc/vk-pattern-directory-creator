@@ -30,4 +30,5 @@ $vkpdc_modules_path = dirname( __FILE__ ) . '/modules/';
 // カスタム投稿タイプを作成.
 require_once $vkpdc_modules_path . 'register-post-type.php';
 
-
+// パターンディレクトリのパーツを読み込み.
+require_once $vkpdc_modules_path . 'content-part.php';

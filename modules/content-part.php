@@ -1,8 +1,8 @@
 <?php
 /**
- * VK Patterns Iframe Content Parts
+ * Parts of Pattern Directory
  *
- * @package VK Patterns
+ * @package VK Pattern Directory Creator
  */
 
 // 必要なフィルターを設置.
