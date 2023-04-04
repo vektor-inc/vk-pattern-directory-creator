@@ -1,32 +1,21 @@
-
 <?php
 /**
  * Template canvas file to render the current 'wp_template'.
  *
- * @package WordPress
- * 
+ * @package VK Pattern Directory Creator
  */
-global $wp_embed;
-$content = '<div class="vk-patterns-container container"><!-- wp:post-content /--></div>';
-$content = $wp_embed->run_shortcode( $content );
-$content = $wp_embed->autoembed( $content );
-$content = do_blocks( $content );
-$content = wptexturize( $content );
-$content = convert_smilies( $content );
-$content = shortcode_unautop( $content );
-$content = wp_filter_content_tags( $content );
-$content = do_shortcode( $content );
-$content = str_replace( ']]>', ']]&gt;', $content );
 
-global $post;
-$style = '<style>';
-$no_margin = get_post_meta( $post->ID, 'vk-patterns-no-margin', true );
-if ( ! empty( $no_margin ) ) {
-	$style .= 'html { margin-top: 0!important; margin-bottom: 0!important; }';
-} else {
-	$style .= 'html { margin-top: 2.6rem!important; margin-bottom: 2.6rem!important; }';
-}
-$style .= '</style>';
+global $wp_embed;
+$vkpdc_content = '<div class="vk-patterns-container container"><!-- wp:post-content /--></div>';
+$vkpdc_content = $wp_embed->run_shortcode( $vkpdc_content );
+$vkpdc_content = $wp_embed->autoembed( $vkpdc_content );
+$vkpdc_content = do_blocks( $vkpdc_content );
+$vkpdc_content = wptexturize( $vkpdc_content );
+$vkpdc_content = convert_smilies( $vkpdc_content );
+$vkpdc_content = shortcode_unautop( $vkpdc_content );
+$vkpdc_content = wp_filter_content_tags( $vkpdc_content );
+$vkpdc_content = do_shortcode( $vkpdc_content );
+$vkpdc_content = str_replace( ']]>', ']]&gt;', $vkpdc_content );
 
 /*
  * Get the template HTML.
@@ -38,13 +27,12 @@ $style .= '</style>';
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<?php wp_head(); ?>
-	<?php echo $style; ?>
 </head>
 
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<?php echo $content; ?>
+<?php echo wp_kses_post( $vkpdc_content ); ?>
 
 <?php wp_footer(); ?>
 </body>

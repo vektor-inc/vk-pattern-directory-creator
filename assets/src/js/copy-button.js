@@ -1,4 +1,4 @@
-const copyButtonOuterAll = document.querySelectorAll('.vk-patterns-copy');
+const copyButtonOuterAll = document.querySelectorAll('.vkpdc-copy');
 // eslint-disable-next-line no-undef
 const beforeTextSingle = vkPatternsCopyButton.beforeTextSingle;
 // eslint-disable-next-line no-undef
@@ -10,7 +10,7 @@ const copyAjaxUrl = vkPatternsCopyButton.ajaxUrl;
 
 copyButtonOuterAll.forEach((copyButtonOuter) => {
 	const post_id = Number(copyButtonOuter.dataset.post);
-	const copyButton = copyButtonOuter.querySelector(`.vk-patterns-copy-button`);
+	const copyButton = copyButtonOuter.querySelector(`.vkpdc-copy-button`);
 	
 	copyButton.onclick = () => {
 		const req = new XMLHttpRequest();

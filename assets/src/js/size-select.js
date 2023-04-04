@@ -1,8 +1,8 @@
-const SelectSizeAll = document.querySelectorAll('.vk-patterns-size-select');
+const SelectSizeAll = document.querySelectorAll('.vkpdc-size-select');
 // eslint-disable-next-line no-undef
 const SizeList = vkPatternsSizeSelect.sizeList;
 const WindowSize = document.body.clientWidth;
-const iframeContainer = document.querySelector('.vk-patterns-iframe-wrapper');
+const iframeContainer = document.querySelector('.vkpdc-iframe-wrapper');
 
 SelectSizeAll.forEach((SelectSize) => {
 	const sizeOption = SelectSize.querySelectorAll('option');

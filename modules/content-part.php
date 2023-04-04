@@ -15,7 +15,6 @@ add_filter( 'vkpdc_content', 'wp_filter_content_tags' );
 add_filter( 'vkpdc_content', 'do_shortcode', 11 );
 add_filter( 'vkpdc_content', 'capital_P_dangit', 11 );
 
-
 /**
  * 幅を切り替えるボタンを作る関数
  *
@@ -26,9 +25,9 @@ function vkpdc_get_size_selector( $page_type = 'single' ) {
 	// iframe の幅のリスト.
 	$size_array = vkpdc_iframe_sizes();
 
-	$select_outer_classes = 'vk-pattern-directory-creator-size';
+	$select_outer_classes = 'vkpdc-size';
 	if ( ! empty( $page_type ) ) {
-		$select_outer_classes .= ' vk-pattern-directory-creator-size--' . $page_type;
+		$select_outer_classes .= ' vkpdc-size--' . $page_type;
 		if ( 'single' === $page_type ) {
 			$select_outer_classes .= ' container';
 		}
@@ -36,7 +35,7 @@ function vkpdc_get_size_selector( $page_type = 'single' ) {
 
 	// iframe の幅をコントロールするボタン.
 	$select_button  = '<div class="' . $select_outer_classes . '">';
-	$select_button .= '<select class="vk-pattern-directory-creator-size-select">';
+	$select_button .= '<select class="vkpdc-size-select">';
 	foreach ( $size_array as $size ) {
 		$select_button .= '<option value="' . $size['value'] . '">' . $size['label'] . '</option>';
 	}
@@ -63,11 +62,11 @@ function vkpdc_get_iframe_content( $post_id, $page_type = 'single', $mini = fals
 	$content = $post->post_content;
 
 	$pattern_content = apply_filters( 'vkpdc_content', $content );
-	$iframe_wrapper  = 'vk-pattern-directory-creator-iframe-wrapper';
+	$iframe_wrapper  = 'vkpdc-iframe-wrapper';
 	if ( ! empty( $page_type ) ) {
-		$iframe_wrapper .= ' vk-pattern-directory-creator-iframe-wrapper--' . $page_type;
+		$iframe_wrapper .= ' vkpdc-iframe-wrapper--' . $page_type;
 	}
-	$patterns_container = true === $mini ? 'vk-pattern-directory-creator-container-mini' : 'vk-pattern-directory-creator-container';
+	$patterns_container = true === $mini ? 'vkpdc-container-mini' : 'vkpdc-container';
 	$scroling           = 'single' === $page_type ? 'yes' : 'no';
 
 	// Iframe の href に指定する url.
@@ -75,7 +74,7 @@ function vkpdc_get_iframe_content( $post_id, $page_type = 'single', $mini = fals
 
 	// Iframe で表示する要素の HTML.
 	$iframe_content  = '<div class="' . $iframe_wrapper . '">';
-	$iframe_content .= '<iframe class="vk-pattern-directory-creator-iframe" scrolling="' . $scroling . '" src="' . $url . '"></iframe>';
+	$iframe_content .= '<iframe class="vkpdc-iframe" scrolling="' . $scroling . '" src="' . $url . '"></iframe>';
 	$iframe_content .= '</div>';
 
 	// iframe 化した コンテンツを返す.
@@ -112,9 +111,6 @@ function vkpdc_get_copy_button_data() {
  */
 function vkpdc_get_copy_button( $post_id, $page_type = 'single' ) {
 
-	// プレミアムパターンか否か.
-	$is_premium = vkpdc_is_premium_pattern( $post_id );
-
 	// コピーボタンのデータを取得.
 	$copy_button_data = vkpdc_get_copy_button_data();
 
@@ -138,16 +134,11 @@ function vkpdc_get_copy_button( $post_id, $page_type = 'single' ) {
 	);
 
 	// ボタンの外側のクラスを作成.
-	$copy_outer_classes = 'vk-pattern-directory-creator-copy';
+	$copy_outer_classes = 'vkpdc-copy';
 
 	// ページタイプに応じてクラス名を追加.
 	if ( ! empty( $page_type ) ) {
-		$copy_outer_classes .= ' vk-pattern-directory-creator-copy--' . $page_type;
-	}
-
-	// プレミアムパターンならクラスを追加.
-	if ( ! empty( $is_premium ) ) {
-		$copy_outer_classes .= ' vk-pattern-directory-creator-premium';
+		$copy_outer_classes .= ' vkpdc-copy--' . $page_type;
 	}
 
 	// コピーボタンのタイトル属性.
@@ -158,9 +149,9 @@ function vkpdc_get_copy_button( $post_id, $page_type = 'single' ) {
 
 	// コピーボタンを生成.
 	$copy_button  = '<div class="' . $copy_outer_classes . '"  data-post="' . $post_id . '">';
-	$copy_button .= '<a class="vk-pattern-directory-creator-copy-button btn btn-primary" data-clipboard-text="' . esc_attr( $content ) . '"' . $copy_title . '>';
-	$copy_button .= '<span class="vk-pattern-directory-creator-copy-button-icon"><i class="fas fa-copy"></i></span>';
-	$copy_button .= '<span class="vk-pattern-directory-creator-copy-button-text">' . $copy_text . '</span>';
+	$copy_button .= '<a class="vkpdc-copy-button" data-clipboard-text="' . esc_attr( $content ) . '"' . $copy_title . '>';
+	$copy_button .= '<span class="vkpdc-copy-button-icon"><i class="fas fa-copy"></i></span>';
+	$copy_button .= '<span class="vkpdc-copy-button-text">' . $copy_text . '</span>';
 	$copy_button .= '</a>';
 	$copy_button .= '</div>';
 
