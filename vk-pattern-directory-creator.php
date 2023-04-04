@@ -27,7 +27,20 @@ define( 'VKPDC_PLUGIN_VERSION', $vkpdc_plugin_data['version'] );
 // 共通パスを定義.
 $vkpdc_modules_path = dirname( __FILE__ ) . '/modules/';
 
+// Iframe のサイズを読み込み.
+require_once $vkpdc_modules_path . 'iframe-sizes.php';
+
 // カスタム投稿タイプを作成.
 require_once $vkpdc_modules_path . 'register-post-type.php';
 
+// パターンディレクトリのパーツを読み込み.
+require_once $vkpdc_modules_path . 'content-part.php';
 
+// スクリプトとスタイルを読み込み.
+require_once $vkpdc_modules_path . 'enquque-scripts.php';
+
+// Iframe の表示部分を読み込み.
+require_once $vkpdc_modules_path . 'iframe-view.php';
+
+// 投稿ページを変更.
+require_once $vkpdc_modules_path . 'content-single.php';
