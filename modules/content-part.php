@@ -62,7 +62,7 @@ function vkpdc_get_iframe_content( $post_id, $page_type = 'single', $mini = fals
 	$content = $post->post_content;
 
 	$pattern_content = apply_filters( 'vkpdc_content', $content );
-	$iframe_wrapper  = 'vkpdc-iframe-wrapper';
+	$iframe_wrapper  = 'vkpdc-iframe-wrapper container';
 	if ( ! empty( $page_type ) ) {
 		$iframe_wrapper .= ' vkpdc-iframe-wrapper--' . $page_type;
 	}
@@ -74,7 +74,7 @@ function vkpdc_get_iframe_content( $post_id, $page_type = 'single', $mini = fals
 
 	// Iframe で表示する要素の HTML.
 	$iframe_content  = '<div class="' . $iframe_wrapper . '">';
-	$iframe_content .= '<iframe class="vkpdc-iframe" scrolling="' . $scroling . '" src="' . $url . '"></iframe>';
+	$iframe_content .= '<iframe class="vkpdc-iframe ' . $patterns_container . '" scrolling="' . $scroling . '" src="' . $url . '"></iframe>';
 	$iframe_content .= '</div>';
 
 	// iframe 化した コンテンツを返す.
