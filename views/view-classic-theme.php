@@ -10,6 +10,14 @@
 <html <?php language_attributes(); ?>>
 <head>	
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
+	<script type="text/javascript">
+		if (window.name !== "any" ) {
+			window.location.reload();
+			window.name = "any";
+		} else {
+			window.name = "";
+		}
+	</script>
 	<?php wp_head(); ?>
 </head>
 
