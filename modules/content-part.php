@@ -50,11 +50,10 @@ function vkpdc_get_size_selector( $page_type = 'single' ) {
  *
  * @param string  $post_id 投稿ID.
  * @param string  $page_type archive or single.
- * @param boolean $mini ラッパーをミニサイズにするか否か.
  *
  * @return string $iframe_content : Iframe で表示する内容
  */
-function vkpdc_get_iframe_content( $post_id, $page_type = 'single', $mini = false ) {
+function vkpdc_get_iframe_content( $post_id, $page_type = 'single' ) {
 
 	// 投稿 ID から情報を取得.
 	$post    = get_post( $post_id );
@@ -66,15 +65,13 @@ function vkpdc_get_iframe_content( $post_id, $page_type = 'single', $mini = fals
 	if ( ! empty( $page_type ) ) {
 		$iframe_wrapper .= ' vkpdc-iframe-wrapper--' . $page_type;
 	}
-	$patterns_container = true === $mini ? 'vkpdc-container-mini' : 'vkpdc-container';
-	$scroling           = 'single' === $page_type ? 'yes' : 'no';
 
 	// Iframe の href に指定する url.
-	$url = get_permalink( $post_id ) . '?view=true';
+	$url = get_permalink( $post_id ) . '?view=' . $page_type;
 
 	// Iframe で表示する要素の HTML.
 	$iframe_content  = '<div class="' . $iframe_wrapper . '">';
-	$iframe_content .= '<iframe class="vkpdc-iframe ' . $patterns_container . '" scrolling="' . $scroling . '" src="' . $url . '"></iframe>';
+	$iframe_content .= '<iframe class="vkpdc-iframe vkpdc-container" src="' . $url . '"></iframe>';
 	$iframe_content .= '</div>';
 
 	// iframe 化した コンテンツを返す.
@@ -158,3 +155,30 @@ function vkpdc_get_copy_button( $post_id, $page_type = 'single' ) {
 	// コピーボタンを返す.
 	return $copy_button;
 }
+
+/**
+ * サムネイルを作る関数
+ *
+ * @param string $html              サムネイルの HTML.
+ * @param int    $post_id           投稿ID.
+ * @param int    $post_thumbnail_id サムネイルの ID.
+ * @param string $size              サムネイルのサイズ.
+ * @param array  $attr              その他の設定.
+ *
+ * @return $html              サムネイルの HTML.
+ */
+function vkpdc_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
+	// 投稿 ID から情報を取得.
+	$post      = get_post( $post_id );
+	$post_type = $post->post_type;
+	
+	if ( 'vk-patterns' === $post_type ) {
+		$html = '<div class="vkpdc-iframe-thumbnail">';
+		$html .= vkpdc_get_iframe_content( $post_id, 'thumbnail' );
+		$html .= '</div>';
+	}
+	
+	return $html;
+
+}
+add_filter( 'post_thumbnail_html', 'vkpdc_post_thumbnail_html', 10, 5 );

@@ -2,12 +2,13 @@ html {
     margin-top: 1rem!important;
     margin-bottom: 1rem!important;
     user-select: none!important;
+    overflow-y: auto;
 }
 body {
     width: 100%;
     margin: 0 auto;
     background-color: unset !important;
-
+    overflow-y: auto;
 }
 .vk-patterns-container {
     width: 100%;

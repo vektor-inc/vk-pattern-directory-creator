@@ -1,0 +1,42 @@
+html {
+    margin-top: 1rem!important;
+    margin-bottom: 1rem!important;
+    user-select: none!important;
+    overflow-y: hidden;
+}
+body {
+    width: 100%;
+    margin: 0 auto;
+    background-color: unset !important;
+    overflow-y: hidden;
+}
+.vk-patterns-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-right: 15px;
+    padding-left: 15px;		
+}
+
+@media ( min-width: 576px ) {
+    .vk-patterns-container {
+        max-width: 540px;
+    }
+}
+
+@media ( min-width: 768px ) {
+    .vk-patterns-container {
+        max-width: 720px;
+    }
+}
+
+@media ( min-width: 992px ) {
+    .vk-patterns-container {
+        max-width: 960px;
+    }
+}
+
+@media ( min-width: 1200px ) {
+    .vk-patterns-container {
+        max-width: 1140px;
+    }
+}
