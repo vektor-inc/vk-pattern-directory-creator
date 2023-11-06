@@ -21,13 +21,12 @@
 	},
 	"homepage": "https://github.com/vektor-inc/vk-pattern-directory-creator#readme",
 	"devDependencies": {
-		"@playwright/test": "^1.32.1",
-		"@wordpress/env": "^5.15.0",
-		"@wordpress/scripts": "^26.1.0",
-		"npm-check-updates": "^16.9.0"
+		"@playwright/test": "^1.39.0",
+		"@wordpress/env": "^8.11.0",
+		"@wordpress/scripts": "^26.16.0",
+		"npm-check-updates": "^16.14.6"
 	},
 	"volta": {
-		"node": "16.15.1",
-		"npm": "8.12.1"
+		"node": "20.9.0"
 	}
 }
