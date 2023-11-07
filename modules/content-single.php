@@ -31,15 +31,21 @@ function vkpdc_content_single( $content ) {
 			$copy_button = vkpdc_get_copy_button( $post_id, 'single' );
 
 			// コンテンツの生成開始.
-			$return_content = '<div class="vk-patterns"><div class="vkpdc-outer-single">';
+			$return_content = '<div class="vkpdc">';
 
 			// 使用プロダクト・幅切り替え・パターンのコンテンツを追加.
-			$return_content .= $select_button . $iframe_content;
+			$return_content .= $select_button;
+			$return_content .= apply_filters( 'vkpdc_iframe_before', '' );
+			$return_content .= '<div class="vkpdc-iframe-outer--single">' . $iframe_content . '</div>';
 
 			// コピーボタンを表示.
-			$return_content .= '<div class="container">' . $copy_button . '</div>';
+			$return_content .= '<div class="vkpdc-container">';
+			$return_content .= $copy_button;
+			$return_content .= apply_filters( 'vkpdc_copy_button_after', '' );
+			$return_content .= '</div>';
 
-			$return_content .= '</div></div>';
+
+			$return_content .= '</div>';
 
 			// コピーボタンを記事本文直後に追加.
 			if ( ! empty( $options['developer_mode'] ) && true === $options['developer_mode'] ) {
