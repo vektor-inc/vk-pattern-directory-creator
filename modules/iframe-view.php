@@ -24,6 +24,13 @@ function vkpdc_is_iframe_view() {
 }
 
 /**
+ * Iframe に適用するテーマの選定
+ */
+function vkpdc_iframe_view_theme() {
+	return apply_filters( 'vkpdc_iframe_theme', 'defauilt' );
+}
+
+/**
  * 管理バーののスクリプトを追加
  */
 function vkpdc_admin_scripts() {
@@ -70,16 +77,21 @@ function vkpdc_load_iframe_template() {
 	add_filter( 'show_admin_bar', '__return_false');
 	add_action( 'wp_enqueue_scripts', 'vkpdc_admin_scripts', 2147483646 );
 
+	// 各種テーマの追加処理
+	do_action( 'vkpdc_iframe_comoon_settings' );
+
 	// iframe の中身の CSS を適用
 	if ( 'single' === $view_type ) {
 		add_action( 'wp_enqueue_scripts', 'vkpdc_iframe_single_scripts' );
 	} elseif ( 'thumbnail' === $view_type ) {
 		add_action( 'wp_enqueue_scripts', 'vkpdc_iframe_thumbnail_scripts' );
-	} 
-	
+	}	
 
 	// 現在のテーマがブロックテーマの場合.
 	if ( wp_is_block_theme() ) {
+
+		// ブロックテーマで iframe を表示するときのの追加処理
+		do_action( 'vkpdc_iframe_block_theme_settings' );
 
 		// ブロックテーマ用の Iframe テンプレートを用意して読み込む.
 		$template  = VKPDC_PLUGIN_ROOT_PATH . '/views/view-block-theme.php';
@@ -90,10 +102,11 @@ function vkpdc_load_iframe_template() {
 		include locate_block_template( $template, $type, $templates );
 	} else { // 現在のテーマがクラッシックテーマの場合.
 
+		// クラシックテーマで iframe を表示するときのの追加処理
+		do_action( 'vkpdc_iframe_block_theme_settings' );
 		// クラシックテーマ用の Iframe テンプレートを用意して読み込む.
 		include VKPDC_PLUGIN_ROOT_PATH . '/views/view-classic-theme.php';
 	}
 	exit;
 }
 add_filter( 'template_redirect', 'vkpdc_load_iframe_template', 2147483647 );
-

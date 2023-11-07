@@ -55,19 +55,16 @@ function vkpdc_get_size_selector( $page_type = 'single' ) {
  */
 function vkpdc_get_iframe_content( $post_id, $page_type = 'single' ) {
 
-	// 投稿 ID から情報を取得.
-	$post    = get_post( $post_id );
-	$title   = $post->post_title;
-	$content = $post->post_content;
-
-	$pattern_content = apply_filters( 'vkpdc_content', $content );
 	$iframe_wrapper  = 'vkpdc-iframe-wrapper';
 	if ( ! empty( $page_type ) ) {
 		$iframe_wrapper .= ' vkpdc-iframe-wrapper--' . $page_type;
 	}
 
+	// 表示するテーマを設定
+	$view = vkpdc_iframe_view_theme();
+
 	// Iframe の href に指定する url.
-	$url = get_permalink( $post_id ) . '?view=' . $page_type;
+	$url = get_permalink( $post_id ) . '?view=' . $view;
 
 	// Iframe で表示する要素の HTML.
 	$iframe_content  = '<div class="' . $iframe_wrapper . '">';
