@@ -5,16 +5,6 @@
  * @package VK Pattern Directory Creator
  */
 
-// 必要なフィルターを設置.
-add_filter( 'vkpdc_content', 'do_blocks', 9 );
-add_filter( 'vkpdc_content', 'wptexturize' );
-add_filter( 'vkpdc_content', 'convert_smilies', 20 );
-add_filter( 'vkpdc_content', 'shortcode_unautop' );
-add_filter( 'vkpdc_content', 'prepend_attachment' );
-add_filter( 'vkpdc_content', 'wp_filter_content_tags' );
-add_filter( 'vkpdc_content', 'do_shortcode', 11 );
-add_filter( 'vkpdc_content', 'capital_P_dangit', 11 );
-
 /**
  * 幅を切り替えるボタンを作る関数
  *
