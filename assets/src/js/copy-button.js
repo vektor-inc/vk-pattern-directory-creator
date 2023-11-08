@@ -1,16 +1,16 @@
-const copyButtonOuterAll = document.querySelectorAll('.vkpdc-copy');
+const copyButtonOuterAll = document.querySelectorAll('.vkpdc_button-outer--copy');
 // eslint-disable-next-line no-undef
-const beforeTextSingle = vkPatternsCopyButton.beforeTextSingle;
+const beforeTextSingle = VKPDCButtonCopy.beforeTextSingle;
 // eslint-disable-next-line no-undef
-const beforeTextArchive = vkPatternsCopyButton.beforeTextArchive;
+const beforeTextArchive = VKPDCButtonCopy.beforeTextArchive;
 // eslint-disable-next-line no-undef
-const afterText = vkPatternsCopyButton.afterText;
+const afterText = VKPDCButtonCopy.afterText;
 // eslint-disable-next-line no-undef
-const copyAjaxUrl = vkPatternsCopyButton.ajaxUrl;
+const copyAjaxUrl = VKPDCButtonCopy.ajaxUrl;
 
 copyButtonOuterAll.forEach((copyButtonOuter) => {
 	const post_id = Number(copyButtonOuter.dataset.post);
-	const copyButton = copyButtonOuter.querySelector(`.vkpdc-copy-button`);
+	const copyButton = copyButtonOuter.querySelector(`.vkpdc_button--copy`);
 	
 	copyButton.onclick = () => {
 		const req = new XMLHttpRequest();

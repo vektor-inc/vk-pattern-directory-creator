@@ -97,7 +97,7 @@ function vkpdc_load_iframe_template() {
 		$template  = VKPDC_PLUGIN_ROOT_PATH . '/views/view-block-theme.php';
 		$type      = 'single';
 		$templates = array(
-			'content' => '<div class="vk-patterns-container"><!-- wp:post-content /--></div>',
+			'content' => '<div class="vkpdc_container"><!-- wp:post-content /--></div>',
 		);
 		include locate_block_template( $template, $type, $templates );
 	} else { // 現在のテーマがクラッシックテーマの場合.

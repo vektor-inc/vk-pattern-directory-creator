@@ -1,7 +1,7 @@
-const SelectSizeAll = document.querySelectorAll('.vk-patterns-size-select');
+const SelectSizeAll = document.querySelectorAll('.vkpdc_select--size');
 const SizeList = vkPatternsSizeSelect.sizeList;
 let WindowSize = document.body.clientWidth;
-const iframeContainer = document.querySelector('.vk-patterns-iframe-wrapper');
+const iframeContainer = document.querySelector('.vkpdc_iframe-wrapper');
 
 function updateSizeOptionsAndIframe(selectSizeElement) {
   const sizeOption = selectSizeElement.querySelectorAll('option');

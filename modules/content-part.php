@@ -15,24 +15,22 @@ function vkpdc_get_size_selector( $page_type = 'single' ) {
 	// iframe の幅のリスト.
 	$size_array = vkpdc_iframe_sizes();
 
-	$select_outer_classes = 'vkpdc-size';
+	$outer_classes = 'vkpdc_select-outer vkpdc_select-outer--size';
 	if ( ! empty( $page_type ) ) {
-		$select_outer_classes .= ' vkpdc-size--' . $page_type;
-		if ( 'single' === $page_type ) {
-			$select_outer_classes .= ' vkpdc-container';
-		}
+		$outer_classes .= ' vkpdc_select-outer--' . $page_type;
 	}
 
 	// iframe の幅をコントロールするボタン.
-	$select_button  = '<div class="' . $select_outer_classes . '">';
-	$select_button .= '<select class="vkpdc-size-select">';
+	$html  = '<div class="' . $outer_classes . '">';
+	$html .= '<select class="vkpdc_select vkpdc_select--size">';
+	$html .= '<option value="">' . __( 'Select Screen Size', 'vk-pattern-directory-creator'). '</option>';
 	foreach ( $size_array as $size ) {
-		$select_button .= '<option value="' . $size['value'] . '">' . $size['label'] . '</option>';
+		$html .= '<option value="' . $size['value'] . '">' . $size['label'] . '</option>';
 	}
-	$select_button .= '</select>';
-	$select_button .= '</div>';
+	$html .= '</select>';
+	$html .= '</div>';
 
-	return $select_button;
+	return $html;
 }
 
 /**
@@ -45,9 +43,9 @@ function vkpdc_get_size_selector( $page_type = 'single' ) {
  */
 function vkpdc_get_iframe_content( $post_id, $page_type = 'single' ) {
 
-	$iframe_wrapper  = 'vkpdc-iframe-wrapper';
+	$iframe_wrapper  = 'vkpdc_iframe-wrapper';
 	if ( ! empty( $page_type ) ) {
-		$iframe_wrapper .= ' vkpdc-iframe-wrapper--' . $page_type;
+		$iframe_wrapper .= ' vkpdc_iframe-wrapper--' . $page_type;
 	}
 
 	// 表示するテーマを設定
@@ -58,7 +56,7 @@ function vkpdc_get_iframe_content( $post_id, $page_type = 'single' ) {
 
 	// Iframe で表示する要素の HTML.
 	$iframe_content  = '<div class="' . $iframe_wrapper . '">';
-	$iframe_content .= '<iframe class="vkpdc-iframe" src="' . $url . '"></iframe>';
+	$iframe_content .= '<iframe class="vkpdc_iframe" src="' . $url . '"></iframe>';
 	$iframe_content .= '</div>';
 
 	// iframe 化した コンテンツを返す.
@@ -118,11 +116,11 @@ function vkpdc_get_copy_button( $post_id, $page_type = 'single' ) {
 	);
 
 	// ボタンの外側のクラスを作成.
-	$copy_outer_classes = 'vkpdc-copy';
+	$copy_outer_classes = 'vkpdc_button-outer vkpdc_button-outer--copy';
 
 	// ページタイプに応じてクラス名を追加.
 	if ( ! empty( $page_type ) ) {
-		$copy_outer_classes .= ' vkpdc-copy--' . $page_type;
+		$copy_outer_classes .= ' vkpdc_button--' . $page_type;
 	}
 
 	// コピーボタンのタイトル属性.
@@ -133,9 +131,9 @@ function vkpdc_get_copy_button( $post_id, $page_type = 'single' ) {
 
 	// コピーボタンを生成.
 	$copy_button  = '<div class="' . $copy_outer_classes . '"  data-post="' . $post_id . '">';
-	$copy_button .= '<a class="vkpdc-copy-button" data-clipboard-text="' . esc_attr( $content ) . '"' . $copy_title . '>';
-	$copy_button .= '<span class="vkpdc-copy-button-icon"><i class="fa-solid fa-copy  fa-fw"></i></span>';
-	$copy_button .= '<span class="vkpdc-copy-button-text">' . $copy_text . '</span>';
+	$copy_button .= '<a class="vkpdc_button vkpdc_button--copy" data-clipboard-text="' . esc_attr( $content ) . '"' . $copy_title . '>';
+	$copy_button .= '<span class="vkpdc_button-icon vkpdc_button-icon--copy"><i class="fa-solid fa-copy fa-fw"></i></span>';
+	$copy_button .= '<span class="vkpdc_button-text kpdc_button-text--copy">' . $copy_text . '</span>';
 	$copy_button .= '</a>';
 	$copy_button .= '</div>';
 

@@ -6,7 +6,7 @@
  */
 
 global $wp_embed;
-$vkpdc_content = '<div class="vk-patterns-container container"><!-- wp:post-content /--></div>';
+$vkpdc_content = '<div class="vkpdc_container container"><!-- wp:post-content /--></div>';
 $vkpdc_content = $wp_embed->run_shortcode( $vkpdc_content );
 $vkpdc_content = $wp_embed->autoembed( $vkpdc_content );
 $vkpdc_content = do_blocks( $vkpdc_content );
