@@ -44,3 +44,6 @@ require_once $vkpdc_modules_path . 'iframe-view.php';
 
 // 投稿ページを変更.
 require_once $vkpdc_modules_path . 'content-single.php';
+
+// アーカイブページ
+require_once $vkpdc_modules_path . 'content-archive.php';
