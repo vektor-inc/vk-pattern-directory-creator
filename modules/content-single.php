@@ -37,7 +37,7 @@ function vkpdc_content_single( $content ) {
 			$iframe_after = apply_filters( 'vkpdc_iframe_after', $copy_button );
 
 			// コンテンツの生成開始.
-			$return_content = '<div class="vkpdc">';
+			$return_content = '<div class="vkpdc vkpdc_single">';
 
 			// トップ部分を追加
 			$return_content .= $iframe_before;
