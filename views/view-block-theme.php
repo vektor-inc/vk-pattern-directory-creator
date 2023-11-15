@@ -4,18 +4,33 @@
  *
  * @package VK Pattern Directory Creator
  */
-
+if ( ! empty( $_GET['reload'] ) ) {
+	$current_url = vkpdc_get_current_url();
+	$redirect_url = str_replace( '&reload=true', '', $current_url );
+	wp_safe_redirect( $redirect_url );
+}
 global $wp_embed;
-$vkpdc_content = '<div class="vkpdc_container container"><!-- wp:post-content /--></div>';
-$vkpdc_content = $wp_embed->run_shortcode( $vkpdc_content );
-$vkpdc_content = $wp_embed->autoembed( $vkpdc_content );
-$vkpdc_content = do_blocks( $vkpdc_content );
-$vkpdc_content = wptexturize( $vkpdc_content );
-$vkpdc_content = convert_smilies( $vkpdc_content );
-$vkpdc_content = shortcode_unautop( $vkpdc_content );
-$vkpdc_content = wp_filter_content_tags( $vkpdc_content );
-$vkpdc_content = do_shortcode( $vkpdc_content );
-$vkpdc_content = str_replace( ']]>', ']]&gt;', $vkpdc_content );
+$content = apply_filters( 'vkpdc_post_content', '<!-- wp:post-content /-->' );
+$content = $wp_embed->run_shortcode( $content );
+$content = $wp_embed->autoembed( $content );
+$content = do_blocks( $content );
+$content = wptexturize( $content );
+$content = convert_smilies( $content );
+$content = shortcode_unautop( $content );
+$content = wp_filter_content_tags( $content );
+$content = do_shortcode( $content );
+$content = str_replace( ']]>', ']]&gt;', $content );
+$content = apply_filters( 'vkpdc_the_content', $content );
+
+global $post;
+$style = '<style>';
+$no_margin = get_post_meta( $post->ID, 'vk-patterns-no-margin', true );
+if ( ! empty( $no_margin ) ) {
+	$style .= 'html { margin-top: 0!important; margin-bottom: 0!important; }';
+} else {
+	$style .= 'html { margin-top: 2.6rem!important; margin-bottom: 2.6rem!important; }';
+}
+$style .= '</style>';
 
 /*
  * Get the template HTML.
@@ -27,12 +42,13 @@ $vkpdc_content = str_replace( ']]>', ']]&gt;', $vkpdc_content );
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<?php wp_head(); ?>
+	<?php echo $style; ?>
 </head>
 
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<?php echo wp_kses_post( $vkpdc_content ); ?>
+<?php echo $content; ?>
 
 <?php wp_footer(); ?>
 </body>

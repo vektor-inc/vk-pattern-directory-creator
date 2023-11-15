@@ -52,7 +52,7 @@ function vkpdc_get_iframe_content( $post_id, $page_type = 'single' ) {
 	$view = vkpdc_iframe_view_theme();
 
 	// Iframe の href に指定する url.
-	$url = get_permalink( $post_id ) . '?view=' . $view;
+	$url = get_permalink( $post_id ) . '?view=' . $view . '&reload=true';
 
 	// Iframe で表示する要素の HTML.
 	$iframe_content  = '<div class="' . $iframe_wrapper . '">';

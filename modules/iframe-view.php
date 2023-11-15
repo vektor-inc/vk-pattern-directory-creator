@@ -6,6 +6,14 @@
  */
 
 /**
+ * 現在の URL を取得
+ */
+function vkpdc_get_current_url() {
+	// 現在の URL を取得
+	return ( empty( $_SERVER['HTTPS'] ) ? 'http://' : 'https://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+}
+
+/**
  * Iframe で表示中か
  */
 function vkpdc_is_iframe_view() {
