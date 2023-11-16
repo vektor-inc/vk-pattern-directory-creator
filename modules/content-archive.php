@@ -18,7 +18,7 @@ function vkpdc_content_archive_single_post( $post_id = null ) {
 
     if ( ! empty( $post ) ) {        
 
-        // iframe
+        /* iframe */
         $iframe = vkpdc_get_iframe_content( $post_id, 'archive' );
 
         /* タクソノミー */
@@ -52,7 +52,7 @@ function vkpdc_content_archive_single_post( $post_id = null ) {
             $taxonomy_list .= '</div>';
         }
 
-        // リンクボタン
+        /* リンクボタン */
         $link_button  = '<div class="vkpdc_button-outer vkpdc_button-outer--view">';
         $link_button .= '<a class="vkpdc_button vkpdc_button--view" href="' . esc_attr( get_the_permalink( $post_id ) ) . '">';
         $link_button .= '<span class="vkpdc_button-icon vkpdc_button-icon--view"><i class="fa-solid fa-circle-arrow-right fa-fw"></i></span>';
@@ -60,13 +60,13 @@ function vkpdc_content_archive_single_post( $post_id = null ) {
         $link_button .= '</a>';
         $link_button .= '</div>';
 
-        // コピーボタン	
+        /* コピーボタン	*/
         $copy_button = vkpdc_get_copy_button( $post_id, 'archive' );
 
-        // ボタンの集合体
+        /* ボタンの集合体 */
         $buttons = apply_filters( 'vkpdc_archive_buttons', $link_button . $copy_button );
 
-        // 最初の div
+        /* 最初の div */
         $html .= '<div id="post-' . esc_attr( $post_id ) . '" class="vkpdec_post vkpdc_post-type--' . esc_attr( $post->post_type ) . ' ' . join( ' ', get_post_class( apply_filters( 'vkpdc_single_post_outer_class', '' ) ) ) . '">';
 
         /* 中身の追加 */
@@ -79,7 +79,7 @@ function vkpdc_content_archive_single_post( $post_id = null ) {
         // ボタン
         $$html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
 
-        // 最後の div
+        /* 最後の div */
         $html .= '</div>';
     }
 
