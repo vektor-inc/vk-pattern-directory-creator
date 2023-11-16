@@ -129,11 +129,16 @@ function vkpdc_get_copy_button( $post_id, $page_type = 'single' ) {
 	// コピーボタンのテキスト.
 	$copy_text = $copy_button_data[ $page_type ]['copy_text'];
 
+	// ボタン本体の属性
+	$button_attributes  = ' data-clipboard-text="' . esc_attr( $content ) . '"' . $copy_title;
+	$button_attributes .= apply_filters( 'vkpdc_copy_button_attributes', '' );
+
+
 	// コピーボタンを生成.
-	$copy_button  = '<div class="' . $copy_outer_classes . '"  data-post="' . $post_id . '">';
-	$copy_button .= '<a class="vkpdc_button vkpdc_button--copy" data-clipboard-text="' . esc_attr( $content ) . '"' . $copy_title . '>';
+	$copy_button  = '<div class="' . $copy_outer_classes . '">';
+	$copy_button .= '<a class="vkpdc_button vkpdc_button--copy"' . $button_attributes . '>';
 	$copy_button .= '<span class="vkpdc_button-icon vkpdc_button-icon--copy"><i class="fa-solid fa-copy fa-fw"></i></span>';
-	$copy_button .= '<span class="vkpdc_button-text kpdc_button-text--copy">' . $copy_text . '</span>';
+	$copy_button .= '<span class="vkpdc_button-text vkpdc_button-text--copy">' . $copy_text . '</span>';
 	$copy_button .= '</a>';
 	$copy_button .= '</div>';
 
