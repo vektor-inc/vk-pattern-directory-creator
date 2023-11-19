@@ -10,9 +10,10 @@
  *
  * @param string $post 投稿のオブジェクト.
  */
-function vkpdc_get_archive_view( $post ) {
+function vkpdc_get_archive_view( $post = null ) {
 
     $html    = '';
+    $post = ! empty( $post ) ? $post : get_post( get_the_ID() );
 
     if ( ! empty( $post ) ) {        
 
