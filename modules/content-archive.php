@@ -65,8 +65,8 @@ function vkpdc_get_archive_single_post( $post = null ) {
         /* ボタンの集合体 */
         $buttons = apply_filters( 'vkpdc_archive_buttons', $link_button . $copy_button );
 
-        /* 最初の div */
-        $html .= '<div id="post-' . esc_attr( $post->ID ) . '" class="vkpdec_post ' . join( ' ', get_post_class( apply_filters( 'vkpdc_single_post_outer_class', '' ) ) ) . '">';
+        /* 最初の article */
+        $html .= '<article id="post-' . esc_attr( $post->ID ) . '" class="vkpdec_post ' . join( ' ', get_post_class( apply_filters( 'vkpdc_single_post_outer_class', '' ) ) ) . '">';
 
         /* 中身の追加 */
         // iframe
@@ -78,8 +78,8 @@ function vkpdc_get_archive_single_post( $post = null ) {
         // ボタン
         $html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
 
-        /* 最後の div */
-        $html .= '</div>';
+        /* 最後の article */
+        $html .= '</article>';
     }
 
     return $html;    
