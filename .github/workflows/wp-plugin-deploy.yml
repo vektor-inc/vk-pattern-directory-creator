@@ -51,6 +51,8 @@ jobs:
                   curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
                   chmod +x wp-cli.phar
                   mv wp-cli.phar /usr/local/bin/wp
+            - name: Build
+              run: npm run build
             - name: Install Theme
               run: bash bin/install-theme.sh
             - name: Install several WordPress version by wp-env.override.json
@@ -86,6 +88,8 @@ jobs:
                   curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
                   chmod +x wp-cli.phar
                   mv wp-cli.phar /usr/local/bin/wp
+            - name: Build
+              run: npm run build
             - name: Make Distribution
               run: bash bin/deploy.sh
             - name: WordPress Plugin Deploy
@@ -119,6 +123,8 @@ jobs:
                   curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
                   chmod +x wp-cli.phar
                   mv wp-cli.phar /usr/local/bin/wp
+            - name: Build
+              run: npm run build
             - name: Make Distribution
               run: bash bin/dist.sh
             - name: Test ZIP
