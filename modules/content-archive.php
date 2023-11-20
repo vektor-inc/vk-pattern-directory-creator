@@ -10,7 +10,7 @@
  *
  * @param string $post 投稿のオブジェクト.
  */
-function vkpdc_get_archive_view( $post = null ) {
+function vkpdc_get_archive_single_post( $post = null ) {
 
     $html    = '';
     $post = ! empty( $post ) ? $post : get_post( get_the_ID() );
@@ -85,6 +85,7 @@ function vkpdc_get_archive_view( $post = null ) {
     return $html;    
 
 }
+add_shortcode( 'vkpdc_archive_single_post', 'vkpdc_get_archive_single_post' );
 
 /**
  * Archive Loop
