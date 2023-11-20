@@ -44,11 +44,11 @@ function vkpdc_get_archive_single_post( $post = null ) {
 
         // タクソノミーごとにタームを表示
         if ( ! empty( $taxonomies ) ) {
-            $taxonomy_list .= '<div class="vkpdec_post_taxonomies">';
+           $taxonomy_html .= '<div class="vkpdec_post_taxonomies">';
             foreach ( $taxonomies as $key => $value ) {
-                $taxonomy_list .= '<dl class="vkpdec_post_taxonomy vkpdec_post_taxonomy-' . $key . '">' . $value . '</dl>';
+               $taxonomy_html .= '<dl class="vkpdec_post_taxonomy vkpdec_post_taxonomy-' . $key . '">' . $value . '</dl>';
             }
-            $taxonomy_list .= '</div>';
+           $taxonomy_html .= '</div>';
         }
 
         /* リンクボタン */
@@ -72,11 +72,11 @@ function vkpdc_get_archive_single_post( $post = null ) {
         // iframe
         $html .= '<div class="vkpdc_iframe-outer vkpdc_iframe-outer--archive">' . $iframe . apply_filters( 'vkpdc_single_post_iframe_after', '' ) . '</div>';
         // タイトル
-        $html .= '<div class="vkpdc_post_title">' . apply_filters( 'vkpdc_post_title', get_the_title( $post->ID ), $post, $options ) . '</div>';
+        $html .= '<div class="vkpdc_post_title">' . apply_filters( 'vkpdc_post_title', get_the_title( $post->ID ), $post ) . '</div>';
         // タクソノミー
-        $html .= $taxonomy_list;
+        $html .= $taxonomy_html;
         // ボタン
-        $$html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
+        $html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
 
         /* 最後の div */
         $html .= '</div>';
