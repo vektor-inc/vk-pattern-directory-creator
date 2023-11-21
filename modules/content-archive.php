@@ -89,10 +89,13 @@ add_shortcode( 'vkpdc_archive_single_post', 'vkpdc_get_archive_single_post' );
 
 /**
  * Archive Loop
+ * 
+ * @param string $query クエリ.
  */
-function vkpdc_get_archive_loop( $query_args = array() ) {
+function vkpdc_get_archive_loop( $query = null ) {
 
-        $query = new WP_Query( $query_args );
+        global $wp_query;
+        $query = ! empty( $query ) ? $query : $wp_query;
     
         $html = '';
 
@@ -103,7 +106,7 @@ function vkpdc_get_archive_loop( $query_args = array() ) {
                 while ( $query->have_posts() ) {
                     $query->the_post();
                     $post  = get_post( get_the_ID() );
-                    $html .= vkpdc_get_archive_view( $post );
+                    $html .= vkpdc_get_archive_single_post( $post );
                 }
                
                 $html .= '</div>';
@@ -119,3 +122,4 @@ function vkpdc_get_archive_loop( $query_args = array() ) {
         wp_reset_postdata();
         return $html;
 }
+add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_archive_loop' );
