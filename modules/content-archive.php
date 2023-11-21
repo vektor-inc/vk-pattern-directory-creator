@@ -96,12 +96,13 @@ function vkpdc_get_archive_loop( $query = null ) {
 
         global $wp_query;
         $query = ! empty( $query ) ? $query : $wp_query;
+        $theme = get_template();
     
         $html = '';
 
         if ( 'vk-patterns' === get_post_type() || 'vk-patterns' === get_query_var('post_type') ) {
             if ( $query->have_posts() ) {
-                $html .= '<div class="vkpdc_posts">';
+                $html .= '<div class="vkpdc_posts vkpdc_posts_theme--' . $theme . '">';
         
                 while ( $query->have_posts() ) {
                     $query->the_post();
