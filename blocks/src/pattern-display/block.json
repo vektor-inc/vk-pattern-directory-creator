@@ -9,11 +9,11 @@
 		"postUrl": {
 			"type": "string"
 		},
-		"selectButton": {
+		"displayPulldowns": {
 			"type": "boolean",
 			"default": true
 		},
-		"copyButton": {
+		"displayButtons": {
 			"type": "boolean",
 			"default": true
 		},

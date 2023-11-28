@@ -89,22 +89,22 @@ function vkpdc_save_pattern_description( $post_id, $post, $update ) {
     $delete_flag = true;
 
 	// 空のブロックを削除
-	$content = preg_replace( '/<!-- wp:vkpdc\/pattern-description \{.*?\} -->((\n|\r|\s)*?)<div class="wp-block-vkpdc-pattern-description vkpdc_pattern-description">((\n|\r|\s)*?)<\/div>((\n|\r|\s)*?)<!-- \/wp:vkpdc\/pattern-description -->/', '', $post->post_content );
+	$content = preg_replace( '/<!-- wp:vkpdc\/pattern-description -->((\n|\r|\s)*?)<div class="wp-block-vkpdc-pattern-description vkpdc_pattern-description">((\n|\r|\s)*?)<\/div>((\n|\r|\s)*?)<!-- \/wp:vkpdc\/pattern-description -->/', '', $post->post_content );
 
     // 投稿コンテンツからパターンの説明を取得
-    preg_match_all( '/<!-- wp:vkpdc\/pattern-description \{.*?\} -->((.|\n|\r|\s)+?)<!-- \/wp:vkpdc\/pattern-description -->/', $content, $block_content_array );
+    preg_match_all( '/<!-- wp:vkpdc\/pattern-description -->((.|\n|\r|\s)+?)<!-- \/wp:vkpdc\/pattern-description -->/', $content, $block_content_array );
 
 
     // パターンの説明を保存
     if ( ! empty( $block_content_array ) ) {
 		foreach ( $block_content_array[0] as $block_content ) {
-			update_post_meta( $post_id, 'pattern_description', $block_content );
+			update_post_meta( $post_id, 'vkpdc_pattern_description', $block_content );
 			$delete_flag = false;		
 		}        
     }
 	
 	if ( true === $delete_flag ) {
-		delete_post_meta( $post_id, 'pattern_description' );
+		delete_post_meta( $post_id, 'vkpdc_pattern_description' );
 	}
 }
 add_action( 'save_post', 'vkpdc_save_pattern_description', 10, 3 );

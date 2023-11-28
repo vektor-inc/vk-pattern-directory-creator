@@ -19,11 +19,11 @@ export default function PostListEdit( props ) {
 		<>
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Display conditions', 'vk-patterns' ) }
+					title={ __( 'Display conditions', 'vk-pattern-directory-creator' ) }
 					initialOpen={ false }
 				>
 					<BaseControl
-						label={ __( 'Number of Posts', 'vk-patterns' ) }
+						label={ __( 'Number of Posts', 'vk-pattern-directory-creator' ) }
 						id={ `vk_postList-numberPosts` }
 					>
 						<RangeControl
@@ -36,7 +36,7 @@ export default function PostListEdit( props ) {
 						/>
 					</BaseControl>
 					<BaseControl
-						label={ __( 'Order', 'vk-patterns' ) }
+						label={ __( 'Order', 'vk-pattern-directory-creator' ) }
 						id={ `vk_postList-order` }
 					>
 						<SelectControl
@@ -45,17 +45,17 @@ export default function PostListEdit( props ) {
 							options={ [
 								{
 									value: 'ASC',
-									label: __( 'ASC', 'vk-patterns' ),
+									label: __( 'ASC', 'vk-pattern-directory-creator' ),
 								},
 								{
 									value: 'DESC',
-									label: __( 'DESC', 'vk-patterns' ),
+									label: __( 'DESC', 'vk-pattern-directory-creator' ),
 								},
 							] }
 						/>
 					</BaseControl>
 					<BaseControl
-						label={ __( 'Order by', 'vk-patterns' ) }
+						label={ __( 'Order by', 'vk-pattern-directory-creator' ) }
 						id={ `vk_postList-orderBy` }
 					>
 						<SelectControl
@@ -68,20 +68,20 @@ export default function PostListEdit( props ) {
 									value: 'date',
 									label: __(
 										'Published Date',
-										'vk-patterns'
+										'vk-pattern-directory-creator'
 									),
 								},
 								{
 									value: 'modified',
-									label: __( 'Modefied Date', 'vk-patterns' ),
+									label: __( 'Modefied Date', 'vk-pattern-directory-creator' ),
 								},
 								{
 									value: 'title',
-									label: __( 'Title', 'vk-patterns' ),
+									label: __( 'Title', 'vk-pattern-directory-creator' ),
 								},
 								{
 									value: 'rand',
-									label: __( 'Random', 'vk-patterns' ),
+									label: __( 'Random', 'vk-pattern-directory-creator' ),
 								},
 							] }
 						/>

@@ -44,7 +44,7 @@ function vkpdc_get_archive_single_post( $post = null ) {
 
         // タクソノミーごとにタームを表示
         if ( ! empty( $taxonomies ) ) {
-           $taxonomy_html .= '<div class="vkpdec_post_taxonomies">';
+           $taxonomy_html .= '<div class="vkpdc_post_taxonomies">';
             foreach ( $taxonomies as $key => $value ) {
                $taxonomy_html .= '<dl class="vkpdec_post_taxonomy vkpdec_post_taxonomy-' . $key . '">' . $value . '</dl>';
             }

@@ -70,6 +70,26 @@ function vkpdc_theme_support() {
 add_action( 'after_setup_theme', 'vkpdc_theme_support' );
 
 /**
+ * パターンブロックを削除する。
+ * 
+ * @param 
+ */
+function vkpdc_delete_pattern_description( $content ) {
+    
+	// 投稿タイプが vk-patterns でない場合は処理を中断
+	if ( 'vk-patterns' !== get_post_type() ) {
+		return $content;
+	}
+
+	// パターンの説明を削除
+	$content = preg_replace( '/<!-- wp:vkpdc\/pattern-description -->((.|\n|\r|\s)+?)<!-- \/wp:vkpdc\/pattern-description -->/', '', $content );
+
+	return $content;
+
+}
+
+
+/**
  * Iframe 時に専用のテンプレートに切り替え
  */
 function vkpdc_load_iframe_template() {
@@ -80,6 +100,9 @@ function vkpdc_load_iframe_template() {
 	if ( false === $view_type ) {
 		return;
 	}
+
+	// パターンの説明を削除
+	add_filter( 'the_content', 'vkpdc_delete_pattern_description', 0 );
 
 	// 管理バーを削除
 	add_filter( 'show_admin_bar', '__return_false');

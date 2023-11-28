@@ -20,10 +20,10 @@ import { link, linkOff, keyboardReturn } from '@wordpress/icons';
 export default function PatternDisplayEdit( props ) {
 	const { attributes, setAttributes } = props;
 
-	const { postUrl, selectButton, copyButton } = attributes;
+	const { postUrl, displayPulldowns, displayButtons } = attributes;
 
 	const blockProps = useBlockProps( {
-		className: `vk-patterns`,
+		className: `vkpdc vkpdc_pattern-display`,
 	} );
 
 	let editContent = '';
@@ -40,11 +40,11 @@ export default function PatternDisplayEdit( props ) {
 		);
 	} else {
 		editContent = (
-			<div className="vk_patterns-warning">
-				<div className="vk_patterns-warning_text">
+			<div className="vkpdc_warning">
+				<div className="vkpdc_warning_text">
 					{ __(
 						'This block will not be displayed because the url is empty or out of this site.',
-						'vk-patterns'
+						'vk-pattern-directory-creator'
 					) }
 				</div>
 			</div>
@@ -80,7 +80,7 @@ export default function PatternDisplayEdit( props ) {
 											? __( 'Unlink' )
 											: __(
 													'Input Internal Post URL',
-													'vk-patterns'
+													'vk-pattern-directory-creator'
 											  )
 									}
 									onClick={ setLink }
@@ -134,36 +134,36 @@ export default function PatternDisplayEdit( props ) {
 			</BlockControls>
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Patterns Option', 'vk-patterns' ) }
+					title={ __( 'Pattern Display Option', 'vk-pattern-directory-creator' ) }
 					initialOpen={ true }
 				>
 					<BaseControl
-						id={ 'vk_patterns-selectButton' }
+						id={ 'vkpdc_displayPulldowns' }
 						label={ __(
-							'Display Size Select Pulldown',
-							'vk-patterns'
+							'Display Pulldowns',
+							'vk-pattern-directory-creator'
 						) }
 					>
 						<CheckboxControl
 							label={ __(
-								'Display Size Select Pulldown.',
-								'vk-patterns'
+								'Display Pulldowns.',
+								'vk-pattern-directory-creator'
 							) }
-							checked={ selectButton }
+							checked={ displayPulldowns }
 							onChange={ ( checked ) =>
-								setAttributes( { selectButton: checked } )
+								setAttributes( { displayPulldowns: checked } )
 							}
 						/>
 					</BaseControl>
 					<BaseControl
-						id={ 'vk_patterns-copyButton' }
-						label={ __( 'Display Copy Button', 'vk-patterns' ) }
+						id={ 'vkpdc_displayButtons' }
+						label={ __( 'Display Buttons', 'vk-pattern-directory-creator' ) }
 					>
 						<CheckboxControl
-							label={ __( 'Display Copy Button', 'vk-patterns' ) }
-							checked={ copyButton }
+							label={ __( 'Display Buttons', 'vk-pattern-directory-creator' ) }
+							checked={ displayButtons }
 							onChange={ ( checked ) =>
-								setAttributes( { copyButton: checked } )
+								setAttributes( { displayButtons: checked } )
 							}
 						/>
 					</BaseControl>
