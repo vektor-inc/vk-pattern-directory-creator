@@ -2,6 +2,7 @@
  * Pattern Description Block
  */
 
+import { registerBlockType } from '@wordpress/blocks';
 // import React
 import { ReactComponent as Icon } from './icon.svg';
 
@@ -19,3 +20,5 @@ export const settings = {
 	edit,
 	save,
 };
+
+registerBlockType( metadata, settings );

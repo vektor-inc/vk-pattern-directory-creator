@@ -9,7 +9,8 @@
 		"update": "npx ncu -u -x '@wordpress/env' && rm -rf node_modules package-lock.json && npm install",
 		"format": "wp-scripts format",
 		"build": "npm run build:block && gulp build",
-		"build:block": "wp-scripts build --webpack-copy-php --webpack-src-dir=./blocks/src/ --output-path=./blocks/build/ --config webpack.config.js --progress",
+		"lint": "wp-scripts format && wp-scripts lint-js --fix",
+		"build:block": "wp-scripts build --webpack-copy-php --webpack-src-dir=./blocks/src/ --output-path=./blocks/build/ --webpack-config=./webpack.config.js",
 		"phpunit": "composer install && bash bin/install-theme.sh && npx wp-env run phpunit \"phpunit -c /var/www/html/wp-content/plugins/vk-pattern-directory-creator/.phpunit.xml --testsuite default --verbose\""
 	},
 	"repository": {

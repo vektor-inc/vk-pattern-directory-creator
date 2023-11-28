@@ -1,13 +1,15 @@
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 
 module.exports = [
-    {
+	{
 		...defaultConfig,
 		entry: {
-            'pattern-description': __dirname + '/blocks/src/pattern-description/index.js',
-            'pattern-display': __dirname + '/blocks/src/pattern-display/index.js',
-            'pattern-list': __dirname + '/blocks/src/pattern-list/index.js',
-        },
+			'pattern-description':
+				__dirname + '/blocks/src/pattern-description/index.js',
+			'pattern-display':
+				__dirname + '/blocks/src/pattern-display/index.js',
+			'pattern-list': __dirname + '/blocks/src/pattern-list/index.js',
+		},
 		output: {
 			path: __dirname + '/blocks/build/',
 			filename: '[name]/block.js',

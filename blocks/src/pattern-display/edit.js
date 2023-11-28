@@ -29,12 +29,12 @@ export default function PatternDisplayEdit( props ) {
 	let editContent = '';
 
 	// eslint-disable-next-line no-undef
-	const homeUrl = VKPatterns.homeUrl;
+	const homeUrl = vkpdcPatternDisplay.homeUrl;
 
 	if ( postUrl !== undefined && postUrl.indexOf( homeUrl ) !== -1 ) {
 		editContent = (
 			<ServerSideRender
-				block="vk-pattern-directory-creator/patterns"
+				block="vkpdc/pattern-display"
 				attributes={ attributes }
 			/>
 		);

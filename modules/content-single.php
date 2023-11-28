@@ -16,11 +16,11 @@ function vkpdc_content_single( $content ) {
 		// グローバル変数 $post を確保.
 		global $post;
 		$post_id        = $post->ID;
-		$return_content = '';
+		
 
 		// 投稿タイプ VK Patterns の場合.
 		if ( 'vk-patterns' === $post->post_type && empty( $_GET['view'] ) ) {
-
+			$content = '';
 			// iframe の幅をコントロールするボタン.
 			$select_button = vkpdc_get_size_selector();
 
@@ -37,21 +37,18 @@ function vkpdc_content_single( $content ) {
 			$buttons = apply_filters( 'vkpdc_single_buttons', $copy_button );
 
 			// コンテンツの生成開始.
-			$return_content = '<div class="vkpdc vkpdc_single">';
+			$content = '<div class="vkpdc vkpdc_single">';
 
 			// トップ部分を追加
-			$return_content .= $setect;
-			$return_content .= '<div class="vkpdc_iframe-outer vkpdc_iframe-outer--single">' . $iframe_content . '</div>';
+			$content .= $setect;
+			$content .= '<div class="vkpdc_iframe-outer vkpdc_iframe-outer--single">' . $iframe_content . '</div>';
 
 			// コピーボタンを表示.
-			$return_content .= '<div class="vkpdc_buttons vkpdc_buttons--single">';
-			$return_content .= $buttons;
-			$return_content .= '</div>';
+			$content .= '<div class="vkpdc_buttons vkpdc_buttons--single">';
+			$content .= $buttons;
+			$content .= '</div>';
 
-
-			$return_content .= '</div>';
-
-			$content = $return_content;
+			$content .= '</div>';
 		}
 	}
 

@@ -2,6 +2,8 @@
  * post-list block type
  *
  */
+
+import { registerBlockType } from '@wordpress/blocks';
 // import React
 import { ReactComponent as Icon } from './icon.svg';
 
@@ -24,3 +26,5 @@ export const settings = {
 	},
 	edit,
 };
+
+registerBlockType( metadata, settings );

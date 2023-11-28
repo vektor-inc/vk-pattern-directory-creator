@@ -12,9 +12,9 @@
   */
 function vkpdc_add_pattern_list_block() {
 
-	$asset_file = 'block.asset.php';
+	$asset_file = include 'block.asset.php';
 
-	$block_js = './block.js';
+	$block_js = 'block.js';
 	wp_register_script(
 		'vkpdc-pattern-list-block',
 		plugins_url( $block_js, __FILE__ ),
@@ -23,7 +23,7 @@ function vkpdc_add_pattern_list_block() {
 		true
 	);
 
-	$editor_css = './editor.css';
+	$editor_css = 'editor.css';
 	wp_register_style(
 		'vkpdc-pattern-list-editor',
 		plugins_url( $editor_css, __FILE__ ),
@@ -31,7 +31,7 @@ function vkpdc_add_pattern_list_block() {
 		$asset_file['version']
 	);
 
-	$style_css = './style.css';
+	$style_css = 'style.css';
 	wp_register_style(
 		'vkpdc-pattern-list-style',
 		plugins_url( $style_css, __FILE__ ),

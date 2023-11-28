@@ -1,3 +1,4 @@
+import { registerBlockType } from '@wordpress/blocks';
 import { ReactComponent as Icon } from './icon.svg';
 import metadata from './block.json';
 import edit from './edit';
@@ -10,3 +11,5 @@ export const settings = {
 	icon: <Icon />,
 	edit,
 };
+
+registerBlockType( metadata, settings );

@@ -22,9 +22,9 @@ add_action( 'init', 'vkpdc_add_pattern_description_meta' );
 
  function vkpdc_add_pattern_description_block() {
 
-    $asset_file = 'block.asset.php';
+    $asset_file = include 'block.asset.php';
 
-	$block_js = './block.js';
+	$block_js = 'block.js';
 	wp_register_script(
 		'vkpdc-pattern-description-block',
 		plugins_url( $block_js, __FILE__ ),
@@ -33,7 +33,7 @@ add_action( 'init', 'vkpdc_add_pattern_description_meta' );
 		true
 	);
 
-	$editor_css = './editor.css';
+	$editor_css = 'editor.css';
 	wp_register_style(
 		'vkpdc-pattern-description-editor',
 		plugins_url( $editor_css, __FILE__ ),
@@ -41,7 +41,7 @@ add_action( 'init', 'vkpdc_add_pattern_description_meta' );
 		$asset_file['version']
 	);
 
-	$style_css = './style.css';
+	$style_css = 'style.css';
 	wp_register_style(
 		'vkpdc-pattern-description-style',
 		plugins_url( $style_css, __FILE__ ),
