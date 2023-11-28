@@ -3,6 +3,7 @@ const pluginName = 'vk-pattern-directory-creator';
 
 // CSS や JS の共通パス
 const assetsPath = './assets';
+const blockPath = './blocks';
 
 // モジュールをロード
 const gulp = require( 'gulp' );
@@ -16,6 +17,11 @@ gulp.task( 'build:css', ( done ) => {
 			sass( { outputStyle: 'compressed' } ).on( 'error', sass.logError )
 		)
 		.pipe( gulp.dest( `${ assetsPath }/build/css/` ) );
+	gulp.src( `${ blockPath }/src/**/*.scss` )
+		.pipe(
+			sass( { outputStyle: 'compressed' } ).on( 'error', sass.logError )
+		)
+		.pipe( gulp.dest( `${ blockPath }/build/` ) );
 	done();
 } );
 

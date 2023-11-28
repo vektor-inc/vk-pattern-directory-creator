@@ -47,3 +47,6 @@ require_once $vkpdc_modules_path . 'content-single.php';
 
 // アーカイブページ
 require_once $vkpdc_modules_path . 'content-archive.php';
+
+// ブロック
+require_once $vkpdc_modules_path . 'blocks.php';
