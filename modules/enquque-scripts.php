@@ -11,7 +11,7 @@
 function vkpdc_enqueue_scripts() {
 	$copy_button_data     = vkpdc_get_copy_button_data();
 
-	wp_enqueue_style( 'vk-patterns', VKPDC_PLUGIN_ROOT_URL . 'assets/build/css/style.css', array(), VKPDC_PLUGIN_VERSION );
+	wp_enqueue_style( 'vkpdc', VKPDC_PLUGIN_ROOT_URL . 'assets/build/css/style.css', array(), VKPDC_PLUGIN_VERSION );
 	wp_enqueue_script( 'vkpdc-select-size', VKPDC_PLUGIN_ROOT_URL . 'assets/build/js/size-select.js', array(), VKPDC_PLUGIN_VERSION, true );
 	wp_localize_script(
 		'vkpdc-select-size',
@@ -33,3 +33,8 @@ function vkpdc_enqueue_scripts() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'vkpdc_enqueue_scripts' );
+
+function vkpdc_enqueue_block_editor_assets() {
+	wp_enqueue_style( 'vkpdc', VKPDC_PLUGIN_ROOT_URL . 'assets/build/css/style.css', array(), VKPDC_PLUGIN_VERSION );
+}
+add_action( 'enqueue_block_editor_assets', 'vkpdc_enqueue_scripts' );
