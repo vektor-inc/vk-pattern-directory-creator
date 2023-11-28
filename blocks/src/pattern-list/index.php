@@ -76,7 +76,6 @@ add_action( 'init', 'vkpdc_add_pattern_list_block', 9999 );
  * @return string
  */
 function vkpdc_render_pattern_list_callback( $attributes ) {
-	global $post;
 	$query_args = array(
 		'post_type'      => 'vk-patterns',
 		'paged'          => 1,
@@ -84,30 +83,11 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 		'order'          => $attributes['order'],
 		'orderby'        => $attributes['orderby'],
 	);
-	$wp_query   = new WP_Query( $query_args );
+	$query   = new WP_Query( $query_args );
 
-	$loop_html = '';
-	if ( $wp_query->have_posts() ) {
-		$loop_html .= '<div class="vk_posts ' . esc_attr( $attributes['className'] ) . '">';
 
-		// for infeed Ads Customize.
-		global $vkpdc_loop_item_count;
-		$vkpdc_loop_item_count = 0;
 
-		while ( $wp_query->have_posts() ) {
-			$wp_query->the_post();
+	$html = vkpdc_get_archive_loop( $query );
 
-			$post_id = get_the_id();
-			$options = vkpdc_loop_item_setting( $post_id );
-			// phpcs:ignore
-			$loop_html .= VK_Component_Posts::get_view( $post, $options );
-
-			$vkpdc_loop_item_count++;
-			do_action( 'vkpdc_loop_item_after' );
-		}
-
-		$loop_html .= '</div>';
-	}
-	wp_reset_postdata();
-	return $loop_html;
+    return $html;
 }

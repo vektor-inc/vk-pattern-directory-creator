@@ -94,33 +94,41 @@ add_shortcode( 'vkpdc_archive_single_post', 'vkpdc_get_archive_single_post' );
  */
 function vkpdc_get_archive_loop( $query = null ) {
 
-        global $wp_query;
-        $query = ! empty( $query ) ? $query : $wp_query;
-        $theme = get_template();
-    
-        $html = '';
+    global $wp_query;
+    $query = ! empty( $query ) ? $query : $wp_query;
+    $theme = get_template();
 
-        if ( 'vk-patterns' === get_post_type() || 'vk-patterns' === get_query_var('post_type') ) {
-            if ( $query->have_posts() ) {
-                $html .= '<div class="vkpdc_posts vkpdc_posts_theme--' . $theme . '">';
-        
-                while ( $query->have_posts() ) {
-                    $query->the_post();
-                    $post  = get_post( get_the_ID() );
-                    $html .= vkpdc_get_archive_single_post( $post );
-                }
-               
-                $html .= '</div>';
-                
-            } else {
-        
-                $html .= '<div class="vkpdc_posts vkpdc_posts--none">';
-                $html .= '<div class="vkpdc_post_title">' . __( 'No posts found.', 'vk-pattern-directory-creator' ) . '</div>';
-                $html .= '</div>';
-        
-            }
+    $html = '';
+
+    
+    if ( $query->have_posts() ) {
+        $html .= '<div class="vkpdc_posts vkpdc_posts_theme--' . $theme . '">';
+
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $post  = get_post( get_the_ID() );
+            $html .= vkpdc_get_archive_single_post( $post );
         }
-        wp_reset_postdata();
-        return $html;
+        
+        $html .= '</div>';
+        
+    } else {
+
+        $html .= '<div class="vkpdc_posts vkpdc_posts--none">';
+        $html .= '<div class="vkpdc_post_title">' . __( 'No posts found.', 'vk-pattern-directory-creator' ) . '</div>';
+        $html .= '</div>';
+
+    }
+
+    wp_reset_postdata();
+    return $html;
 }
-add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_archive_loop' );
+
+
+function vkpdc_get_patterns_archive_shortcode() {
+    if ( 'vk-patterns' === get_post_type() || 'vk-patterns' === get_query_var('post_type') ) {
+        $html = vkpdc_get_archive_loop();
+    }
+    return $html;
+}
+add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_patterns_archive_shortcode' );

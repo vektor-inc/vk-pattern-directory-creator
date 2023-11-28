@@ -90,7 +90,7 @@ export default function PostListEdit( props ) {
 			</InspectorControls>
 			<div { ...blockProps }>
 				<ServerSideRender
-					block="vk-pattern-directory-creator/pattern-list"
+					block="vkpdc/pattern-list"
 					attributes={ attributes }
 				/>
 			</div>
