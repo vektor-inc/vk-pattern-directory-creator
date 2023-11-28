@@ -1,0 +1,29 @@
+{
+	"apiVersion": 2,
+	"name": "vkpdc/pattern-list",
+	"category": "vk-pattern-directory-creator",
+	"title": "VK Pattern List",
+	"description": "Displays the list of Patterns, classification, and number of posts to display.",
+	"textdomain": "vk-pattern-directory-creator",
+	"attributes": {
+		"numberPosts": {
+			"type": "number",
+			"default": 6
+		},
+		"order": {
+			"type": "string",
+			"default": "DESC"
+		},
+		"orderby": {
+			"type": "string",
+			"default": "date"
+		},
+		"className": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"className": true
+	}
+}

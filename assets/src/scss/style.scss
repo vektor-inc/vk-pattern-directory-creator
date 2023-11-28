@@ -1,0 +1,66 @@
+.vkpdc {
+	&_select {
+		width: 100%;
+		display: block;
+		margin-bottom: 1rem;
+	}
+	&_iframe-outer {
+		&--single {
+			margin: 0 calc( 50% - 50vw );
+		}
+	}
+
+	&_iframe-wrapper {
+		width:100%;
+		height:100%;
+		iframe {
+			width:100%;
+			height:100%;
+			padding: 0;
+			border:1px solid #EEEEEE;
+		}	
+	
+		&--single {
+			width: 1280px;
+			height: 720px;
+			margin:2rem auto 0;
+			padding-bottom: 2rem;
+		}
+	
+		&--archive {
+			width: 100%;
+			height: 200px;
+			position: relative;
+			outline: 1px solid #EEEEEE;
+			iframe {
+				pointer-events: none;
+				transform: scale(0.25);
+				transform-origin: 0 0;
+				width: 400%;
+				height:800px;
+			}
+		}
+	
+	}
+	
+	&_buttons {
+		min-width:160px;
+    	flex: 1;
+		display: block;
+		& .vkpdc_button--copy {
+			background-color: #D8141C;
+			color:#FFF;
+			text-align: center;
+		}
+	}
+	&_button { 
+		width: 100%;
+		display: block;
+		padding: 0.5rem 0.85rem;
+		&-outer {
+			width: 100%;
+			display: block;
+		}
+	}
+	
+}
