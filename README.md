@@ -1,4 +1,4 @@
-# vk-pattern-directory-creator
+# VK Pattern Directory Creator 
 VK Pattern Directory Creator
 
 https://pdc.vs4.nagoya/ にて開発中
@@ -6,6 +6,8 @@ https://pdc.vs4.nagoya/ にて開発中
 ## これはなに？
 
 ブロックパターンディレクトリのサイトを作るためのプラグイン。
+
+※ https://github.com/vektor-inc/vk-patterns に依存関係のないまったく別で独立したプラグイン
 
 ### 想定用途
 
