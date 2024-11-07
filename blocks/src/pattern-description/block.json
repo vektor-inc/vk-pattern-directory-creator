@@ -1,0 +1,8 @@
+{
+	"apiVersion": 2,
+	"name": "vkpdc/pattern-description",
+	"category": "vk-pattern-directory-creator",
+	"title": "Pattern Description",
+	"description": "Add meta of pattern description",
+	"textdomain": "vk-pattern-directory-creator"
+}
