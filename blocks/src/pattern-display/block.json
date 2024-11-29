@@ -1,7 +1,7 @@
 {
 	"apiVersion": 2,
 	"name": "vkpdc/pattern-display",
-	"title": "VK Pattern Diaplay",
+	"title": "VK Pattern Display",
 	"category": "vk-pattern-directory-creator",
 	"description": "Display post on VK Patterns",
 	"textdomain": "vk-pattern-directory-creator",
