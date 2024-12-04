@@ -85,7 +85,7 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 	);
 	$query   = new WP_Query( $query_args );
 
-
+	$html = vkpdc_get_archive_loop( $query, $attributes );
 
 	$html = vkpdc_get_archive_loop( $query );
 
