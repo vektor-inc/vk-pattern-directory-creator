@@ -92,22 +92,43 @@ add_shortcode( 'vkpdc_archive_single_post', 'vkpdc_get_archive_single_post' );
  * 
  * @param string $query クエリ.
  */
-function vkpdc_get_archive_loop( $query = null ) {
+function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 
     global $wp_query;
     $query = ! empty( $query ) ? $query : $wp_query;
     $theme = get_template();
 
+	$attributes = wp_parse_args(
+		$attributes,
+		[
+			'colWidthMin'       => '300px',
+			'colWidthMinTablet' => '300px',
+			'colWidthMinPC'     => '300px',
+			'gap'               => '30px',
+			'gapRow'            => '30px',
+		]
+	);
+
+	// 動的スタイルを生成
+	$styles = sprintf(
+		'--col-width-min: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
+		esc_attr( $attributes['colWidthMin'] ),
+		esc_attr( $attributes['colWidthMinTablet'] ),
+		esc_attr( $attributes['colWidthMinPC'] ),
+		esc_attr( $attributes['gap'] ),
+		esc_attr( $attributes['gapRow'] )
+	);
+
     $html = '';
 
     
     if ( $query->have_posts() ) {
-        $html .= '<div class="vkpdc_posts vkpdc_posts_theme--' . $theme . '">';
+        $html .= '<div class="vkpdc_posts vkpdc_posts_theme--' . esc_attr( $theme ) . '" style="' . esc_attr( $styles ) . '">';
 
         while ( $query->have_posts() ) {
             $query->the_post();
             $post  = get_post( get_the_ID() );
-            $html .= vkpdc_get_archive_single_post( $post );
+            $html .= vkpdc_get_archive_single_post( $post, $attributes );
         }
         
         $html .= '</div>';
