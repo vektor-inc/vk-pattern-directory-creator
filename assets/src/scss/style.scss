@@ -51,16 +51,30 @@
 		justify-content: space-between;
 		min-width:160px;
     	flex: 1;
-		& .vkpdc_button--copy {
-			background-color: #D8141C;
-			color:#FFF;
-			text-align: center;
+		& .vkpdc_button {
+			&--icon {
+				margin-right: .375rem;
+			}
+			&--view {
+				border-color: rgba(0,0,0,0.2);
+			}
+			&--copy {
+				background-color: #D8141C;
+				border-color: #D8141C;
+				color: #FFF;
+				:hover {
+					background-color: #A20F15;
+				}
+			}
 		}
 	}
 	&_button { 
 		width: 100%;
 		display: block;
 		padding: .375rem .85rem;
+		border: 1px solid transparent;
+		border-radius: .25rem;
+		text-align: center;
 		text-decoration: none;
 		&-outer {
 			width: 100%;
