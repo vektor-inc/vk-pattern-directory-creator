@@ -58,6 +58,26 @@ function vkpdc_add_pattern_list_block() {
 					'type'    => 'string',
 					'default' => 'date',
 				),
+				'colWidthMin' => array(
+					'type'    => 'string',
+					'default' => '300px',
+				),
+				'colWidthMinTablet' => array(
+					'type'    => 'string',
+					'default' => '300px',
+				),
+				'colWidthMinPC' => array(
+					'type'    => 'string',
+					'default' => '300px',
+				),
+				'gap' => array(
+					'type'    => 'string',
+					'default' => '30px',
+				),
+				'gapRow' => array(
+					'type'    => 'string',
+					'default' => '30px',
+				),
 				'className'   => array(
 					'type'    => 'string',
 					'default' => '',
