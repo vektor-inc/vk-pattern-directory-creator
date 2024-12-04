@@ -103,11 +103,20 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 		'order'          => $attributes['order'],
 		'orderby'        => $attributes['orderby'],
 	);
-	$query   = new WP_Query( $query_args );
-
-	$html = vkpdc_get_archive_loop( $query, $attributes );
-
-	$html = vkpdc_get_archive_loop( $query );
-
-    return $html;
+	
+	$query = new WP_Query( $query_args );
+	
+	$styles = sprintf(
+		'grid-template-columns: repeat(auto-fit, minmax(%s, 1fr)); gap: %s %s;',
+		esc_attr( $attributes['colWidthMin'] ),
+		esc_attr( $attributes['gap'] ),
+		esc_attr( $attributes['gapRow'] )
+	);
+	
+	$html  = '<div class="vkpdc-pattern-list">';
+	$html .= vkpdc_get_archive_loop( $query, $attributes );
+	$html .= '</div>';
+	
+	return $html;
+	
 }
