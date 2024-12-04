@@ -44,9 +44,13 @@
 	}
 	
 	&_buttons {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+		gap: .75rem .75rem;
+		margin-top: auto;
+		justify-content: space-between;
 		min-width:160px;
     	flex: 1;
-		display: block;
 		& .vkpdc_button--copy {
 			background-color: #D8141C;
 			color:#FFF;
@@ -56,7 +60,8 @@
 	&_button { 
 		width: 100%;
 		display: block;
-		padding: 0.5rem 0.85rem;
+		padding: .375rem .85rem;
+		text-decoration: none;
 		&-outer {
 			width: 100%;
 			display: block;
