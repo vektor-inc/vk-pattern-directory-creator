@@ -104,8 +104,8 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 			'colWidthMin'       => '300px',
 			'colWidthMinTablet' => '300px',
 			'colWidthMinPC'     => '300px',
-			'gap'               => '30px',
-			'gapRow'            => '30px',
+			'gap'               => '1.5rem',
+			'gapRow'            => '1.5rem',
 		]
 	);
 
