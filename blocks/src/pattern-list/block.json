@@ -18,6 +18,26 @@
 			"type": "string",
 			"default": "date"
 		},
+		"colWidthMin": {
+			"type": "string",
+			"default": "300px"
+		},
+		"colWidthMinTablet": {
+			"type": "string",
+			"default": "300px"
+		},
+		"colWidthMinPC": {
+			"type": "string",
+			"default": "300px"
+		},
+		"gap": {
+			"type": "string",
+			"default": "30px"
+		},
+		"gapRow": {
+			"type": "string",
+			"default": null
+		},
 		"className": {
 			"type": "string",
 			"default": ""
