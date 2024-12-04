@@ -7,14 +7,14 @@
 
 /* タブレット表示用のメディアクエリ */
 @media (min-width: 768px) {
-    .vkpdc_post {
+    .vkpdc_posts {
         grid-template-columns: repeat(auto-fit, minmax(var(--col-width-min-tablet, 300px), 1fr));
     }
 }
 
 /* PC表示用のメディアクエリ */
 @media (min-width: 1024px) {
-    .vkpdc_post {
+    .vkpdc_posts {
         grid-template-columns: repeat(auto-fit, minmax(var(--col-width-min-pc, 300px), 1fr));
     }
 }
