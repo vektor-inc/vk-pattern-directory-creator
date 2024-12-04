@@ -7,7 +7,7 @@ set -ex
 # -s ファイル出力時の進捗状況を非表示にする(エラーも非表示)
 # curl -s $WP_THEME -o theme.zip
 rm -rf temp
-curl -s https://downloads.wordpress.org/theme/lightning.zip -o theme.zip
+curl -sL https://downloads.wordpress.org/theme/lightning.zip -o theme.zip
 # -d 指定したディレクトリに展開
 mkdir ./temp/
 unzip theme.zip -d ./temp/themes
