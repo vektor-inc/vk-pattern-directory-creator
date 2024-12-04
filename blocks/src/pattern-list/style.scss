@@ -5,15 +5,13 @@
     row-gap: var(--gap-row, 1.5rem);
 }
 
-/* タブレット表示用のメディアクエリ */
-@media (min-width: 768px) {
+@media (min-width: 576px) {
     .vkpdc_posts {
         grid-template-columns: repeat(auto-fit, minmax(var(--col-width-min-tablet, 300px), 1fr));
     }
 }
 
-/* PC表示用のメディアクエリ */
-@media (min-width: 1024px) {
+@media (min-width: 992px) {
     .vkpdc_posts {
         grid-template-columns: repeat(auto-fit, minmax(var(--col-width-min-pc, 300px), 1fr));
     }
