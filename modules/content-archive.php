@@ -51,6 +51,10 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		   $taxonomy_html .= '</div>';
 		}
 
+		/* 日付 */
+		$date = get_the_date( '', $post->ID );
+		$modified_date = get_the_modified_date( '', $post->ID );
+
 		/* リンクボタン */
 		$link_button  = '<div class="vkpdc_button-outer vkpdc_button-outer--view">';
 		$link_button .= '<a class="vkpdc_button vkpdc_button--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
@@ -81,8 +85,17 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		$html .= apply_filters( 'vkpdc_post_title', get_the_title( $post->ID ), $post );
 		$html .= '</a>';
 		$html .= '</div>';
+		// 日付と更新日
+		$html .= '<div class="vkpdc_post_date">';
+		$html .= '<span class="vkpdc_post_date--published">' . __( 'Published:', 'vk-pattern-directory-creator' ) . ' ' . esc_html( $date ) . '</span>';
+		$html .= '<span class="vkpdc_post_date--modified">' . __( 'Updated:', 'vk-pattern-directory-creator' ) . ' ' . esc_html( $modified_date ) . '</span>';
+		$html .= '</div>';
 		// タクソノミー
 		$html .= $taxonomy_html;
+		// パターンID
+		$html .= '<div class="vkpdc_post_id">';
+		$html .= '<span>' . __( 'Pattern ID:', 'vk-pattern-directory-creator' ) . ' ' . esc_html( $post->ID ) . '</span>';
+		$html .= '</div>';
 		// ボタン
 		$html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
 
