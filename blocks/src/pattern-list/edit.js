@@ -54,7 +54,10 @@ export default function PostListEdit( props ) {
 							max="100"
 						/>
 					</BaseControl>
-					<BaseControl label={__('Order', 'vk-pattern-directory-creator')}>
+					<BaseControl
+						label={ __( 'Order', 'vk-pattern-directory-creator' ) }	
+						id={ `vk_postList-order` }
+					>
 						<SelectControl
 							value={ order }
 							onChange={ ( v ) => setAttributes( { order: v } ) }
