@@ -36,35 +36,69 @@ export default function PostListEdit(props) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Display conditions', 'vk-pattern-directory-creator')}>
-					<BaseControl label={__('Number of Posts', 'vk-pattern-directory-creator')}>
+			<PanelBody
+					title={ __( 'Display conditions', 'vk-pattern-directory-creator' ) }
+					initialOpen={ false }
+				>
+					<BaseControl
+						label={ __( 'Number of Posts', 'vk-pattern-directory-creator' ) }
+						id={ `vk_postList-numberPosts` }
+					>
 						<RangeControl
-							value={numberPosts}
-							onChange={(value) => setAttributes({ numberPosts: value })}
-							min={1}
-							max={100}
+							value={ numberPosts }
+							onChange={ ( value ) =>
+								setAttributes( { numberPosts: value } )
+							}
+							min="1"
+							max="100"
 						/>
 					</BaseControl>
 					<BaseControl label={__('Order', 'vk-pattern-directory-creator')}>
 						<SelectControl
-							value={order}
-							onChange={(value) => setAttributes({ order: value })}
-							options={[
-								{ value: 'ASC', label: __('ASC', 'vk-pattern-directory-creator') },
-								{ value: 'DESC', label: __('DESC', 'vk-pattern-directory-creator') },
-							]}
+							value={ order }
+							onChange={ ( v ) => setAttributes( { order: v } ) }
+							options={ [
+								{
+									value: 'ASC',
+									label: __( 'ASC', 'vk-pattern-directory-creator' ),
+								},
+								{
+									value: 'DESC',
+									label: __( 'DESC', 'vk-pattern-directory-creator' ),
+								},
+							] }
 						/>
 					</BaseControl>
-					<BaseControl label={__('Order by', 'vk-pattern-directory-creator')}>
+					<BaseControl
+						label={ __( 'Order by', 'vk-pattern-directory-creator' ) }
+						id={ `vk_postList-orderBy` }
+					>
 						<SelectControl
-							value={orderby}
-							onChange={(value) => setAttributes({ orderby: value })}
-							options={[
-								{ value: 'date', label: __('Published Date', 'vk-pattern-directory-creator') },
-								{ value: 'modified', label: __('Modified Date', 'vk-pattern-directory-creator') },
-								{ value: 'title', label: __('Title', 'vk-pattern-directory-creator') },
-								{ value: 'rand', label: __('Random', 'vk-pattern-directory-creator') },
-							]}
+							value={ orderby }
+							onChange={ ( v ) =>
+								setAttributes( { orderby: v } )
+							}
+							options={ [
+								{
+									value: 'date',
+									label: __(
+										'Published Date',
+										'vk-pattern-directory-creator'
+									),
+								},
+								{
+									value: 'modified',
+									label: __( 'Modefied Date', 'vk-pattern-directory-creator' ),
+								},
+								{
+									value: 'title',
+									label: __( 'Title', 'vk-pattern-directory-creator' ),
+								},
+								{
+									value: 'rand',
+									label: __( 'Random', 'vk-pattern-directory-creator' ),
+								},
+							] }
 						/>
 					</BaseControl>
 				</PanelBody>
