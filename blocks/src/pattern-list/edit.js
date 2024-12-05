@@ -1,3 +1,4 @@
+// import WordPress Scripts
 import { __ } from '@wordpress/i18n';
 import {
 	RangeControl,
@@ -10,7 +11,7 @@ import { useEffect } from '@wordpress/element';
 import ServerSideRender from '@wordpress/server-side-render';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
-export default function PostListEdit(props) {
+export default function PostListEdit( props ) {
 	const { attributes, setAttributes } = props;
 	const {
 		numberPosts,
@@ -36,7 +37,7 @@ export default function PostListEdit(props) {
 	return (
 		<>
 			<InspectorControls>
-			<PanelBody
+				<PanelBody
 					title={ __( 'Display conditions', 'vk-pattern-directory-creator' ) }
 					initialOpen={ false }
 				>
