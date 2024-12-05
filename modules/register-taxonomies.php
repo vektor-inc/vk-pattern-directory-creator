@@ -1,12 +1,12 @@
 <?php
 /**
- * Register Custom Taxonomies and Settings Page
+ * Register Block Pattern Custom Taxonomies and Settings Page
  *
  * @package VK Pattern Directory Creator
  */
 
 /**
- * Register Custom Taxonomies
+ * Register Block Pattern Custom Taxonomies
  */
 function register_custom_taxonomies() {
     $taxonomies = get_option( 'custom_taxonomies', array() );
@@ -99,7 +99,7 @@ function display_taxonomy_settings_page() {
 
     ?>
     <div class="wrap">
-        <h1><?php _e( 'Custom Taxonomies', 'vk-pattern-directory-creator' ); ?></h1>
+        <h1><?php _e( 'Block Pattern Custom Taxonomies', 'vk-pattern-directory-creator' ); ?></h1>
         <form method="post" action="">
             <?php wp_nonce_field( 'save_custom_taxonomies' ); ?>
             <table class="form-table">
