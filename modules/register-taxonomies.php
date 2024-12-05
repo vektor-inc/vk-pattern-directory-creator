@@ -18,19 +18,19 @@ function register_custom_taxonomies() {
 			array(
 				'labels' => array(
 					'name'              => $taxonomy['name'],
-					'singular_name'     => $taxonomy['singular_name'],
+					'singular_name'     => $taxonomy['name'],
 					'search_items'      => __( 'Search ' . $taxonomy['name'], 'vk-pattern-directory-creator' ),
 					'all_items'         => __( 'All ' . $taxonomy['name'], 'vk-pattern-directory-creator' ),
-					'edit_item'         => __( 'Edit ' . $taxonomy['singular_name'], 'vk-pattern-directory-creator' ),
-					'update_item'       => __( 'Update ' . $taxonomy['singular_name'], 'vk-pattern-directory-creator' ),
-					'add_new_item'      => __( 'Add New ' . $taxonomy['singular_name'], 'vk-pattern-directory-creator' ),
-					'new_item_name'     => __( 'New ' . $taxonomy['singular_name'] . ' Name', 'vk-pattern-directory-creator' ),
+					'edit_item'         => __( 'Edit ' . $taxonomy['name'], 'vk-pattern-directory-creator' ),
+					'update_item'       => __( 'Update ' . $taxonomy['name'], 'vk-pattern-directory-creator' ),
+					'add_new_item'      => __( 'Add New ' . $taxonomy['name'], 'vk-pattern-directory-creator' ),
+					'new_item_name'     => __( 'New ' . $taxonomy['name'] . ' Name', 'vk-pattern-directory-creator' ),
 					'menu_name'         => __( $taxonomy['name'], 'vk-pattern-directory-creator' ),
 				),
 				'show_ui'           => true,
 				'show_admin_column' => true,
 				'show_in_rest'      => true,
-				'hierarchical'      => $taxonomy['hierarchical'],
+				'hierarchical'      => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : false, // チェックされていない場合はタグとして扱う
 				'rewrite'           => array( 'slug' => $taxonomy['slug'] ),
 			)
 		);
@@ -85,9 +85,8 @@ function display_taxonomy_settings_page() {
 			foreach ( $_POST['taxonomies'] as $taxonomy ) {
 				$taxonomies[] = array(
 					'name'          => sanitize_text_field( $taxonomy['name'] ),
-					'singular_name' => sanitize_text_field( $taxonomy['singular_name'] ),
 					'slug'          => sanitize_text_field( $taxonomy['slug'] ),
-					'hierarchical'  => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : false,
+					'hierarchical'  => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : false, // チェックされていない場合はタグとして扱う
 				);
 			}
 		}
@@ -106,11 +105,10 @@ function display_taxonomy_settings_page() {
 			<table class="form-table">
 				<thead>
 					<tr>
-						<th><?php _e( 'Name', 'vk-pattern-directory-creator' ); ?></th>
-						<th><?php _e( 'Singular Name', 'vk-pattern-directory-creator' ); ?></th>
-						<th><?php _e( 'Slug', 'vk-pattern-directory-creator' ); ?></th>
-						<th><?php _e( 'Hierarchical', 'vk-pattern-directory-creator' ); ?></th>
-						<th><?php _e( 'Actions', 'vk-pattern-directory-creator' ); ?></th>
+						<th><?php _e( 'Custom taxonomy label', 'vk-pattern-directory-creator' ); ?></th>
+						<th><?php _e( 'Custom taxonomy name (slug)', 'vk-pattern-directory-creator' ); ?></th>
+						<th><?php _e( 'Hierarchy', 'vk-pattern-directory-creator' ); ?></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -118,11 +116,7 @@ function display_taxonomy_settings_page() {
 						<tr>
 							<td>
 								<input type="text" name="taxonomies[<?php echo $index; ?>][name]" value="<?php echo esc_attr( $taxonomy['name'] ); ?>" placeholder="<?php _e( 'Category', 'vk-pattern-directory-creator' ); ?>" />
-								<p class="description"><?php _e( 'The plural name of the taxonomy (e.g., Categories)', 'vk-pattern-directory-creator' ); ?></p>
-							</td>
-							<td>
-								<input type="text" name="taxonomies[<?php echo $index; ?>][singular_name]" value="<?php echo esc_attr( $taxonomy['singular_name'] ); ?>" placeholder="<?php _e( 'Category', 'vk-pattern-directory-creator' ); ?>" />
-								<p class="description"><?php _e( 'The singular name of the taxonomy (e.g., Category)', 'vk-pattern-directory-creator' ); ?></p>
+								<p class="description"><?php _e( 'The name of the taxonomy (e.g., Category)', 'vk-pattern-directory-creator' ); ?></p>
 							</td>
 							<td>
 								<input type="text" name="taxonomies[<?php echo $index; ?>][slug]" value="<?php echo esc_attr( $taxonomy['slug'] ); ?>" placeholder="<?php _e( 'category', 'vk-pattern-directory-creator' ); ?>" />
@@ -130,7 +124,7 @@ function display_taxonomy_settings_page() {
 							</td>
 							<td>
 								<input type="checkbox" name="taxonomies[<?php echo $index; ?>][hierarchical]" <?php checked( $taxonomy['hierarchical'] ); ?> />
-								<p class="description"><?php _e( 'Is this taxonomy hierarchical (like categories)?', 'vk-pattern-directory-creator' ); ?></p>
+								<p class="description"><?php _e( 'Make it a tag (do not hierarchize)', 'vk-pattern-directory-creator' ); ?></p>
 							</td>
 							<td>
 								<input type="submit" name="remove_taxonomy[<?php echo $index; ?>]" class="button remove-taxonomy" value="<?php _e( 'Remove', 'vk-pattern-directory-creator' ); ?>" />
@@ -163,17 +157,22 @@ function display_taxonomy_settings_page() {
 		document.addEventListener('DOMContentLoaded', function () {
 			function toggleRemoveButton() {
 				document.querySelectorAll('tbody tr').forEach(function(row) {
-					var isFilled = Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
-						return input.value.trim() !== '';
-					});
+					if (row.classList.contains('new-taxonomy')) {
+						row.querySelector('.remove-taxonomy').disabled = true;
+					} else {
+						row.querySelector('.remove-taxonomy').disabled = false;
+					}
 				});
 			}
 
 			function toggleSaveButton() {
 				var isValid = Array.from(document.querySelectorAll('tbody tr')).every(function(row) {
-					return Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
-						return input.value.trim() !== '';
-					});
+					if (row.classList.contains('new-taxonomy')) {
+						return Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
+							return input.value.trim() !== '';
+						});
+					}
+					return true;
 				});
 				document.querySelector('input[name="save_custom_taxonomies"]').disabled = !isValid;
 			}
@@ -182,13 +181,10 @@ function display_taxonomy_settings_page() {
 				e.preventDefault();
 				var index = this.dataset.index || <?php echo count( $taxonomies ); ?>;
 				var row = document.createElement('tr');
+				row.classList.add('new-taxonomy');
 				row.innerHTML = '<td>' +
 					'<input type="text" name="taxonomies[' + index + '][name]" value="" placeholder="<?php _e( 'Category', 'vk-pattern-directory-creator' ); ?>" />' +
-					'<p class="description"><?php _e( 'The plural name of the taxonomy (e.g., Categories)', 'vk-pattern-directory-creator' ); ?></p>' +
-					'</td>' +
-					'<td>' +
-					'<input type="text" name="taxonomies[' + index + '][singular_name]" value="" placeholder="<?php _e( 'Category', 'vk-pattern-directory-creator' ); ?>" />' +
-					'<p class="description"><?php _e( 'The singular name of the taxonomy (e.g., Category)', 'vk-pattern-directory-creator' ); ?></p>' +
+					'<p class="description"><?php _e( 'The name of the taxonomy (e.g., Category)', 'vk-pattern-directory-creator' ); ?></p>' +
 					'</td>' +
 					'<td>' +
 					'<input type="text" name="taxonomies[' + index + '][slug]" value="" placeholder="<?php _e( 'category', 'vk-pattern-directory-creator' ); ?>" />' +
@@ -196,9 +192,9 @@ function display_taxonomy_settings_page() {
 					'</td>' +
 					'<td>' +
 					'<input type="checkbox" name="taxonomies[' + index + '][hierarchical]" />' +
-					'<p class="description"><?php _e( 'Is this taxonomy hierarchical (like categories)?', 'vk-pattern-directory-creator' ); ?></p>' +
+					'<p class="description"><?php _e( 'Make it a tag (do not hierarchize)', 'vk-pattern-directory-creator' ); ?></p>' +
 					'</td>' +
-					'<td><input type="submit" name="remove_taxonomy[' + index + ']" class="button remove-taxonomy" value="<?php _e( 'Remove', 'vk-pattern-directory-creator' ); ?>" /></td>';
+					'<td><input type="submit" name="remove_taxonomy[' + index + ']" class="button remove-taxonomy" value="<?php _e( 'Remove', 'vk-pattern-directory-creator' ); ?>" disabled /></td>';
 				document.querySelector('table.form-table tbody').appendChild(row);
 				this.dataset.index = parseInt(index) + 1;
 				toggleRemoveButton();
@@ -213,23 +209,34 @@ function display_taxonomy_settings_page() {
 			});
 
 			document.querySelector('form').addEventListener('submit', function(e) {
-				// Removeボタンがクリックされた場合は確認メッセージを表示
+				// Removeボタンがクリックされた場合の処理
 				if (e.submitter && e.submitter.classList.contains('remove-taxonomy')) {
-					if (!confirm('<?php _e( 'Are you sure you want to delete this taxonomy?', 'vk-pattern-directory-creator' ); ?>')) {
-						e.preventDefault();
+					var row = e.submitter.closest('tr');
+					var isFilled = Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
+						return input.value.trim() !== '';
+					});
+
+					// すべてのフィールドが空でない場合のみ確認メッセージを表示
+					if (isFilled) {
+						if (!confirm('<?php _e( 'Are you sure you want to delete this taxonomy?', 'vk-pattern-directory-creator' ); ?>')) {
+							e.preventDefault();
+						}
 					}
 					return;
 				}
 
 				var isValid = Array.from(document.querySelectorAll('tbody tr')).every(function(row) {
-					return Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
-						return input.value.trim() !== '';
-					});
+					if (row.classList.contains('new-taxonomy')) {
+						return Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
+							return input.value.trim() !== '';
+						});
+					}
+					return true;
 				});
 
 				if (!isValid) {
 					e.preventDefault();
-					alert('<?php _e( 'Please fill in all fields: Name, Singular Name, and Slug.', 'vk-pattern-directory-creator' ); ?>');
+					alert('<?php _e( 'Please fill in all fields: Name and Slug.', 'vk-pattern-directory-creator' ); ?>');
 				}
 			});
 
