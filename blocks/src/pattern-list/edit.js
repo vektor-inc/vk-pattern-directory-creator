@@ -55,7 +55,7 @@ export default function PostListEdit( props ) {
 						/>
 					</BaseControl>
 					<BaseControl
-						label={ __( 'Order', 'vk-pattern-directory-creator' ) }	
+						label={ __( 'Order', 'vk-pattern-directory-creator' ) }
 						id={ `vk_postList-order` }
 					>
 						<SelectControl
