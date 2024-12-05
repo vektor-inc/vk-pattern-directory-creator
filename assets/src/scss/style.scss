@@ -71,22 +71,6 @@
 		justify-content: space-between;
 		min-width:160px;
     	flex: 1;
-		& .vkpdc_button {
-			&--icon {
-				margin-right: .375rem;
-			}
-			&--view {
-				border-color: rgba(0,0,0,0.2);
-			}
-			&--copy {
-				background-color: #D8141C;
-				border-color: #D8141C;
-				color: #FFF;
-				:hover {
-					background-color: #A20F15;
-				}
-			}
-		}
 	}
 	&_button {
 		display: block;
@@ -94,11 +78,34 @@
 		border: 1px solid transparent;
 		border-radius: .25rem;
 		text-align: center;
+		cursor: pointer;
 		text-decoration: none;
+
 		&-outer {
 			width: 100%;
 			display: block;
 		}
+		&--icon {
+			margin-right: .375rem;
+		}
+		&--view {
+			border-color: rgba(0,0,0,0.2);
+			&:hover {
+				color: #fff;
+				background-color: #D8141C;
+				border-color: #D8141C;
+				transition: 0.5s;
+			}
+		}
+		&--copy {
+			background-color: #D8141C;
+			border-color: #D8141C;
+			color: #FFF;
+			&:hover {
+				background-color: #A20F15;
+				color: #FFF;
+				transition: 0.5s;
+			}
+		}
 	}
-	
 }
