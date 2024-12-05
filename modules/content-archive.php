@@ -72,7 +72,11 @@ function vkpdc_get_archive_single_post( $post = null ) {
         // iframe
         $html .= '<div class="vkpdc_iframe-outer vkpdc_iframe-outer--archive">' . $iframe . apply_filters( 'vkpdc_single_post_iframe_after', '' ) . '</div>';
         // タイトル
-        $html .= '<div class="vkpdc_post_title">' . apply_filters( 'vkpdc_post_title', get_the_title( $post->ID ), $post ) . '</div>';
+        $html .= '<div class="vkpdc_post_title">';
+        $html .= '<a class="vkpdc_post_title--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
+        $html .= apply_filters( 'vkpdc_post_title', get_the_title( $post->ID ), $post );
+        $html .= '</a>';
+        $html .= '</div>';
         // タクソノミー
         $html .= $taxonomy_html;
         // ボタン
