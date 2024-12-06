@@ -3,6 +3,7 @@
     grid-template-columns: repeat(auto-fit, minmax(var(--col-width-min, 300px), 1fr));
     gap: var(--gap, 1.5rem);
     row-gap: var(--gap-row, 1.5rem);
+    overflow: hidden;
 }
 
 @media (min-width: 576px) {
