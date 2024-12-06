@@ -16,27 +16,37 @@ function register_custom_taxonomies() {
 			$taxonomy['slug'],
 			'vk-patterns',
 			array(
-				'labels' => array(
-					'name'              => $taxonomy['name'],
-					'singular_name'     => $taxonomy['name'],
-					'search_items'      => __( 'Search ' . $taxonomy['name'], 'vk-pattern-directory-creator' ),
-					'all_items'         => __( 'All ' . $taxonomy['name'], 'vk-pattern-directory-creator' ),
-					'edit_item'         => __( 'Edit ' . $taxonomy['name'], 'vk-pattern-directory-creator' ),
-					'update_item'       => __( 'Update ' . $taxonomy['name'], 'vk-pattern-directory-creator' ),
-					'add_new_item'      => __( 'Add New ' . $taxonomy['name'], 'vk-pattern-directory-creator' ),
-					'new_item_name'     => __( 'New ' . $taxonomy['name'] . ' Name', 'vk-pattern-directory-creator' ),
-					'menu_name'         => __( $taxonomy['name'], 'vk-pattern-directory-creator' ),
-				),
-				'show_ui'           => true,
+				'labels' => generate_taxonomy_labels( $taxonomy['name'] ),
+				'show_ui' => true,
 				'show_admin_column' => true,
-				'show_in_rest'      => true,
-				'hierarchical'      => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : false, // チェックされていない場合はタグとして扱う
-				'rewrite'           => array( 'slug' => $taxonomy['slug'] ),
+				'show_in_rest' => true,
+				'hierarchical' => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : false,
+				'rewrite' => array( 'slug' => $taxonomy['slug'] ),
 			)
 		);
 	}
 }
 add_action( 'init', 'register_custom_taxonomies', 0 );
+
+/**
+ * Generate taxonomy labels
+ *
+ * @param string $name Taxonomy name.
+ * @return array Taxonomy labels.
+ */
+function generate_taxonomy_labels( $name ) {
+	return array(
+		'name' => $name,
+		'singular_name' => $name,
+		'search_items' => __( 'Search ' . $name, 'vk-pattern-directory-creator' ),
+		'all_items' => __( 'All ' . $name, 'vk-pattern-directory-creator' ),
+		'edit_item' => __( 'Edit ' . $name, 'vk-pattern-directory-creator' ),
+		'update_item' => __( 'Update ' . $name, 'vk-pattern-directory-creator' ),
+		'add_new_item' => __( 'Add New ' . $name, 'vk-pattern-directory-creator' ),
+		'new_item_name' => __( 'New ' . $name . ' Name', 'vk-pattern-directory-creator' ),
+		'menu_name' => __( $name, 'vk-pattern-directory-creator' ),
+	);
+}
 
 /**
  * Add Settings Page
@@ -54,49 +64,69 @@ function add_taxonomy_settings_page() {
 add_action( 'admin_menu', 'add_taxonomy_settings_page' );
 
 /**
- * Settings Page Callback
+ * Display Settings Page
  */
 function display_taxonomy_settings_page() {
+	handle_taxonomy_form_submission();
+	$taxonomies = get_option( 'custom_taxonomies', array() );
+	render_taxonomy_settings_page( $taxonomies );
+}
 
+/**
+ * Handle form submission
+ */
+function handle_taxonomy_form_submission() {
 	if ( isset( $_POST['remove_taxonomy'] ) ) {
-		// どの行が削除されたかを判定
-		$remove_key = array_key_first( $_POST['remove_taxonomy'] );
-	
-		// 現在のタクソノミーを取得
-		$taxonomies = get_option( 'custom_taxonomies', array() );
-	
-		// 該当する行を削除
-		if ( isset( $taxonomies[ $remove_key ] ) ) {
-			unset( $taxonomies[ $remove_key ] );
-		}
-	
-		// 更新後のタクソノミーを保存
-		update_option( 'custom_taxonomies', $taxonomies );
-	
-		// 保存完了メッセージを表示
-		echo '<div class="updated"><p>' . __( 'Taxonomy removed successfully.', 'vk-pattern-directory-creator' ) . '</p></div>';
+		remove_taxonomy();
 	}
-	
+
 	if ( isset( $_POST['save_custom_taxonomies'] ) ) {
-		check_admin_referer( 'save_custom_taxonomies' );
-
-		$taxonomies = array();
-		if ( isset( $_POST['taxonomies'] ) && is_array( $_POST['taxonomies'] ) ) {
-			foreach ( $_POST['taxonomies'] as $taxonomy ) {
-				$taxonomies[] = array(
-					'name'          => sanitize_text_field( $taxonomy['name'] ),
-					'slug'          => sanitize_text_field( $taxonomy['slug'] ),
-					'hierarchical'  => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : false, // チェックされていない場合はタグとして扱う
-				);
-			}
-		}
-
-		update_option( 'custom_taxonomies', $taxonomies );
-		echo '<div class="updated"><p>' . __( 'Taxonomies saved.', 'vk-pattern-directory-creator' ) . '</p></div>';
+		save_custom_taxonomies();
 	}
+}
 
+/**
+ * Remove taxonomy
+ */
+function remove_taxonomy() {
+	$remove_key = array_key_first( $_POST['remove_taxonomy'] );
 	$taxonomies = get_option( 'custom_taxonomies', array() );
 
+	if ( isset( $taxonomies[ $remove_key ] ) ) {
+		unset( $taxonomies[ $remove_key ] );
+	}
+
+	update_option( 'custom_taxonomies', $taxonomies );
+	echo '<div class="updated"><p>' . __( 'Taxonomy removed successfully.', 'vk-pattern-directory-creator' ) . '</p></div>';
+}
+
+/**
+ * Save custom taxonomies
+ */
+function save_custom_taxonomies() {
+	check_admin_referer( 'save_custom_taxonomies' );
+
+	$taxonomies = array();
+	if ( isset( $_POST['taxonomies'] ) && is_array( $_POST['taxonomies'] ) ) {
+		foreach ( $_POST['taxonomies'] as $taxonomy ) {
+			$taxonomies[] = array(
+				'name' => sanitize_text_field( $taxonomy['name'] ),
+				'slug' => sanitize_text_field( $taxonomy['slug'] ),
+				'hierarchical' => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : false,
+			);
+		}
+	}
+
+	update_option( 'custom_taxonomies', $taxonomies );
+	echo '<div class="updated"><p>' . __( 'Taxonomies saved.', 'vk-pattern-directory-creator' ) . '</p></div>';
+}
+
+/**
+ * Render taxonomy settings page
+ *
+ * @param array $taxonomies List of taxonomies.
+ */
+function render_taxonomy_settings_page( $taxonomies ) {
 	?>
 	<div class="wrap">
 		<h1><?php _e( 'Block Pattern Custom Taxonomies', 'vk-pattern-directory-creator' ); ?></h1>
@@ -228,18 +258,14 @@ function display_taxonomy_settings_page() {
 			});
 
 			document.querySelector('form').addEventListener('submit', function(e) {
-				// Removeボタンがクリックされた場合の処理
 				if (e.submitter && e.submitter.classList.contains('remove-taxonomy')) {
 					var row = e.submitter.closest('tr');
 					var isFilled = Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
 						return input.value.trim() !== '';
 					});
 
-					// すべてのフィールドが空でない場合のみ確認メッセージを表示
-					if (isFilled) {
-						if (!confirm('<?php _e( 'Are you sure you want to delete this taxonomy?', 'vk-pattern-directory-creator' ); ?>')) {
-							e.preventDefault();
-						}
+					if (isFilled && !confirm('<?php _e( 'Are you sure you want to delete this taxonomy?', 'vk-pattern-directory-creator' ); ?>')) {
+						e.preventDefault();
 					}
 					return;
 				}
