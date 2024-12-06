@@ -146,13 +146,13 @@ function display_taxonomy_settings_page() {
 		.form-table {
 			border-collapse: collapse;
 			border-spacing: 0;
-			width:100%;
+			width: 100%;
 			background-color: #fff;
-			border:2px solid #e5e5e5;
+			border: 2px solid #e5e5e5;
 		}
 		.form-table th, .form-table td {
-			border:1px solid #e5e5e5;
-			padding:0.5em 0.8em;
+			border: 1px solid #e5e5e5;
+			padding: 0.5em 0.8em;
 		}
 		.form-table th {
 			background-color: #f5f5f5;
@@ -161,7 +161,7 @@ function display_taxonomy_settings_page() {
 			width: 100%;
 		}
 		.description {
-			font-size: 0.9rem;
+			margin: 0 !important;
 			color: #666;
 		}
 		@media screen and (max-width: 782px) {
