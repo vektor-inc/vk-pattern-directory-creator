@@ -44,6 +44,10 @@
 	}
 
 	&_posts {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(var(--col-width-min, 300px), 1fr));
+		gap: var(--gap, 1.5rem);
+		row-gap: var(--gap-row, 1.5rem);		
 		overflow: hidden;
 		> article {
 			display: grid;
@@ -107,6 +111,18 @@
 				color: #FFF;
 				transition: 0.5s;
 			}
+		}
+	}
+
+	@media (min-width: 576px) {
+		&_posts {
+			grid-template-columns: repeat(auto-fit, minmax(var(--col-width-min-tablet, 300px), 1fr));
+		}
+	}
+
+	@media (min-width: 992px) {
+		&_posts {
+			grid-template-columns: repeat(auto-fit, minmax(var(--col-width-min-pc, 300px), 1fr));
 		}
 	}
 }
