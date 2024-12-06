@@ -133,15 +133,15 @@ function save_custom_taxonomies() {
 function render_taxonomy_settings_page( $taxonomies ) {
     ?>
     <div class="wrap">
-        <h1><?php __( 'Block Pattern Custom Taxonomies', 'vk-pattern-directory-creator' ); ?></h1>
+        <h1><?php _e( 'Block Pattern Custom Taxonomies', 'vk-pattern-directory-creator' ); ?></h1>
         <form method="post" action="">
             <?php wp_nonce_field( 'save_custom_taxonomies' ); ?>
             <table class="table form-table">
                 <thead>
                     <tr>
-                        <th><?php __( 'Custom taxonomy label', 'vk-pattern-directory-creator' ); ?></th>
-                        <th><?php __( 'Custom taxonomy name (slug)', 'vk-pattern-directory-creator' ); ?></th>
-                        <th><?php __( 'Hierarchy', 'vk-pattern-directory-creator' ); ?></th>
+                        <th><?php _e( 'Custom taxonomy label', 'vk-pattern-directory-creator' ); ?></th>
+                        <th><?php _e( 'Custom taxonomy name (slug)', 'vk-pattern-directory-creator' ); ?></th>
+                        <th><?php _e( 'Hierarchy', 'vk-pattern-directory-creator' ); ?></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -209,98 +209,98 @@ function render_taxonomy_settings_page( $taxonomies ) {
             }
         }
     </style>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        function addEmptyRow() {
-            var index = document.querySelectorAll('table.form-table tbody tr').length;
-            var row = document.createElement('tr');
-            row.classList.add('new-taxonomy');
-            row.innerHTML = `
-                <td><input type="text" name="taxonomies[${index}][name]" placeholder="<?php __( 'Category', 'vk-pattern-directory-creator' ); ?>" /></td>
-                <td><input type="text" name="taxonomies[${index}][slug]" placeholder="<?php __( 'category', 'vk-pattern-directory-creator' ); ?>" /></td>
-                <td><input type="checkbox" name="taxonomies[${index}][hierarchical]" /></td>
-                <td><input type="submit" name="remove_taxonomy[${index}]" class="button remove-taxonomy" value="<?php __( 'Remove', 'vk-pattern-directory-creator' ); ?>" disabled /></td>
-            `;
-            document.querySelector('table.form-table tbody').appendChild(row);
-        }
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			function addEmptyRow() {
+				var index = document.querySelectorAll('table.form-table tbody tr').length;
+				var row = document.createElement('tr');
+				row.classList.add('new-taxonomy');
+				row.innerHTML = `
+					<td><input type="text" name="taxonomies[${index}][name]" placeholder="<?php __( 'Category', 'vk-pattern-directory-creator' ); ?>" /></td>
+					<td><input type="text" name="taxonomies[${index}][slug]" placeholder="<?php __( 'category', 'vk-pattern-directory-creator' ); ?>" /></td>
+					<td><input type="checkbox" name="taxonomies[${index}][hierarchical]" /></td>
+					<td><input type="submit" name="remove_taxonomy[${index}]" class="button remove-taxonomy" value="<?php __( 'Remove', 'vk-pattern-directory-creator' ); ?>" disabled /></td>
+				`;
+				document.querySelector('table.form-table tbody').appendChild(row);
+			}
 
-        function toggleAddButton() {
-            var isValid = Array.from(document.querySelectorAll('tbody tr.new-taxonomy')).every(function(row) {
-                return Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
-                    return input.value.trim() !== '';
-                });
-            });
-            document.getElementById('add-taxonomy').disabled = !isValid;
-        }
+			function toggleAddButton() {
+				var isValid = Array.from(document.querySelectorAll('tbody tr.new-taxonomy')).every(function(row) {
+					return Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
+						return input.value.trim() !== '';
+					});
+				});
+				document.getElementById('add-taxonomy').disabled = !isValid;
+			}
 
-        function toggleSaveButton() {
-            var isValid = Array.from(document.querySelectorAll('tbody tr')).every(function(row) {
-                if (row.classList.contains('new-taxonomy')) {
-                    return Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
-                        return input.value.trim() !== '';
-                    });
-                }
-                return true;
-            });
-            document.querySelector('input[name="save_custom_taxonomies"]').disabled = !isValid;
-        }
+			function toggleSaveButton() {
+				var isValid = Array.from(document.querySelectorAll('tbody tr')).every(function(row) {
+					if (row.classList.contains('new-taxonomy')) {
+						return Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
+							return input.value.trim() !== '';
+						});
+					}
+					return true;
+				});
+				document.querySelector('input[name="save_custom_taxonomies"]').disabled = !isValid;
+			}
 
-        document.getElementById('add-taxonomy').addEventListener('click', function(e) {
-            e.preventDefault();
-            addEmptyRow();
-            toggleAddButton();
-            toggleSaveButton();
-        });
+			document.getElementById('add-taxonomy').addEventListener('click', function(e) {
+				e.preventDefault();
+				addEmptyRow();
+				toggleAddButton();
+				toggleSaveButton();
+			});
 
-        document.addEventListener('input', function(e) {
-            if (e.target.matches('input[type="text"]')) {
-                toggleAddButton();
-                toggleSaveButton();
-            }
-        });
+			document.addEventListener('input', function(e) {
+				if (e.target.matches('input[type="text"]')) {
+					toggleAddButton();
+					toggleSaveButton();
+				}
+			});
 
-        document.querySelector('form').addEventListener('submit', function(e) {
-            if (e.submitter && e.submitter.classList.contains('remove-taxonomy')) {
-                var row = e.submitter.closest('tr');
-                var isFilled = Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
-                    return input.value.trim() !== '';
-                });
+			document.querySelector('form').addEventListener('submit', function(e) {
+				if (e.submitter && e.submitter.classList.contains('remove-taxonomy')) {
+					var row = e.submitter.closest('tr');
+					var isFilled = Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
+						return input.value.trim() !== '';
+					});
 
-                if (isFilled && row.classList.contains('new-taxonomy')) {
-                    e.preventDefault();
-                    alert('<?php __( 'Please save the new taxonomy before removing it.', 'vk-pattern-directory-creator' ); ?>');
-                    return;
-                }
+					if (isFilled && row.classList.contains('new-taxonomy')) {
+						e.preventDefault();
+						alert('<?php __( 'Please save the new taxonomy before removing it.', 'vk-pattern-directory-creator' ); ?>');
+						return;
+					}
 
-                if (!isFilled && !confirm('<?php __( 'Are you sure you want to delete this taxonomy?', 'vk-pattern-directory-creator' ); ?>')) {
-                    e.preventDefault();
-                }
-                return;
-            }
+					if (!isFilled && !confirm('<?php __( 'Are you sure you want to delete this taxonomy?', 'vk-pattern-directory-creator' ); ?>')) {
+						e.preventDefault();
+					}
+					return;
+				}
 
-            var isValid = Array.from(document.querySelectorAll('tbody tr')).every(function(row) {
-                if (row.classList.contains('new-taxonomy')) {
-                    return Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
-                        return input.value.trim() !== '';
-                    });
-                }
-                return true;
-            });
+				var isValid = Array.from(document.querySelectorAll('tbody tr')).every(function(row) {
+					if (row.classList.contains('new-taxonomy')) {
+						return Array.from(row.querySelectorAll('input[type="text"]')).every(function(input) {
+							return input.value.trim() !== '';
+						});
+					}
+					return true;
+				});
 
-            if (!isValid) {
-                e.preventDefault();
-                alert('<?php __( 'Please fill in all fields: Name and Slug.', 'vk-pattern-directory-creator' ); ?>');
-            }
-        });
+				if (!isValid) {
+					e.preventDefault();
+					alert('<?php __( 'Please fill in all fields: Name and Slug.', 'vk-pattern-directory-creator' ); ?>');
+				}
+			});
 
-        // 初期状態で空の行を追加
-        if (document.querySelectorAll('table.form-table tbody tr').length === 0) {
-            addEmptyRow();
-        }
+			// 初期状態で空の行を追加
+			if (document.querySelectorAll('table.form-table tbody tr').length === 0) {
+				addEmptyRow();
+			}
 
-        toggleAddButton();
-        toggleSaveButton();
-    });
-</script>
+			toggleAddButton();
+			toggleSaveButton();
+		});
+	</script>
     <?php
 }
