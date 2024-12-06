@@ -20,8 +20,8 @@ function register_custom_taxonomies() {
 				'show_ui' => true,
 				'show_admin_column' => true,
 				'show_in_rest' => true,
-				'hierarchical' => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : true,
 				'rewrite' => array( 'slug' => $taxonomy['slug'] ),
+				'hierarchical'      => $taxonomy['hierarchical'],
 			)
 		);
 	}
@@ -104,21 +104,22 @@ function remove_taxonomy() {
  * Save custom taxonomies
  */
 function save_custom_taxonomies() {
-	check_admin_referer( 'save_custom_taxonomies' );
+    check_admin_referer( 'save_custom_taxonomies' );
 
-	$taxonomies = array();
-	if ( isset( $_POST['taxonomies'] ) && is_array( $_POST['taxonomies'] ) ) {
-		foreach ( $_POST['taxonomies'] as $taxonomy ) {
-			$taxonomies[] = array(
-				'name' => sanitize_text_field( $taxonomy['name'] ),
-				'slug' => sanitize_text_field( $taxonomy['slug'] ),
-				'hierarchical' => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : false,
-			);
-		}
-	}
+    $taxonomies = array();
+    if ( isset( $_POST['taxonomies'] ) && is_array( $_POST['taxonomies'] ) ) {
+        foreach ( $_POST['taxonomies'] as $taxonomy ) {
+            $taxonomies[] = array(
+                'name'          => sanitize_text_field( $taxonomy['name'] ),
+                'slug'          => sanitize_title( $taxonomy['slug'] ),
+                // チェックされていない場合は true（階層あり）、チェックされている場合は false（階層なし）
+                'hierarchical'  => empty( $taxonomy['hierarchical'] ) ? true : false,
+            );
+        }
+    }
 
-	update_option( 'custom_taxonomies', $taxonomies );
-	echo '<div class="updated"><p>' . __( 'Taxonomies saved.', 'vk-pattern-directory-creator' ) . '</p></div>';
+    update_option( 'custom_taxonomies', $taxonomies );
+    echo '<div class="updated"><p>' . __( 'Taxonomies saved.', 'vk-pattern-directory-creator' ) . '</p></div>';
 }
 
 /**
@@ -151,7 +152,7 @@ function render_taxonomy_settings_page( $taxonomies ) {
 								<input type="text" name="taxonomies[<?php echo $index; ?>][slug]" value="<?php echo esc_attr( $taxonomy['slug'] ); ?>" placeholder="<?php _e( 'category', 'vk-pattern-directory-creator' ); ?>" />
 							</td>
 							<td>
-								<input type="checkbox" name="taxonomies[<?php echo $index; ?>][hierarchical]" <?php checked( $taxonomy['hierarchical'] ); ?> />
+								<input type="checkbox" name="taxonomies[<?php echo $index; ?>][hierarchical]" <?php checked( $taxonomy['hierarchical'], false ); ?> />
 							</td>
 							<td>
 								<input type="submit" name="remove_taxonomy[<?php echo $index; ?>]" class="button remove-taxonomy" value="<?php _e( 'Remove', 'vk-pattern-directory-creator' ); ?>" />
