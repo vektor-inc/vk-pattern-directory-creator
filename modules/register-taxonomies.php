@@ -122,7 +122,7 @@ function save_custom_taxonomies() {
 	}
 
 	update_option( 'custom_taxonomies', $taxonomies );
-	echo '<div class="updated"><p>' . _e( 'Taxonomies saved.', 'vk-pattern-directory-creator' ) . '</p></div>';
+	echo '<div class="updated"><p>' . __( 'Taxonomies saved.', 'vk-pattern-directory-creator' ) . '</p></div>';
 }
 
 /**
