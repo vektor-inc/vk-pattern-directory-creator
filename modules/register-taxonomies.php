@@ -20,7 +20,7 @@ function register_custom_taxonomies() {
 				'show_ui' => true,
 				'show_admin_column' => true,
 				'show_in_rest' => true,
-				'hierarchical' => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : false,
+				'hierarchical' => isset( $taxonomy['hierarchical'] ) ? (bool) $taxonomy['hierarchical'] : true,
 				'rewrite' => array( 'slug' => $taxonomy['slug'] ),
 			)
 		);
