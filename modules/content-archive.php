@@ -26,7 +26,7 @@ function vkpdc_get_archive_single_post( $post = null ) {
 
 		// タクソノミーの取得.
 		$args       = array(
-			'template'      => '<dt class="vkpdc_post_taxonomy_title"><span class="vkpdc_post_taxonomy_title_inner">%s</span></dt><dd class="vkpdc_post_taxonomy_terms">%l</dd>',
+			'template'      => '<dt class="vkpdc_post_taxonomy_title"><span class="vkpdc_post_taxonomy_title_inner">%s</span></dt><dd class="vkpdc_post_taxonomy_contents">%l</dd>',
 			'term_template' => '<a href="%1$s">%2$s</a>',
 		);
 		$taxonomies = get_the_taxonomies( $post->ID, $args );
@@ -42,14 +42,22 @@ function vkpdc_get_archive_single_post( $post = null ) {
 			}
 		}
 
+		$taxonomy_html .= '<div class="vkpdc_post_info">';
+
 		// タクソノミーごとにタームを表示
 		if ( ! empty( $taxonomies ) ) {
-		   $taxonomy_html .= '<div class="vkpdc_post_taxonomies">';
 			foreach ( $taxonomies as $key => $value ) {
-			   $taxonomy_html .= '<dl class="vkpdc_post_taxonomy vkpdc_post_taxonomy-' . $key . '">' . $value . '</dl>';
+				$taxonomy_html .= '<dl class="vkpdc_post_taxonomy vkpdc_post_taxonomy-' . $key . '">' . $value . '</dl>';
 			}
-		   $taxonomy_html .= '</div>';
 		}
+
+		// パターンIDはタクソノミーの有無に関わらず出力
+		$taxonomy_html .= '<div class="vkpdc_post_id">';
+		$taxonomy_html .= '<span class="vkpdc_post_id_title_inner">' . __( 'Pattern ID', 'vk-pattern-directory-creator' ) . '</span>';
+		$taxonomy_html .= '<span class="vkpdc_post_id_content">' . esc_html( $post->ID ) . '</span>';
+		$taxonomy_html .= '</div>';
+
+		$taxonomy_html .= '</div>';
 
 		/* 日付 */
 		$date = get_the_date( '', $post->ID );
@@ -100,18 +108,16 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		$html .= $iframe . apply_filters( 'vkpdc_single_post_iframe_after', '' );
 		$html .= '</a>';
 		$html .= '</div>';
+		// ボディ
+		$html .= '<div class="vkpdc_post_body">'; 
 		// タイトル
 		$html .= '<div class="vkpdc_post_title">';
 		$html .= '<a class="vkpdc_post_title--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
 		$html .= apply_filters( 'vkpdc_post_title', get_the_title( $post->ID ), $post );
 		$html .= '</a>';
 		$html .= '</div>';
-		// タクソノミー
+		// タクソノミーとパターンID
 		$html .= $taxonomy_html;
-		// パターンID
-		$html .= '<div class="vkpdc_post_id">';
-		$html .= '<span>' . __( 'Pattern ID:', 'vk-pattern-directory-creator' ) . ' ' . esc_html( $post->ID ) . '</span>';
-		$html .= '</div>';
 		// 公開日と更新日
 		$html .= '<div class="vkpdc_post_entry_meta">';
 		$html .= '<div class="vkpdc_post_entry_meta_item vkpdc_post_date">';
@@ -121,6 +127,9 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		// 著者情報
         $html .= $author_html;
 		$html .= '</div>';
+
+		$html .= '</div>';
+
 		// ボタン
 		$html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
 
