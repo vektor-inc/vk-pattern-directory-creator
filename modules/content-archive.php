@@ -54,7 +54,7 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		// パターンIDはタクソノミーの有無に関わらず出力
 		$taxonomy_html .= '<div class="vkpdc_post_id">';
 		$taxonomy_html .= '<span class="vkpdc_post_id_title_inner">' . __( 'Pattern ID', 'vk-pattern-directory-creator' ) . '</span>';
-		$taxonomy_html .= '<span class="vkpdc_post_id_content">' . esc_html( $post->ID ) . '</span>';
+		$taxonomy_html .= '<span class="vkpdc_post_id_contents">' . esc_html( $post->ID ) . '</span>';
 		$taxonomy_html .= '</div>';
 
 		$taxonomy_html .= '</div>';
