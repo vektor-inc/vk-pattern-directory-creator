@@ -46,7 +46,7 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		if ( ! empty( $taxonomies ) ) {
 		   $taxonomy_html .= '<div class="vkpdc_post_taxonomies">';
 			foreach ( $taxonomies as $key => $value ) {
-			   $taxonomy_html .= '<dl class="vkpdec_post_taxonomy vkpdec_post_taxonomy-' . $key . '">' . $value . '</dl>';
+			   $taxonomy_html .= '<dl class="vkpdc_post_taxonomy vkpdc_post_taxonomy-' . $key . '">' . $value . '</dl>';
 			}
 		   $taxonomy_html .= '</div>';
 		}
@@ -91,7 +91,7 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		$author_html .= '</div>';
 
 		/* 最初の article */
-		$html .= '<article id="post-' . esc_attr( $post->ID ) . '" class="vkpdec_post ' . join( ' ', get_post_class( apply_filters( 'vkpdc_single_post_outer_class', '' ) ) ) . '">';
+		$html .= '<article id="post-' . esc_attr( $post->ID ) . '" class="vkpdc_post ' . join( ' ', get_post_class( apply_filters( 'vkpdc_single_post_outer_class', '' ) ) ) . '">';
 
 		/* 中身の追加 */
 		// iframe
