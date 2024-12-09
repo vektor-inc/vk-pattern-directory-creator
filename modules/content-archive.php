@@ -85,7 +85,7 @@ function vkpdc_get_archive_single_post( $post = null ) {
 
 		$author_name = get_the_author_meta( 'display_name', $author_id );
 
-		$author_html  = '<div class="vkpdc_post_author">';
+		$author_html  = '<div class="vkpdc_post_entry_meta_item vkpdc_post_author">';
 		$author_html .= '<div class="vkpdc_post_author_avatar">' . $profile_image . '</div>';
 		$author_html .= '<div class="vkpdc_post_author_name">' . esc_html( $author_name ) . '</div>';
 		$author_html .= '</div>';
@@ -106,19 +106,21 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		$html .= apply_filters( 'vkpdc_post_title', get_the_title( $post->ID ), $post );
 		$html .= '</a>';
 		$html .= '</div>';
-		// 日付と更新日
-		$html .= '<div class="vkpdc_post_date">';
-		$html .= '<span class="vkpdc_post_date--published">' . __( 'Published:', 'vk-pattern-directory-creator' ) . ' ' . esc_html( $date ) . '</span>';
-		$html .= '<span class="vkpdc_post_date--modified">' . __( 'Updated:', 'vk-pattern-directory-creator' ) . ' ' . esc_html( $modified_date ) . '</span>';
-		$html .= '</div>';
 		// タクソノミー
 		$html .= $taxonomy_html;
 		// パターンID
 		$html .= '<div class="vkpdc_post_id">';
 		$html .= '<span>' . __( 'Pattern ID:', 'vk-pattern-directory-creator' ) . ' ' . esc_html( $post->ID ) . '</span>';
 		$html .= '</div>';
-		 // 著者情報
+		// 公開日と更新日
+		$html .= '<div class="vkpdc_post_entry_meta">';
+		$html .= '<div class="vkpdc_post_entry_meta_item vkpdc_post_date">';
+		$html .= '<span class="vkpdc_post_date--published"><i class="far fa-calendar-alt" aria-label="' . __( 'Published Date', 'vk-pattern-directory-creator' ) . '"></i>' . esc_html( $date ) . '</span>';
+		$html .= '<span class="vkpdc_post_date--modified"><i class="fas fa-history" aria-label="' . __( 'Modified Date', 'vk-pattern-directory-creator' ) . '"></i>' . esc_html( $modified_date ) . '</span>';
+		$html .= '</div>';
+		// 著者情報
         $html .= $author_html;
+		$html .= '</div>';
 		// ボタン
 		$html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
 
