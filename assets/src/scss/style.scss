@@ -85,7 +85,6 @@
 		&_id {
 			display: flex;
 			flex-direction: row;
-			align-items: baseline;
 			margin: 0;
 			padding: 0;
 			gap: .375rem;
@@ -101,11 +100,11 @@
 					text-align: center;
 					font-weight: normal;
 				}
-				&_contents {
-					margin: 0;
-					padding: 0;
-				}
 			}	
+			&_contents {
+				margin: 0;
+				padding: 0;
+			}
 		}
 		&_entry_meta,
 		&_date {
