@@ -86,7 +86,8 @@
 				font-weight: normal;
 			}
 		}
-		&_entry_meta {
+		&_entry_meta,
+		&_date {
 			display: flex;
 			gap: .75rem;
 			align-items: center;
