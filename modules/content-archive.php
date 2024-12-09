@@ -69,6 +69,27 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		/* ボタンの集合体 */
 		$buttons = apply_filters( 'vkpdc_archive_buttons', $link_button . $copy_button );
 
+		/* 著者情報 */
+		$author_id = $post->post_author;
+
+		// VK Post Author Displayの画像取得ロジック
+		$profile_image_id = get_the_author_meta( 'user_profile_image', $author_id );
+		if ( $profile_image_id ) {
+			$profile_image_src = wp_get_attachment_image_src( $profile_image_id, 'thumbnail' );
+		}
+		if ( isset( $profile_image_src ) && is_array( $profile_image_src ) ) {
+			$profile_image = '<img src="' . esc_url( $profile_image_src[0] ) . '" alt="' . esc_attr( get_the_author_meta( 'display_name', $author_id ) ) . '" />';
+		} else {
+			$profile_image = get_avatar( get_the_author_meta( 'email', $author_id ), 64 );
+		}
+
+		$author_name = get_the_author_meta( 'display_name', $author_id );
+
+		$author_html  = '<div class="vkpdc_post_author">';
+		$author_html .= '<div class="vkpdc_post_author_avatar">' . $profile_image . '</div>';
+		$author_html .= '<div class="vkpdc_post_author_name">' . esc_html( $author_name ) . '</div>';
+		$author_html .= '</div>';
+
 		/* 最初の article */
 		$html .= '<article id="post-' . esc_attr( $post->ID ) . '" class="vkpdec_post ' . join( ' ', get_post_class( apply_filters( 'vkpdc_single_post_outer_class', '' ) ) ) . '">';
 
@@ -96,6 +117,8 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		$html .= '<div class="vkpdc_post_id">';
 		$html .= '<span>' . __( 'Pattern ID:', 'vk-pattern-directory-creator' ) . ' ' . esc_html( $post->ID ) . '</span>';
 		$html .= '</div>';
+		 // 著者情報
+        $html .= $author_html;
 		// ボタン
 		$html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
 
