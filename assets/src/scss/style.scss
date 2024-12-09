@@ -111,6 +111,7 @@
 		&_date {
 			display: flex;
 			gap: .75rem;
+			justify-content: space-between;
 			align-items: center;
 		}
 		&_author {
