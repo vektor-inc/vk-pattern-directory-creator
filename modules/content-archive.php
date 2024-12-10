@@ -41,8 +41,9 @@ function vkpdc_get_archive_single_post( $post = null ) {
 				unset( $taxonomies[ $value ] );
 			}
 		}
-
+		
 		$taxonomy_html .= '<div class="vkpdc_post_info">';
+		$taxonomy_html .= '<div class="vkpdc_post_taxonomies">';		
 
 		// タクソノミーごとにタームを表示
 		if ( ! empty( $taxonomies ) ) {
@@ -50,6 +51,8 @@ function vkpdc_get_archive_single_post( $post = null ) {
 				$taxonomy_html .= '<dl class="vkpdc_post_taxonomy vkpdc_post_taxonomy-' . $key . '">' . $value . '</dl>';
 			}
 		}
+
+		$taxonomy_html .= '</div>';
 
 		// パターンIDはタクソノミーの有無に関わらず出力
 		$taxonomy_html .= '<div class="vkpdc_post_id">';
