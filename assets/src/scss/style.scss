@@ -68,7 +68,7 @@
 	&_post {
 		&_body {
 			display: grid;
-			grid-template-rows: auto 1fr auto;
+			grid-template-rows: 1fr auto auto;
 			padding: 0 1.25rem;
 			gap: .75rem;
 		}
@@ -105,9 +105,6 @@
 				margin: 0;
 				padding: 0;
 				vertical-align: middle;
-				a {
-					vertical-align: middle;
-				}
 			}
 		}
 		&_entry_meta,
