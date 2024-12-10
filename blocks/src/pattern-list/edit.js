@@ -1,10 +1,12 @@
 // import WordPress Scripts
 import { __ } from '@wordpress/i18n';
 import {
-	RangeControl,
 	PanelBody,
 	BaseControl,
+	TextControl,
 	SelectControl,
+	CheckboxControl,
+	RangeControl,
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
@@ -17,6 +19,18 @@ export default function PostListEdit( props ) {
 		numberPosts,
 		order,
 		orderby,
+		display_image, //eslint-disable-line camelcase
+		display_image_overlay_term, //eslint-disable-line camelcase
+		display_excerpt, //eslint-disable-line camelcase
+		display_author, //eslint-disable-line camelcase
+		display_date, //eslint-disable-line camelcase
+		display_new, //eslint-disable-line camelcase
+		display_taxonomies, //eslint-disable-line camelcase
+		display_btn, //eslint-disable-line camelcase
+		new_date, //eslint-disable-line camelcase
+		new_text, //eslint-disable-line camelcase
+		btn_text, //eslint-disable-line camelcase
+		btn_align, //eslint-disable-line camelcase
 		colWidthMin,
 		colWidthMinTablet,
 		colWidthMinPC,
@@ -103,6 +117,106 @@ export default function PostListEdit( props ) {
 									label: __( 'Random', 'vk-pattern-directory-creator' ),
 								},
 							] }
+						/>
+					</BaseControl>
+				</PanelBody>
+				<PanelBody
+					title={__('Display item', 'vk-pattern-directory-creator')}
+					initialOpen={false}
+				>
+					<CheckboxControl
+						label={__('Image', 'vk-pattern-directory-creator')}
+						checked={display_image} //eslint-disable-line camelcase
+						onChange={(checked) =>
+							setAttributes({ display_image: checked })
+						}
+					/>
+					<CheckboxControl
+						label={__('Author', 'vk-pattern-directory-creator')}
+						checked={display_author} //eslint-disable-line camelcase
+						onChange={(checked) =>
+							setAttributes({ display_author: checked })
+						}
+					/>
+					<CheckboxControl
+						label={__('Date', 'vk-pattern-directory-creator')}
+						checked={display_date} //eslint-disable-line camelcase
+						onChange={(checked) => setAttributes({ display_date: checked })}
+					/>
+					<CheckboxControl
+						label={__('New mark', 'vk-pattern-directory-creator')}
+						checked={display_new} //eslint-disable-line camelcase
+						onChange={(checked) => setAttributes({ display_new: checked })}
+					/>
+					<CheckboxControl
+						label={__('Taxonomies (all)', 'vk-pattern-directory-creator')}
+						checked={display_taxonomies} //eslint-disable-line camelcase
+						onChange={(checked) =>
+							setAttributes({ display_taxonomies: checked })
+						}
+					/>
+					<CheckboxControl
+						label={__('Button', 'vk-pattern-directory-creator')}
+						checked={display_btn} //eslint-disable-line camelcase
+						onChange={(checked) => setAttributes({ display_btn: checked })}
+					/>
+					<CheckboxControl
+						label={__('Button', 'vk-pattern-directory-creator')}
+						checked={display_btn} //eslint-disable-line camelcase
+						onChange={(checked) => setAttributes({ display_btn: checked })}
+					/>
+					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
+					<TextControl
+						label={__(
+							'Number of days to display the new post mark',
+							'vk-pattern-directory-creator'
+						)}
+						value={new_date} //eslint-disable-line camelcase
+						onChange={(value) =>
+							setAttributes({ new_date: parseInt(value) || 0 })
+						}
+						type={'number'}
+					/>
+					<TextControl
+						label={__('New post mark', 'vk-pattern-directory-creator')}
+						value={new_text} //eslint-disable-line camelcase
+						onChange={(value) => setAttributes({ new_text: value })}
+					/>
+					<h4 className={'postList_itemCard_button-option'}>
+						{__('Button option', 'vk-pattern-directory-creator')}
+					</h4>
+					<p>
+						{__(
+							"Click each card block to set the target url. You can find the url form at it's sidebar.",
+							'vk-pattern-directory-creator'
+						)}
+					</p>
+					<TextControl
+						label={__('Button text', 'vk-pattern-directory-creator')}
+						value={btn_text} //eslint-disable-line camelcase
+						onChange={(value) => setAttributes({ btn_text: value })}
+					/>
+					<BaseControl
+						label={__('Button align', 'vk-pattern-directory-creator')}
+						id={'vk_displayItem-buttonAlign'}
+					>
+						<SelectControl
+							value={btn_align} //eslint-disable-line camelcase
+							onChange={(value) => setAttributes({ btn_align: value })}
+							options={[
+								{
+									value: 'text-left',
+									label: __('Left', 'vk-pattern-directory-creator'),
+								},
+								{
+									value: 'text-center',
+									label: __('Center', 'vk-pattern-directory-creator'),
+								},
+								{
+									value: 'text-right',
+									label: __('Right', 'vk-pattern-directory-creator'),
+								},
+							]}
 						/>
 					</BaseControl>
 				</PanelBody>
