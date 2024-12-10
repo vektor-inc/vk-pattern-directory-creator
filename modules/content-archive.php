@@ -108,8 +108,6 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		$html .= $iframe . apply_filters( 'vkpdc_single_post_iframe_after', '' );
 		$html .= '</a>';
 		$html .= '</div>';
-		// ボディ
-		$html .= '<div class="vkpdc_post_body">'; 
 		// タイトル
 		$html .= '<div class="vkpdc_post_title">';
 		$html .= '<a class="vkpdc_post_title--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
@@ -118,6 +116,7 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		$html .= '</div>';
 		// タクソノミーとパターンID
 		$html .= $taxonomy_html;
+
 		// 公開日と更新日
 		$html .= '<div class="vkpdc_post_entry_meta">';
 		$html .= '<div class="vkpdc_post_entry_meta_item vkpdc_post_date">';
@@ -126,8 +125,6 @@ function vkpdc_get_archive_single_post( $post = null ) {
 		$html .= '</div>';
 		// 著者情報
         $html .= $author_html;
-		$html .= '</div>';
-
 		$html .= '</div>';
 
 		// ボタン
