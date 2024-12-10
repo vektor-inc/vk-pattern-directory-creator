@@ -76,14 +76,6 @@
 			font-size: 1rem;
 			font-weight: bold;
 		}
-		&_info,
-		&_taxonomies {
-			display: grid;
-			gap: .375rem;
-		}
-		&_info {
-			grid-template-rows: 1fr auto;
-		}
 		&_taxonomy,
 		&_id {
 			display: flex;
