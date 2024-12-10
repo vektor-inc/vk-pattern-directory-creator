@@ -139,31 +139,41 @@ export default function PostListEdit( props ) {
 						}
 					/>
 					<CheckboxControl
-						label={__('Date', 'vk-pattern-directory-creator')}
-						checked={display_date} //eslint-disable-line camelcase
-						onChange={(checked) => setAttributes({ display_date: checked })}
+						label={__('Publiched Date', 'vk-blocks-pro')}
+						checked={display_date_publiched} //eslint-disable-line camelcase
+						onChange={(checked) => setAttributes({ display_date_publiched: checked })}
 					/>
 					<CheckboxControl
-						label={__('New mark', 'vk-pattern-directory-creator')}
+						label={__('Modified Date', 'vk-blocks-pro')}
+						checked={display_date_modified} //eslint-disable-line camelcase
+						onChange={(checked) => setAttributes({ display_date_modified: checked })}
+					/>
+					<CheckboxControl
+						label={__('New mark', 'vk-blocks-pro')}
 						checked={display_new} //eslint-disable-line camelcase
 						onChange={(checked) => setAttributes({ display_new: checked })}
 					/>
 					<CheckboxControl
-						label={__('Taxonomies (all)', 'vk-pattern-directory-creator')}
+						label={__('Taxonomies (all)', 'vk-blocks-pro')}
 						checked={display_taxonomies} //eslint-disable-line camelcase
 						onChange={(checked) =>
 							setAttributes({ display_taxonomies: checked })
 						}
 					/>
 					<CheckboxControl
-						label={__('Button', 'vk-pattern-directory-creator')}
+						label={__('View button', 'vk-blocks-pro')}
 						checked={display_btn} //eslint-disable-line camelcase
-						onChange={(checked) => setAttributes({ display_btn: checked })}
+						onChange={(checked) => setAttributes({ display_btn_view: checked })}
 					/>
 					<CheckboxControl
-						label={__('Button', 'vk-pattern-directory-creator')}
+						label={__('Copy button', 'vk-blocks-pro')}
 						checked={display_btn} //eslint-disable-line camelcase
-						onChange={(checked) => setAttributes({ display_btn: checked })}
+						onChange={(checked) => setAttributes({ display_btn_copy: checked })}
+					/>
+					<CheckboxControl
+						label={__('Pattern ID', 'vk-blocks-pro')}
+						checked={pattern_id} //eslint-disable-line camelcase
+						onChange={(checked) => setAttributes({ pattern_id: checked })}
 					/>
 					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
 					<TextControl
