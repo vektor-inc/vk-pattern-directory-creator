@@ -114,6 +114,9 @@
 			justify-content: space-between;
 			align-items: center;
 		}
+		&_entry_meta {
+			padding: 0 1.25rem;
+		}
 		&_author,
 		&_date > span {
 			display: flex;
@@ -131,6 +134,9 @@
 					top: 0;
 					width: 100%;
 				}
+			}
+			i {
+				margin-right: 0;
 			}
 		}
 	}
