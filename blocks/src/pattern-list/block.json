@@ -54,6 +54,14 @@
 			"type": "boolean",
 			"default": true
 		},
+		"new_date": {
+			"type": "number",
+			"default": 7
+		},
+		"new_text": {
+			"type": "string",
+			"default": "NEW!!"
+		},
 		"colWidthMin": {
 			"type": "string",
 			"default": "300px"

@@ -94,6 +94,10 @@ function vkpdc_add_pattern_list_block() {
 					'type'    => 'boolean',
 					'default' => true,
 				),
+				'display_new' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
 				'display_taxonomies' => array(
 					'type'    => 'boolean',
 					'default' => true,
@@ -109,6 +113,14 @@ function vkpdc_add_pattern_list_block() {
 				'display_btn_copy' => array(
 					'type'    => 'boolean',
 					'default' => true,
+				),
+				'new_date'   => array(
+					'type'    => 'number',
+					'default' => 7,
+				),
+				'new_text' => array(
+					'type'    => 'string',
+					'default' => 'NEW!!',
 				),
 				'className'   => array(
 					'type'    => 'string',

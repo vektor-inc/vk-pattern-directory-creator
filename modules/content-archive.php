@@ -9,138 +9,174 @@
  * Archive Single Pattern 
  *
  * @param string $post 投稿のオブジェクト.
+ * @param array $attributes ブロックの属性.
  */
-function vkpdc_get_archive_single_post( $post = null ) {
+function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
 
-	$html    = '';
-	$post = ! empty( $post ) ? $post : get_post( get_the_ID() );
+    $html    = '';
+    $post = ! empty( $post ) ? $post : get_post( get_the_ID() );
 
-	if ( ! empty( $post ) ) {        
+    if ( ! empty( $post ) ) {        
 
-		/* iframe */
-		$iframe = vkpdc_get_iframe_content( $post->ID, 'archive' );
+        /* iframe */
+        $iframe = vkpdc_get_iframe_content( $post->ID, 'archive' );
 
-		/* タクソノミー */
-		// 変数初期化
-		$taxonomy_html = '';
+        /* タクソノミー */
+        $taxonomy_html = '';
+        $has_taxonomies = ! empty( $attributes['display_taxonomies'] );
+        $has_pattern_id = ! empty( $attributes['pattern_id'] );
 
-		// タクソノミーの取得.
-		$args       = array(
-			'template'      => '<dt class="vkpdc_post_taxonomy_title"><span class="vkpdc_post_taxonomy_title_inner">%s</span></dt><dd class="vkpdc_post_taxonomy_contents">%l</dd>',
-			'term_template' => '<a href="%1$s">%2$s</a>',
-		);
-		$taxonomies = get_the_taxonomies( $post->ID, $args );
+        if ( $has_taxonomies || $has_pattern_id ) {
+            $taxonomy_html .= '<div class="vkpdc_post_info">';
+        }
 
-		// 除外するタクソノミー.
-		$exclusion = array( 'product_type', 'language' );
-		$exclusion = apply_filters( 'vkpdc_archive_display_taxonomies_exclusion', $exclusion );
+        if ( $has_taxonomies ) {
+            // タクソノミーの取得.
+            $args       = array(
+                'template'      => '<dt class="vkpdc_post_taxonomy_title"><span class="vkpdc_post_taxonomy_title_inner">%s</span></dt><dd class="vkpdc_post_taxonomy_contents">%l</dd>',
+                'term_template' => '<a href="%1$s">%2$s</a>',
+            );
+            $taxonomies = get_the_taxonomies( $post->ID, $args );
 
-		// 除外するタクソノミーを削除.
-		if ( is_array( $exclusion ) ) {
-			foreach ( $exclusion as $key => $value ) {
-				unset( $taxonomies[ $value ] );
-			}
-		}
-		
-		$taxonomy_html .= '<div class="vkpdc_post_info">';
-		$taxonomy_html .= '<div class="vkpdc_post_taxonomies">';		
+            // 除外するタクソノミー.
+            $exclusion = array( 'product_type', 'language' );
+            $exclusion = apply_filters( 'vkpdc_archive_display_taxonomies_exclusion', $exclusion );
 
-		// タクソノミーごとにタームを表示
-		if ( ! empty( $taxonomies ) ) {
-			foreach ( $taxonomies as $key => $value ) {
-				$taxonomy_html .= '<dl class="vkpdc_post_taxonomy vkpdc_post_taxonomy-' . $key . '">' . $value . '</dl>';
-			}
-		}
+            // 除外するタクソノミーを削除.
+            if ( is_array( $exclusion ) ) {
+                foreach ( $exclusion as $key => $value ) {
+                    unset( $taxonomies[ $value ] );
+                }
+            }
+            
+            $taxonomy_html .= '<div class="vkpdc_post_taxonomies">';        
 
-		$taxonomy_html .= '</div>';
+            // タクソノミーごとにタームを表示
+            if ( ! empty( $taxonomies ) ) {
+                foreach ( $taxonomies as $key => $value ) {
+                    $taxonomy_html .= '<dl class="vkpdc_post_taxonomy vkpdc_post_taxonomy-' . $key . '">' . $value . '</dl>';
+                }
+            }
+            $taxonomy_html .= '</div>';
+        }
 
-		// パターンIDはタクソノミーの有無に関わらず出力
-		$taxonomy_html .= '<div class="vkpdc_post_id">';
-		$taxonomy_html .= '<span class="vkpdc_post_id_title_inner">' . __( 'Pattern ID', 'vk-pattern-directory-creator' ) . '</span>';
-		$taxonomy_html .= '<span class="vkpdc_post_id_contents">' . esc_html( $post->ID ) . '</span>';
-		$taxonomy_html .= '</div>';
+        // パターンIDはタクソノミーの有無に関わらず出力
+        if ( $has_pattern_id ) {
+            $taxonomy_html .= '<div class="vkpdc_post_id">';
+            $taxonomy_html .= '<span class="vkpdc_post_id_title_inner">' . __( 'Pattern ID', 'vk-pattern-directory-creator' ) . '</span>';
+            $taxonomy_html .= '<span class="vkpdc_post_id_contents">' . esc_html( $post->ID ) . '</span>';
+            $taxonomy_html .= '</div>';
+        }
 
-		$taxonomy_html .= '</div>';
+        if ( $has_taxonomies || $has_pattern_id ) {
+            $taxonomy_html .= '</div>';
+        }
 
-		/* 日付 */
-		$date = get_the_date( '', $post->ID );
-		$modified_date = get_the_modified_date( '', $post->ID );
+        /* 日付 */
+        $date = ! empty( $attributes['display_date_publiched'] ) ? get_the_date( '', $post->ID ) : '';
+        $modified_date = ! empty( $attributes['display_date_modified'] ) ? get_the_modified_date( '', $post->ID ) : '';
 
-		/* リンクボタン */
-		$link_button  = '<div class="vkpdc_button-outer vkpdc_button-outer--view">';
-		$link_button .= '<a class="vkpdc_button vkpdc_button--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
-		$link_button .= '<span class="vkpdc_button-icon vkpdc_button-icon--view"><i class="fa-solid fa-circle-arrow-right fa-fw"></i></span>';
-		$link_button .= '<span class="vkpdc_button-text vkpdc_button-text--view">' . __( 'Read More', 'vk-pattern-directory-creator' ) . '</span>';
-		$link_button .= '</a>';
-		$link_button .= '</div>';
+        /* リンクボタン */
+        $link_button = '';
+        if ( ! empty( $attributes['display_btn_view'] ) ) {
+            $link_button  = '<div class="vkpdc_button-outer vkpdc_button-outer--view">';
+            $link_button .= '<a class="vkpdc_button vkpdc_button--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
+            $link_button .= '<span class="vkpdc_button-icon vkpdc_button-icon--view"><i class="fa-solid fa-circle-arrow-right fa-fw"></i></span>';
+            $link_button .= '<span class="vkpdc_button-text vkpdc_button-text--view">' . __( 'Read More', 'vk-pattern-directory-creator' ) . '</span>';
+            $link_button .= '</a>';
+            $link_button .= '</div>';
+        }
 
-		/* コピーボタン	*/
-		$copy_button = vkpdc_get_copy_button( $post->ID, 'archive' );
+        /* コピーボタン */
+        $copy_button = ! empty( $attributes['display_btn_copy'] ) ? vkpdc_get_copy_button( $post->ID, 'archive' ) : '';
 
-		/* ボタンの集合体 */
-		$buttons = apply_filters( 'vkpdc_archive_buttons', $link_button . $copy_button );
+        /* ボタンの集合体 */
+        $buttons = apply_filters( 'vkpdc_archive_buttons', $link_button . $copy_button );
 
-		/* 著者情報 */
-		$author_id = $post->post_author;
+        /* 著者情報 */
+        $author_html = '';
+        if ( ! empty( $attributes['display_author'] ) ) {
+            $author_id = $post->post_author;
+            $author_name = get_the_author_meta( 'display_name', $author_id );
 
-		// VK Post Author Displayの画像取得ロジック
-		$profile_image_id = get_the_author_meta( 'user_profile_image', $author_id );
-		if ( $profile_image_id ) {
-			$profile_image_src = wp_get_attachment_image_src( $profile_image_id, 'thumbnail' );
-		}
-		if ( isset( $profile_image_src ) && is_array( $profile_image_src ) ) {
-			$profile_image = '<img src="' . esc_url( $profile_image_src[0] ) . '" alt="' . esc_attr( get_the_author_meta( 'display_name', $author_id ) ) . '" />';
-		} else {
-			$profile_image = get_avatar( get_the_author_meta( 'email', $author_id ), 64 );
-		}
+            // VK Post Author Displayの画像取得ロジック
+            $profile_image_id = get_the_author_meta( 'user_profile_image', $author_id );
+            if ( $profile_image_id ) {
+                $profile_image_src = wp_get_attachment_image_src( $profile_image_id, 'thumbnail' );
+            }
+            if ( isset( $profile_image_src ) && is_array( $profile_image_src ) ) {
+                $profile_image = '<img src="' . esc_url( $profile_image_src[0] ) . '" alt="' . esc_attr( get_the_author_meta( 'display_name', $author_id ) ) . '" />';
+            } else {
+                $profile_image = get_avatar( get_the_author_meta( 'email', $author_id ), 64 );
+            }
 
-		$author_name = get_the_author_meta( 'display_name', $author_id );
+            $author_html  = '<div class="vkpdc_post_entry_meta_item vkpdc_post_author">';
+            $author_html .= '<div class="vkpdc_post_author_avatar">' . $profile_image . '</div>';
+            $author_html .= '<div class="vkpdc_post_author_name">' . esc_html( $author_name ) . '</div>';
+            $author_html .= '</div>';
+        }
 
-		$author_html  = '<div class="vkpdc_post_entry_meta_item vkpdc_post_author">';
-		$author_html .= '<div class="vkpdc_post_author_avatar">' . $profile_image . '</div>';
-		$author_html .= '<div class="vkpdc_post_author_name">' . esc_html( $author_name ) . '</div>';
-		$author_html .= '</div>';
+        /* 新しい投稿マーク */
+        $new_mark_html = '';
+        if ( ! empty( $attributes['display_new'] ) && ! empty( $attributes['new_date'] ) && ! empty( $attributes['new_text'] ) ) {
+            $post_date = get_the_date( 'U', $post->ID );
+            $current_date = current_time( 'timestamp' );
+            $date_diff = ( $current_date - $post_date ) / DAY_IN_SECONDS;
 
-		/* 最初の article */
-		$html .= '<article id="post-' . esc_attr( $post->ID ) . '" class="vkpdc_post ' . join( ' ', get_post_class( apply_filters( 'vkpdc_single_post_outer_class', '' ) ) ) . '">';
+            if ( $date_diff <= $attributes['new_date'] ) {
+                $new_mark_html = '<span class="vkpdc_post_title_new">' . esc_html( $attributes['new_text'] ) . '</span>';
+            }
+        }
 
-		/* 中身の追加 */
-		// iframe
-		$html .= '<div class="vkpdc_iframe-outer vkpdc_iframe-outer--archive">';
-		$html .= '<a class="vkpdc_iframe-outer--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
-		$html .= $iframe . apply_filters( 'vkpdc_single_post_iframe_after', '' );
-		$html .= '</a>';
-		$html .= '</div>';
-		// タイトル
-		$html .= '<div class="vkpdc_post_title">';
-		$html .= '<a class="vkpdc_post_title--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
-		$html .= apply_filters( 'vkpdc_post_title', get_the_title( $post->ID ), $post );
-		$html .= '</a>';
-		$html .= '</div>';
-		// タクソノミーとパターンID
-		$html .= $taxonomy_html;
+        /* 最初の article */
+        $html .= '<article id="post-' . esc_attr( $post->ID ) . '" class="vkpdc_post ' . join( ' ', get_post_class( apply_filters( 'vkpdc_single_post_outer_class', '' ) ) ) . '">';
 
-		// 公開日と更新日
-		$html .= '<div class="vkpdc_post_entry_meta">';
-		$html .= '<div class="vkpdc_post_entry_meta_item vkpdc_post_date">';
-		$html .= '<span class="vkpdc_post_date--published"><i class="far fa-calendar-alt" aria-label="' . __( 'Published Date', 'vk-pattern-directory-creator' ) . '"></i>' . esc_html( $date ) . '</span>';
-		$html .= '<span class="vkpdc_post_date--modified"><i class="fas fa-history" aria-label="' . __( 'Modified Date', 'vk-pattern-directory-creator' ) . '"></i>' . esc_html( $modified_date ) . '</span>';
-		$html .= '</div>';
-		// 著者情報
+        /* 中身の追加 */
+        // iframe
+        if ( ! empty( $attributes['display_image'] ) ) {
+            $html .= '<div class="vkpdc_iframe-outer vkpdc_iframe-outer--archive">';
+            $html .= '<a class="vkpdc_iframe-outer--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
+            $html .= $iframe . apply_filters( 'vkpdc_single_post_iframe_after', '' );
+            $html .= '</a>';
+            $html .= '</div>';
+        }
+        // タイトル
+        $html .= '<div class="vkpdc_post_title">';
+        $html .= '<a class="vkpdc_post_title--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
+        $html .= apply_filters( 'vkpdc_post_title', get_the_title( $post->ID ), $post );
+        $html .= $new_mark_html;
+        $html .= '</a>';
+        $html .= '</div>';
+        // タクソノミーとパターンID
+        $html .= $taxonomy_html;
+
+        // 公開日と更新日
+        $html .= '<div class="vkpdc_post_entry_meta">';
+        if ( $date || $modified_date ) {
+            $html .= '<div class="vkpdc_post_entry_meta_item vkpdc_post_date">';
+            if ( $date ) {
+                $html .= '<span class="vkpdc_post_date--published"><i class="far fa-calendar-alt" aria-label="' . __( 'Published Date', 'vk-pattern-directory-creator' ) . '"></i>' . esc_html( $date ) . '</span>';
+            }
+            if ( $modified_date ) {
+                $html .= '<span class="vkpdc_post_date--modified"><i class="fas fa-history" aria-label="' . __( 'Modified Date', 'vk-pattern-directory-creator' ) . '"></i>' . esc_html( $modified_date ) . '</span>';
+            }
+            $html .= '</div>';
+        }
+
+        // 著者情報
         $html .= $author_html;
-		$html .= '</div>';
+        $html .= '</div>';
 
-		// ボタン
-		$html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
+        // ボタン
+        $html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
 
-		/* 最後の article */
-		$html .= '</article>';
-	}
+        /* 最後の article */
+        $html .= '</article>';
+    }
 
-	return $html;    
+    return $html;    
 
 }
-add_shortcode( 'vkpdc_archive_single_post', 'vkpdc_get_archive_single_post' );
 
 /**
  * Archive Loop

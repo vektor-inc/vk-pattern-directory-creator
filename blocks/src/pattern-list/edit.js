@@ -26,11 +26,10 @@ export default function PostListEdit( props ) {
 		display_new, //eslint-disable-line camelcase
 		display_taxonomies, //eslint-disable-line camelcase
 		pattern_id, //eslint-disable-line camelcase
-		display_btn, //eslint-disable-line camelcase
+		display_btn_view, //eslint-disable-line camelcase
+		display_btn_copy, //eslint-disable-line camelcase
 		new_date, //eslint-disable-line camelcase
 		new_text, //eslint-disable-line camelcase
-		btn_text, //eslint-disable-line camelcase
-		btn_align, //eslint-disable-line camelcase
 		colWidthMin,
 		colWidthMinTablet,
 		colWidthMinPC,
@@ -41,11 +40,23 @@ export default function PostListEdit( props ) {
 	const blockProps = useBlockProps();
 
 	useEffect(() => {
+		if (display_image === undefined) setAttributes({ display_image: true });
+		if (display_author === undefined) setAttributes({ display_author: true });
+		if (display_date_publiched === undefined) setAttributes({ display_date_publiched: true });
+		if (display_date_modified === undefined) setAttributes({ display_date_modified: true });
+		if (display_new === undefined) setAttributes({ display_new: true });
+		if (display_taxonomies === undefined) setAttributes({ display_taxonomies: true });
+		if (pattern_id === undefined) setAttributes({ pattern_id: true });
+		if (display_btn_view === undefined) setAttributes({ display_btn_view: true });
+		if (display_btn_copy === undefined) setAttributes({ display_btn_copy: true });
+        if (new_date === undefined || isNaN(new_date)) setAttributes({ new_date: 7 });
+        if (new_text === undefined) setAttributes({ new_text: 'NEW!!' });
 		if (!colWidthMin) setAttributes({ colWidthMin: '300px' });
 		if (!colWidthMinTablet) setAttributes({ colWidthMinTablet: '300px' });
 		if (!colWidthMinPC) setAttributes({ colWidthMinPC: '300px' });
-		if (!gap) setAttributes({ gap: '30px' });
-		if (!gapRow) setAttributes({ gapRow: '30px' });
+		if (!gap) setAttributes({ gap: '1.5rem' });
+		if (!gapRow) setAttributes({ gapRow: '1.5rem' });
+
 	}, []);
 
 	return (
@@ -121,61 +132,59 @@ export default function PostListEdit( props ) {
 					</BaseControl>
 				</PanelBody>
 				<PanelBody
-					title={__('Display item', 'vk-pattern-directory-creator')}
-					initialOpen={false}
+					title={__('Display Items', 'vk-pattern-directory-creator')}
+					initialOpen={true}
 				>
 					<CheckboxControl
 						label={__('Image', 'vk-pattern-directory-creator')}
-						checked={display_image} //eslint-disable-line camelcase
-						onChange={(checked) =>
-							setAttributes({ display_image: checked })
-						}
+						checked={display_image}
+						onChange={(checked) => setAttributes({ display_image: checked })}
 					/>
 					<CheckboxControl
 						label={__('Author', 'vk-pattern-directory-creator')}
-						checked={display_author} //eslint-disable-line camelcase
-						onChange={(checked) =>
-							setAttributes({ display_author: checked })
-						}
+						checked={display_author}
+						onChange={(checked) => setAttributes({ display_author: checked })}
 					/>
 					<CheckboxControl
-						label={__('Publiched date', 'vk-pattern-directory-creator')}
-						checked={display_date_publiched} //eslint-disable-line camelcase
+						label={__('Published Date', 'vk-pattern-directory-creator')}
+						checked={display_date_publiched}
 						onChange={(checked) => setAttributes({ display_date_publiched: checked })}
 					/>
 					<CheckboxControl
-						label={__('Modified date', 'vk-pattern-directory-creator')}
-						checked={display_date_modified} //eslint-disable-line camelcase
+						label={__('Modified Date', 'vk-pattern-directory-creator')}
+						checked={display_date_modified}
 						onChange={(checked) => setAttributes({ display_date_modified: checked })}
 					/>
 					<CheckboxControl
-						label={__('New mark', 'vk-pattern-directory-creator')}
-						checked={display_new} //eslint-disable-line camelcase
+						label={__('New Mark', 'vk-pattern-directory-creator')}
+						checked={display_new}
 						onChange={(checked) => setAttributes({ display_new: checked })}
 					/>
 					<CheckboxControl
-						label={__('Taxonomies (all)', 'vk-pattern-directory-creator')}
-						checked={display_taxonomies} //eslint-disable-line camelcase
-						onChange={(checked) =>
-							setAttributes({ display_taxonomies: checked })
-						}
-					/>
-					<CheckboxControl
-						label={__('View button', 'vk-pattern-directory-creator')}
-						checked={display_btn} //eslint-disable-line camelcase
-						onChange={(checked) => setAttributes({ display_btn_view: checked })}
-					/>
-					<CheckboxControl
-						label={__('Copy button', 'vk-pattern-directory-creator')}
-						checked={display_btn} //eslint-disable-line camelcase
-						onChange={(checked) => setAttributes({ display_btn_copy: checked })}
+						label={__('Taxonomies(all)', 'vk-pattern-directory-creator')}
+						checked={display_taxonomies}
+						onChange={(checked) => setAttributes({ display_taxonomies: checked })}
 					/>
 					<CheckboxControl
 						label={__('Pattern ID', 'vk-pattern-directory-creator')}
-						checked={pattern_id} //eslint-disable-line camelcase
+						checked={pattern_id}
 						onChange={(checked) => setAttributes({ pattern_id: checked })}
 					/>
-					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
+					<CheckboxControl
+						label={__('View Button', 'vk-pattern-directory-creator')}
+						checked={display_btn_view}
+						onChange={(checked) => setAttributes({ display_btn_view: checked })}
+					/>
+					<CheckboxControl
+						label={__('Copy Button', 'vk-pattern-directory-creator')}
+						checked={display_btn_copy}
+						onChange={(checked) => setAttributes({ display_btn_copy: checked })}
+						/>
+				</PanelBody>
+				<PanelBody
+					title={__('New Mark Options', 'vk-pattern-directory-creator')}
+					initialOpen={false}
+				>
 					<TextControl
 						label={__(
 							'Number of days to display the new post mark',
@@ -183,7 +192,7 @@ export default function PostListEdit( props ) {
 						)}
 						value={new_date} //eslint-disable-line camelcase
 						onChange={(value) =>
-							setAttributes({ new_date: parseInt(value) || 0 })
+							setAttributes({ new_date: parseInt(value) })
 						}
 						type={'number'}
 					/>
@@ -192,43 +201,6 @@ export default function PostListEdit( props ) {
 						value={new_text} //eslint-disable-line camelcase
 						onChange={(value) => setAttributes({ new_text: value })}
 					/>
-					<h4 className={'postList_itemCard_button-option'}>
-						{__('Button option', 'vk-pattern-directory-creator')}
-					</h4>
-					<p>
-						{__(
-							"Click each card block to set the target url. You can find the url form at it's sidebar.",
-							'vk-pattern-directory-creator'
-						)}
-					</p>
-					<TextControl
-						label={__('Button text', 'vk-pattern-directory-creator')}
-						value={btn_text} //eslint-disable-line camelcase
-						onChange={(value) => setAttributes({ btn_text: value })}
-					/>
-					<BaseControl
-						label={__('Button align', 'vk-pattern-directory-creator')}
-						id={'vk_displayItem-buttonAlign'}
-					>
-						<SelectControl
-							value={btn_align} //eslint-disable-line camelcase
-							onChange={(value) => setAttributes({ btn_align: value })}
-							options={[
-								{
-									value: 'text-left',
-									label: __('Left', 'vk-pattern-directory-creator'),
-								},
-								{
-									value: 'text-center',
-									label: __('Center', 'vk-pattern-directory-creator'),
-								},
-								{
-									value: 'text-right',
-									label: __('Right', 'vk-pattern-directory-creator'),
-								},
-							]}
-						/>
-					</BaseControl>
 				</PanelBody>
 				<PanelBody title={__('Column Width Setting', 'vk-pattern-directory-creator')}>
 					<UnitControl
