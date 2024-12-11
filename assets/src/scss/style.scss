@@ -73,8 +73,14 @@
 		}
 		&_title {
 			line-height: 1.4;
-			font-size: 1rem;
+			font-size: .9rem;
 			font-weight: bold;
+			&_new {
+				margin-left: .4em;
+				font-size: .8em;
+				white-space: nowrap;
+				color: red;
+			}
 		}
 		&_taxonomy,
 		&_id {
