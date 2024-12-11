@@ -150,7 +150,8 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 	
 	$query = new WP_Query( $query_args );
 	
-	$html  = '<div class="vkpdc-pattern-list">';
+	$className = isset( $attributes['className'] ) ? $attributes['className'] : '';
+    $html  = '<div class="vkpdc-pattern-list ' . esc_attr( $className ) . '">';
 	$html .= vkpdc_get_archive_loop( $query, $attributes );
 	$html .= '</div>';
 	
