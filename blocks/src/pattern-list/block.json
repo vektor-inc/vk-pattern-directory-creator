@@ -18,6 +18,42 @@
 			"type": "string",
 			"default": "date"
 		},
+		"display_image": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_author": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_date_publiched": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_date_modified": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_new": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_taxonomies": {
+			"type": "boolean",
+			"default": true
+		},
+		"pattern_id": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_btn_view": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_btn_copy": {
+			"type": "boolean",
+			"default": true
+		},
 		"colWidthMin": {
 			"type": "string",
 			"default": "300px"
@@ -32,11 +68,11 @@
 		},
 		"gap": {
 			"type": "string",
-			"default": "30px"
+			"default": "1.5rem"
 		},
 		"gapRow": {
 			"type": "string",
-			"default": null
+			"default": "1.5rem"
 		},
 		"className": {
 			"type": "string",

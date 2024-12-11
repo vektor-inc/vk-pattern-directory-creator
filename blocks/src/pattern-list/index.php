@@ -5,11 +5,11 @@
  * @package vk-blocks
  */
 
- /**
-  * Register block pattern-list
-  *
-  * @return void
-  */
+/**
+ * Register block pattern-list
+ *
+ * @return void
+ */
 function vkpdc_add_pattern_list_block() {
 
 	$asset_file = include 'block.asset.php';
@@ -72,11 +72,43 @@ function vkpdc_add_pattern_list_block() {
 				),
 				'gap' => array(
 					'type'    => 'string',
-					'default' => '30px',
+					'default' => '1.5rem',
 				),
 				'gapRow' => array(
 					'type'    => 'string',
-					'default' => '30px',
+					'default' => '1.5rem',
+				),
+				'display_image' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'display_author' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'display_date_publiched' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'display_date_modified' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'display_taxonomies' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'pattern_id' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'display_btn_view' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
+				'display_btn_copy' => array(
+					'type'    => 'boolean',
+					'default' => true,
 				),
 				'className'   => array(
 					'type'    => 'string',
