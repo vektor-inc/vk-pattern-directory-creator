@@ -180,11 +180,7 @@ export default function PostListEdit( props ) {
 						checked={display_btn_copy}
 						onChange={(checked) => setAttributes({ display_btn_copy: checked })}
 						/>
-				</PanelBody>
-				<PanelBody
-					title={__('New Mark Options', 'vk-pattern-directory-creator')}
-					initialOpen={false}
-				>
+					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
 					<TextControl
 						label={__(
 							'Number of days to display the new post mark',
