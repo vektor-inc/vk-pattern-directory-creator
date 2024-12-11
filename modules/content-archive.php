@@ -26,10 +26,6 @@ function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
         $has_taxonomies = ! empty( $attributes['display_taxonomies'] );
         $has_pattern_id = ! empty( $attributes['pattern_id'] );
 
-        if ( $has_taxonomies || $has_pattern_id ) {
-            $taxonomy_html .= '<div class="vkpdc_post_info">';
-        }
-
         if ( $has_taxonomies ) {
             // タクソノミーの取得.
             $args       = array(
@@ -69,7 +65,7 @@ function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
         }
 
         if ( $has_taxonomies || $has_pattern_id ) {
-            $taxonomy_html .= '</div>';
+            $taxonomy_html = '<div class="vkpdc_post_info">' . $taxonomy_html . '</div>';
         }
 
         /* 日付 */
@@ -91,7 +87,7 @@ function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
         $copy_button = ! empty( $attributes['display_btn_copy'] ) ? vkpdc_get_copy_button( $post->ID, 'archive' ) : '';
 
         /* ボタンの集合体 */
-        $buttons = apply_filters( 'vkpdc_archive_buttons', $link_button . $copy_button );
+        $buttons = $link_button . $copy_button;
 
         /* 著者情報 */
         $author_html = '';
@@ -150,25 +146,28 @@ function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
         // タクソノミーとパターンID
         $html .= $taxonomy_html;
 
-        // 公開日と更新日
-        $html .= '<div class="vkpdc_post_entry_meta">';
-        if ( $date || $modified_date ) {
-            $html .= '<div class="vkpdc_post_entry_meta_item vkpdc_post_date">';
-            if ( $date ) {
-                $html .= '<span class="vkpdc_post_date--published"><i class="far fa-calendar-alt" aria-label="' . __( 'Published Date', 'vk-pattern-directory-creator' ) . '"></i>' . esc_html( $date ) . '</span>';
+        // 公開日、更新日、著者情報がある場合のみ出力
+        if ( $date || $modified_date || $author_html ) {
+            $html .= '<div class="vkpdc_post_entry_meta">';
+            if ( $date || $modified_date ) {
+                $html .= '<div class="vkpdc_post_entry_meta_item vkpdc_post_date">';
+                if ( $date ) {
+                    $html .= '<span class="vkpdc_post_date--published"><i class="far fa-calendar-alt" aria-label="' . __( 'Published Date', 'vk-pattern-directory-creator' ) . '"></i>' . esc_html( $date ) . '</span>';
+                }
+                if ( $modified_date ) {
+                    $html .= '<span class="vkpdc_post_date--modified"><i class="fas fa-history" aria-label="' . __( 'Modified Date', 'vk-pattern-directory-creator' ) . '"></i>' . esc_html( $modified_date ) . '</span>';
+                }
+                $html .= '</div>';
             }
-            if ( $modified_date ) {
-                $html .= '<span class="vkpdc_post_date--modified"><i class="fas fa-history" aria-label="' . __( 'Modified Date', 'vk-pattern-directory-creator' ) . '"></i>' . esc_html( $modified_date ) . '</span>';
-            }
+            // 著者情報
+            $html .= $author_html;
             $html .= '</div>';
         }
 
-        // 著者情報
-        $html .= $author_html;
-        $html .= '</div>';
-
         // ボタン
-        $html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
+        if ( ! empty( $buttons ) ) {
+            $html .= '<div class="vkpdc_buttons vkpdc_buttons--archive">' . $buttons . '</div>';
+        }
 
         /* 最後の article */
         $html .= '</article>';
@@ -185,62 +184,62 @@ function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
  */
 function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 
-	global $wp_query;
-	$query = ! empty( $query ) ? $query : $wp_query;
-	$theme = get_template();
+    global $wp_query;
+    $query = ! empty( $query ) ? $query : $wp_query;
+    $theme = get_template();
 
-	$attributes = wp_parse_args(
-		$attributes,
-		[
-			'colWidthMin'       => '300px',
-			'colWidthMinTablet' => '300px',
-			'colWidthMinPC'     => '300px',
-			'gap'               => '1.5rem',
-			'gapRow'            => '1.5rem',
-		]
-	);
+    $attributes = wp_parse_args(
+        $attributes,
+        [
+            'colWidthMin'       => '300px',
+            'colWidthMinTablet' => '300px',
+            'colWidthMinPC'     => '300px',
+            'gap'               => '1.5rem',
+            'gapRow'            => '1.5rem',
+        ]
+    );
 
-	// 動的スタイルを生成
-	$styles = sprintf(
-		'--col-width-min: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
-		esc_attr( $attributes['colWidthMin'] ),
-		esc_attr( $attributes['colWidthMinTablet'] ),
-		esc_attr( $attributes['colWidthMinPC'] ),
-		esc_attr( $attributes['gap'] ),
-		esc_attr( $attributes['gapRow'] )
-	);
+    // 動的スタイルを生成
+    $styles = sprintf(
+        '--col-width-min: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
+        esc_attr( $attributes['colWidthMin'] ),
+        esc_attr( $attributes['colWidthMinTablet'] ),
+        esc_attr( $attributes['colWidthMinPC'] ),
+        esc_attr( $attributes['gap'] ),
+        esc_attr( $attributes['gapRow'] )
+    );
 
-	$html = '';
+    $html = '';
 
-	
-	if ( $query->have_posts() ) {
-		$html .= '<div class="vkpdc_posts vkpdc_posts_theme--' . esc_attr( $theme ) . '" style="' . esc_attr( $styles ) . '">';
+    
+    if ( $query->have_posts() ) {
+        $html .= '<div class="vkpdc_posts vkpdc_posts_theme--' . esc_attr( $theme ) . '" style="' . esc_attr( $styles ) . '">';
 
-		while ( $query->have_posts() ) {
-			$query->the_post();
-			$post  = get_post( get_the_ID() );
-			$html .= vkpdc_get_archive_single_post( $post, $attributes );
-		}
-		
-		$html .= '</div>';
-		
-	} else {
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $post  = get_post( get_the_ID() );
+            $html .= vkpdc_get_archive_single_post( $post, $attributes );
+        }
+        
+        $html .= '</div>';
+        
+    } else {
 
-		$html .= '<div class="vkpdc_posts vkpdc_posts--none">';
-		$html .= '<div class="vkpdc_post_title">' . __( 'No posts found.', 'vk-pattern-directory-creator' ) . '</div>';
-		$html .= '</div>';
+        $html .= '<div class="vkpdc_posts vkpdc_posts--none">';
+        $html .= '<div class="vkpdc_post_title">' . __( 'No posts found.', 'vk-pattern-directory-creator' ) . '</div>';
+        $html .= '</div>';
 
-	}
+    }
 
-	wp_reset_postdata();
-	return $html;
+    wp_reset_postdata();
+    return $html;
 }
 
 
 function vkpdc_get_patterns_archive_shortcode() {
-	if ( 'vk-patterns' === get_post_type() || 'vk-patterns' === get_query_var('post_type') ) {
-		$html = vkpdc_get_archive_loop();
-	}
-	return $html;
+    if ( 'vk-patterns' === get_post_type() || 'vk-patterns' === get_query_var('post_type') ) {
+        $html = vkpdc_get_archive_loop();
+    }
+    return $html;
 }
 add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_patterns_archive_shortcode' );
