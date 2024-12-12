@@ -188,7 +188,7 @@ export default function PostListEdit( props ) {
 						label={__('Display Image Option', 'vk-pattern-directory-creator')}
 						value={display_image}
 						options={[
-							{ label: __('None', 'vk-pattern-directory-creator'), value: '' },
+							{ label: __('None', 'vk-pattern-directory-creator'), value:false },
 							{ label: __('Use Featured Image', 'vk-pattern-directory-creator'), value: 'featured' },
 							{ label: __('Use iframe Only', 'vk-pattern-directory-creator'), value: 'iframe' },
 						]}
