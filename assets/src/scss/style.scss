@@ -201,22 +201,19 @@
 		&--view {
 			background-color: #fff;
 			border-color: rgba(0,0,0,0.2);
-			&:hover {
-				color: #fff;
-				background-color: #D8141C;
-				border-color: #D8141C;
-				transition: 0.5s;
-			}
 		}
 		&--copy {
-			background-color: #D8141C;
-			border-color: #D8141C;
+			background-color: var(--wp--preset--color--vk-color-primary, #337ab7);
+			border-color: var(--wp--preset--color--vk-color-primary-dark, #296292);
 			color: #FFF;
 			&:hover {
-				background-color: #A20F15;
 				color: #FFF;
-				transition: 0.5s;
 			}
+		}
+		&:hover {
+			opacity: .8;
+			box-shadow: 0 0 0 .2rem rgba(171, 184, 195, .25);
+			transition: 0.5s;
 		}
 	}
 
