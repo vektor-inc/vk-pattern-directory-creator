@@ -150,12 +150,6 @@ function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
 			}
 			$html .= '</a>';
 			$html .= '</div>';
-		} else {
-			$html .= '<div class="vkpdc_iframe-outer vkpdc_iframe-outer--archive">';
-			$html .= '<div class="vkpdc_iframe-wrapper vkpdc_iframe-wrapper--archive">';
-			$html .= $iframe . apply_filters( 'vkpdc_single_post_iframe_after', '' );
-			$html .= '</div>';
-			$html .= '</div>';
 		}
 		// タイトル
 		$html .= '<div class="vkpdc_post_title">';
