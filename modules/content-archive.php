@@ -155,8 +155,8 @@ function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
 		$html .= '<div class="vkpdc_post_title">';
 		$html .= '<a class="vkpdc_post_title--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
 		$html .= apply_filters( 'vkpdc_post_title', get_the_title( $post->ID ), $post );
-		$html .= $new_mark_html;
 		$html .= '</a>';
+		$html .= $new_mark_html;
 		$html .= '</div>';
 		// タクソノミーとパターンID
 		$html .= $taxonomy_html;
