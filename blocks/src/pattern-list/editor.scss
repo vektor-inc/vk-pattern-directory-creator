@@ -1,5 +1,8 @@
 .editor-styles-wrapper {
 	.vkpdc {
+		&_iframe-wrapper--archive img {
+			height: 100%;
+		}
 		&_post {
 			&_taxonomy,
 			&_id {
