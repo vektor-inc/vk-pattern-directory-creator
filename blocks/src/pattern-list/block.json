@@ -66,6 +66,10 @@
 			"type": "string",
 			"default": "NEW!!"
 		},
+		"display_btn_view_text": {
+			"type": "string",
+			"default": "Read More"
+		},
 		"colWidthMin": {
 			"type": "string",
 			"default": "300px"

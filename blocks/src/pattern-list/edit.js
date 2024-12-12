@@ -7,6 +7,7 @@ import {
 	SelectControl,
 	CheckboxControl,
 	RangeControl,
+	ColorPalette,
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
@@ -27,6 +28,7 @@ export default function PostListEdit( props ) {
 		display_taxonomies, //eslint-disable-line camelcase
 		pattern_id, //eslint-disable-line camelcase
 		display_btn_view, //eslint-disable-line camelcase
+		display_btn_view_text, //eslint-disable-line camelcase
 		display_btn_copy, //eslint-disable-line camelcase
 		new_date, //eslint-disable-line camelcase
 		new_text, //eslint-disable-line camelcase
@@ -226,6 +228,12 @@ export default function PostListEdit( props ) {
 						value={new_text} //eslint-disable-line camelcase
 						onChange={(value) => setAttributes({ new_text: value })}
 					/>
+					<h4>{__('View Button Text', 'vk-pattern-directory-creator')}</h4>
+					<TextControl
+						label={__('View Button Text', 'vk-pattern-directory-creator')}
+						value={display_btn_view_text}
+						onChange={(value) => setAttributes({ display_btn_view_text: value })}
+					/>
 				</PanelBody>
 				<PanelBody title={__('Column Width Setting', 'vk-pattern-directory-creator')}>
 					<UnitControl
@@ -255,6 +263,44 @@ export default function PostListEdit( props ) {
 						value={gapRow}
 						onChange={(value) => setAttributes({ gapRow: value })}
 					/>
+				</PanelBody>
+				<PanelBody title={__('Color Settings', 'vk-pattern-directory-creator')}>
+					<BaseControl
+						label={__('Post Background Color', 'vk-pattern-directory-creator')}
+					>
+						<ColorPalette
+							value={postBackgroundColor}
+							onChange={(value) => setAttributes({ postBackgroundColor: value })}
+							disableAlpha
+						/>
+					</BaseControl>
+					<BaseControl
+						label={__('Post Text Color', 'vk-pattern-directory-creator')}
+					>
+						<ColorPalette
+							value={postTextColor}
+							onChange={(value) => setAttributes({ postTextColor: value })}
+							disableAlpha
+						/>
+					</BaseControl>
+					<BaseControl
+						label={__('Button Background Color', 'vk-pattern-directory-creator')}
+					>
+						<ColorPalette
+							value={buttonBackgroundColor}
+							onChange={(value) => setAttributes({ buttonBackgroundColor: value })}
+							disableAlpha
+						/>
+					</BaseControl>
+					<BaseControl
+						label={__('Button Text Color', 'vk-pattern-directory-creator')}
+					>
+						<ColorPalette
+							value={buttonTextColor}
+							onChange={(value) => setAttributes({ buttonTextColor: value })}
+							disableAlpha
+						/>
+					</BaseControl>
 				</PanelBody>
 			</InspectorControls>
 			<div {...blockProps}>

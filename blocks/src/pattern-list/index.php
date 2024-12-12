@@ -105,6 +105,10 @@ function vkpdc_add_pattern_list_block() {
 					'type'    => 'string',
 					'default' => 'NEW!!',
 				),
+				'display_btn_view_text' => array(
+					'type'    => 'string',
+					'default' => 'Read More',
+				),
 				'colWidthMin' => array(
 					'type'    => 'string',
 					'default' => '300px',
