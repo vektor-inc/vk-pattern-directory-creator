@@ -6,7 +6,9 @@ import {
 	TextControl,
 	SelectControl,
 	CheckboxControl,
+	ToggleControl,
 	RangeControl,
+	ColorPicker,
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
@@ -30,6 +32,7 @@ export default function PostListEdit( props ) {
 		display_btn_copy, //eslint-disable-line camelcase
 		new_date, //eslint-disable-line camelcase
 		new_text, //eslint-disable-line camelcase
+		thumbnail_size, //eslint-disable-line camelcase
 		colWidthMin,
 		colWidthMinTablet,
 		colWidthMinPC,
@@ -41,12 +44,12 @@ export default function PostListEdit( props ) {
 
 	useEffect(() => {
 		if (display_image === undefined) setAttributes({ display_image: true });
-		if (display_author === undefined) setAttributes({ display_author: true });
-		if (display_date_publiched === undefined) setAttributes({ display_date_publiched: true });
-		if (display_date_modified === undefined) setAttributes({ display_date_modified: true });
 		if (display_new === undefined) setAttributes({ display_new: true });
 		if (display_taxonomies === undefined) setAttributes({ display_taxonomies: true });
 		if (pattern_id === undefined) setAttributes({ pattern_id: true });
+		if (display_date_publiched === undefined) setAttributes({ display_date_publiched: true });
+		if (display_date_modified === undefined) setAttributes({ display_date_modified: true });
+		if (display_author === undefined) setAttributes({ display_author: true });
 		if (display_btn_view === undefined) setAttributes({ display_btn_view: true });
 		if (display_btn_copy === undefined) setAttributes({ display_btn_copy: true });
         if (new_date === undefined || isNaN(new_date)) setAttributes({ new_date: 7 });
@@ -56,6 +59,7 @@ export default function PostListEdit( props ) {
 		if (!colWidthMinPC) setAttributes({ colWidthMinPC: '300px' });
 		if (!gap) setAttributes({ gap: '1.5rem' });
 		if (!gapRow) setAttributes({ gapRow: '1.5rem' });
+		if (!thumbnail_size) setAttributes({ thumbnail_size: 'full' });
 
 	}, []);
 
@@ -136,26 +140,6 @@ export default function PostListEdit( props ) {
 					initialOpen={true}
 				>
 					<CheckboxControl
-						label={__('Image', 'vk-pattern-directory-creator')}
-						checked={display_image}
-						onChange={(checked) => setAttributes({ display_image: checked })}
-					/>
-					<CheckboxControl
-						label={__('Author', 'vk-pattern-directory-creator')}
-						checked={display_author}
-						onChange={(checked) => setAttributes({ display_author: checked })}
-					/>
-					<CheckboxControl
-						label={__('Published Date', 'vk-pattern-directory-creator')}
-						checked={display_date_publiched}
-						onChange={(checked) => setAttributes({ display_date_publiched: checked })}
-					/>
-					<CheckboxControl
-						label={__('Modified Date', 'vk-pattern-directory-creator')}
-						checked={display_date_modified}
-						onChange={(checked) => setAttributes({ display_date_modified: checked })}
-					/>
-					<CheckboxControl
 						label={__('New Mark', 'vk-pattern-directory-creator')}
 						checked={display_new}
 						onChange={(checked) => setAttributes({ display_new: checked })}
@@ -171,6 +155,21 @@ export default function PostListEdit( props ) {
 						onChange={(checked) => setAttributes({ pattern_id: checked })}
 					/>
 					<CheckboxControl
+						label={__('Published Date', 'vk-pattern-directory-creator')}
+						checked={display_date_publiched}
+						onChange={(checked) => setAttributes({ display_date_publiched: checked })}
+					/>
+					<CheckboxControl
+						label={__('Modified Date', 'vk-pattern-directory-creator')}
+						checked={display_date_modified}
+						onChange={(checked) => setAttributes({ display_date_modified: checked })}
+					/>
+					<CheckboxControl
+						label={__('Author', 'vk-pattern-directory-creator')}
+						checked={display_author}
+						onChange={(checked) => setAttributes({ display_author: checked })}
+					/>
+					<CheckboxControl
 						label={__('View Button', 'vk-pattern-directory-creator')}
 						checked={display_btn_view}
 						onChange={(checked) => setAttributes({ display_btn_view: checked })}
@@ -180,7 +179,35 @@ export default function PostListEdit( props ) {
 						checked={display_btn_copy}
 						onChange={(checked) => setAttributes({ display_btn_copy: checked })}
 						/>
-					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
+					<h4>{__('Image option', 'vk-pattern-directory-creator')}</h4>
+					<SelectControl
+						label={__('Display Image Option', 'vk-pattern-directory-creator')}
+						value={display_image}
+						options={[
+							{ label: __('None', 'vk-pattern-directory-creator'), value: '' },
+							{ label: __('Use Featured Image', 'vk-pattern-directory-creator'), value: 'featured' },
+							{ label: __('Use iframe Only', 'vk-pattern-directory-creator'), value: 'iframe' },
+						]}
+						onChange={(value) => setAttributes({ display_image: value })}
+						defaultValue="featured"
+					/>
+					{display_image === 'featured' && (
+						<BaseControl
+							label={__('Thumbnail Size', 'vk-pattern-directory-creator')}
+							id={`vk_postList-thumbnail_size`}
+						>
+							<SelectControl
+								value={thumbnail_size}
+								onChange={(v) => setAttributes({ thumbnail_size: v })}
+								options={[
+									{ value: 'thumbnail', label: __('Thumbnail', 'vk-pattern-directory-creator') },
+									{ value: 'medium', label: __('Medium', 'vk-pattern-directory-creator') },
+									{ value: 'large', label: __('Large', 'vk-pattern-directory-creator') },
+									{ value: 'full', label: __('Full', 'vk-pattern-directory-creator') },
+								]}
+							/>
+						</BaseControl>
+					)}					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
 					<TextControl
 						label={__(
 							'Number of days to display the new post mark',
