@@ -90,6 +90,9 @@
 			&:not(:has(.vkpdc_iframe-outer):has(.vkpdc_post_info):has(.vkpdc_post_buttons)) {
 				grid-template-rows: auto 1fr;
 			}
+			&:not(:has(.vkpdc_iframe-outer):has(.vkpdc_post_info):has(.vkpdc_post_entry_meta):has(.vkpdc_post_buttons)) {
+				grid-template-rows: auto;
+			}
 			&:not(:has(.vkpdc_buttons)) {
 				padding-bottom: 1.25rem;
 			}
