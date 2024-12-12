@@ -38,13 +38,13 @@ function generate_taxonomy_labels( $name ) {
 	return array(
 		'name' => $name,
 		'singular_name' => $name,
-		'search_items' => _e( 'Search ' . $name, 'vk-pattern-directory-creator' ),
-		'all_items' => _e( 'All ' . $name, 'vk-pattern-directory-creator' ),
-		'edit_item' => _e( 'Edit ' . $name, 'vk-pattern-directory-creator' ),
-		'update_item' => _e( 'Update ' . $name, 'vk-pattern-directory-creator' ),
-		'add_new_item' => _e( 'Add New ' . $name, 'vk-pattern-directory-creator' ),
-		'new_item_name' => _e( 'New ' . $name . ' Name', 'vk-pattern-directory-creator' ),
-		'menu_name' => _e( $name, 'vk-pattern-directory-creator' ),
+		'search_items' => __( 'Search ' . $name, 'vk-pattern-directory-creator' ),
+		'all_items' => __( 'All ' . $name, 'vk-pattern-directory-creator' ),
+		'edit_item' => __( 'Edit ' . $name, 'vk-pattern-directory-creator' ),
+		'update_item' => __( 'Update ' . $name, 'vk-pattern-directory-creator' ),
+		'add_new_item' => __( 'Add New ' . $name, 'vk-pattern-directory-creator' ),
+		'new_item_name' => __( 'New ' . $name . ' Name', 'vk-pattern-directory-creator' ),
+		'menu_name' => __( $name, 'vk-pattern-directory-creator' ),
 	);
 }
 

@@ -1,11 +1,21 @@
-# vk-pattern-directory-creator
+# VK Pattern Directory Creator 
 VK Pattern Directory Creator
 
-## 概要
-**Block Pattern**というカスタム投稿タイプに追加されたブロックパターンをフロントエンドで紹介、コピペできるようにするためのプラグインです。
+## これはなに？
 
-- テストサイト: https://pdc.vs4.nagoya/
-- 完成イメージ: VKパターンライブラリ https://patterns.vektor-inc.co.jp/ の改良版。
+ブロックパターンディレクトリのサイトを作るためのプラグイン。
+※ https://github.com/vektor-inc/vk-patterns に依存関係のないまったく別で独立したプラグイン
+
+### 想定用途
+
+* ベクトルサーバーで、ベクトルのテーマ用のパターンを提供する
+* ベクトルテーマから API で直接アクセスして、ユーザーが管理画面から直接呼び出せるようにする
+* ベクトル以外の開発者がパターンディレクトリを作る事が出来る -> 販売するかどうかは未定
+
+## なぜ必要？
+
+現状 patterns.vektor-inc.co.jp 複数のテーマ用のパターンを入れているが、余白や色の定義 / 幅処理の方式 などがテーマによって異なるため、テーマ指定の余白サイズが使いづらかったりいろいろ無理がある。
+特に SmaVeksive は幅の扱いが全く違うため、SmaVeksive 専用のパターンディレクトリを作らないといけない。
 
 ## 仕様
 
