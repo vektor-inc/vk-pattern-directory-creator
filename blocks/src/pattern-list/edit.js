@@ -6,9 +6,7 @@ import {
 	TextControl,
 	SelectControl,
 	CheckboxControl,
-	ToggleControl,
 	RangeControl,
-	ColorPicker,
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
@@ -38,6 +36,10 @@ export default function PostListEdit( props ) {
 		colWidthMinPC,
 		gap,
 		gapRow,
+		postBackgroundColor,
+		postTextColor,
+		buttonBackgroundColor,
+		buttonTextColor,
 	} = attributes;
 
 	const blockProps = useBlockProps();
