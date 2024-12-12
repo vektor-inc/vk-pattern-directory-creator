@@ -5,11 +5,11 @@
  * @package vk-blocks
  */
 
-/**
- * Register block pattern-list
- *
- * @return void
- */
+ /**
+  * Register block pattern-list
+  *
+  * @return void
+  */
 function vkpdc_add_pattern_list_block() {
 
 	$asset_file = include 'block.asset.php';
@@ -58,73 +58,6 @@ function vkpdc_add_pattern_list_block() {
 					'type'    => 'string',
 					'default' => 'date',
 				),
-				'display_new' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'display_taxonomies' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'pattern_id' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),				'display_date_publiched' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'display_date_modified' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'display_author' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'display_btn_view' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'display_btn_copy' => array(
-					'type'    => 'boolean',
-					'default' => true,
-				),
-				'display_image' => array(
-					'type'    => 'string',
-					'default' => 'featured',
-				),
-				'thumbnail_size' => array(
-					'type'    => 'string',
-					'default' => 'large',
-				),
-				'new_date'   => array(
-					'type'    => 'number',
-					'default' => 7,
-				),
-				'new_text' => array(
-					'type'    => 'string',
-					'default' => 'NEW!!',
-				),
-				'colWidthMin' => array(
-					'type'    => 'string',
-					'default' => '300px',
-				),
-				'colWidthMinTablet' => array(
-					'type'    => 'string',
-					'default' => '300px',
-				),
-				'colWidthMinPC' => array(
-					'type'    => 'string',
-					'default' => '300px',
-				),
-				'gap' => array(
-					'type'    => 'string',
-					'default' => '1.5rem',
-				),
-				'gapRow' => array(
-					'type'    => 'string',
-					'default' => '1.5rem',
-				),
 				'className'   => array(
 					'type'    => 'string',
 					'default' => '',
@@ -150,14 +83,11 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 		'order'          => $attributes['order'],
 		'orderby'        => $attributes['orderby'],
 	);
-	
-	$query = new WP_Query( $query_args );
+	$query   = new WP_Query( $query_args );
 
-	$className = isset( $attributes['className'] ) ? $attributes['className'] : '';
-	$html  = '<div class="vkpdc-pattern-list ' . esc_attr( $className ) . '">';
-	$html .= vkpdc_get_archive_loop( $query, $attributes );
-	$html .= '</div>';
-	
-	return $html;
-	
+
+
+	$html = vkpdc_get_archive_loop( $query );
+
+    return $html;
 }
