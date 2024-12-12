@@ -1,16 +1,15 @@
 // import WordPress Scripts
 import { __ } from '@wordpress/i18n';
 import {
+	RangeControl,
 	PanelBody,
 	BaseControl,
-	TextControl,
 	SelectControl,
 	CheckboxControl,
 	RangeControl,
 	ColorPalette,
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
-import { useEffect } from '@wordpress/element';
 import ServerSideRender from '@wordpress/server-side-render';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
@@ -43,29 +42,9 @@ export default function PostListEdit( props ) {
 		buttonBackgroundColor,
 		buttonTextColor,
 	} = attributes;
+	const { numberPosts, order, orderby } = attributes;
 
 	const blockProps = useBlockProps();
-
-	useEffect(() => {
-		if (display_image === undefined) setAttributes({ display_image: true });
-		if (display_new === undefined) setAttributes({ display_new: true });
-		if (display_taxonomies === undefined) setAttributes({ display_taxonomies: true });
-		if (pattern_id === undefined) setAttributes({ pattern_id: true });
-		if (display_date_publiched === undefined) setAttributes({ display_date_publiched: true });
-		if (display_date_modified === undefined) setAttributes({ display_date_modified: true });
-		if (display_author === undefined) setAttributes({ display_author: true });
-		if (display_btn_view === undefined) setAttributes({ display_btn_view: true });
-		if (display_btn_copy === undefined) setAttributes({ display_btn_copy: true });
-        if (new_date === undefined || isNaN(new_date)) setAttributes({ new_date: 7 });
-        if (new_text === undefined) setAttributes({ new_text: 'NEW!!' });
-		if (!colWidthMin) setAttributes({ colWidthMin: '300px' });
-		if (!colWidthMinTablet) setAttributes({ colWidthMinTablet: '300px' });
-		if (!colWidthMinPC) setAttributes({ colWidthMinPC: '300px' });
-		if (!gap) setAttributes({ gap: '1.5rem' });
-		if (!gapRow) setAttributes({ gapRow: '1.5rem' });
-		if (!thumbnail_size) setAttributes({ thumbnail_size: 'full' });
-
-	}, []);
 
 	return (
 		<>
@@ -303,10 +282,10 @@ export default function PostListEdit( props ) {
 					</BaseControl>
 				</PanelBody>
 			</InspectorControls>
-			<div {...blockProps}>
+			<div { ...blockProps }>
 				<ServerSideRender
 					block="vkpdc/pattern-list"
-					attributes={attributes}
+					attributes={ attributes }
 				/>
 			</div>
 		</>

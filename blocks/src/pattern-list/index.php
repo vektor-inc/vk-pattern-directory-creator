@@ -5,11 +5,11 @@
  * @package vk-blocks
  */
 
-/**
- * Register block pattern-list
- *
- * @return void
- */
+ /**
+  * Register block pattern-list
+  *
+  * @return void
+  */
 function vkpdc_add_pattern_list_block() {
 
 	$asset_file = include 'block.asset.php';
@@ -154,14 +154,11 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 		'order'          => $attributes['order'],
 		'orderby'        => $attributes['orderby'],
 	);
-	
-	$query = new WP_Query( $query_args );
+	$query   = new WP_Query( $query_args );
 
-	$className = isset( $attributes['className'] ) ? $attributes['className'] : '';
-	$html  = '<div class="vkpdc-pattern-list ' . esc_attr( $className ) . '">';
-	$html .= vkpdc_get_archive_loop( $query, $attributes );
-	$html .= '</div>';
-	
-	return $html;
-	
+
+
+	$html = vkpdc_get_archive_loop( $query );
+
+    return $html;
 }
