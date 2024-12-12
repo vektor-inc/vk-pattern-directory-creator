@@ -78,7 +78,6 @@ function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
 			$link_button  = '<div class="vkpdc_button-outer vkpdc_button-outer--view">';
 			$link_button .= '<a class="vkpdc_button vkpdc_button--view" href="' . esc_attr( get_the_permalink( $post->ID ) ) . '">';
 			$link_button .= '<span class="vkpdc_button-icon vkpdc_button-icon--view"><i class="fa-solid fa-circle-arrow-right fa-fw"></i></span>';
-			$link_button .= '<span class="vkpdc_button-text vkpdc_button-text--view">' . __( 'Read More', 'vk-pattern-directory-creator' ) . '</span>';
 			$link_button .= '<span class="vkpdc_button-text vkpdc_button-text--view">' . esc_html( $attributes['display_btn_view_text'] ) . '</span>';
 			$link_button .= '</a>';
 			$link_button .= '</div>';
