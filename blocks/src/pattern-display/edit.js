@@ -16,6 +16,7 @@ import {
     URLInput,
 } from '@wordpress/block-editor';
 import { link, linkOff, keyboardReturn } from '@wordpress/icons';
+import { useState } from 'react';
 
 export default function PatternDisplayEdit( props ) {
     const { attributes, setAttributes } = props;
@@ -37,23 +38,12 @@ export default function PatternDisplayEdit( props ) {
                 attributes={ attributes }
             />
         );
-    } else if ( !postUrl ) {
-        editContent = (
-            <div className="vkpdc_warning">
-                <div className="vkpdc_warning_text">
-                    { __(
-                        'Please enter an internal URL to display the pattern. This block will not display any content until a valid URL is provided.',
-                        'vk-pattern-directory-creator'
-                    ) }
-                </div>
-            </div>
-        );
     } else {
         editContent = (
             <div className="vkpdc_warning">
                 <div className="vkpdc_warning_text">
                     { __(
-                        'This block will not be displayed because the URL is empty or out of this site.',
+                        'Please set a valid internal post URL.This block will not be displayed because the url is empty or out of this site.',
                         'vk-pattern-directory-creator'
                     ) }
                 </div>
