@@ -188,8 +188,7 @@ export default function PostListEdit( props ) {
 						label={__('Display Image Option', 'vk-pattern-directory-creator')}
 						value={display_image}
 						options={[
-							{ label: __('None', 'vk-pattern-directory-creator'), value:false },
-							{ label: __('Use Featured Image', 'vk-pattern-directory-creator'), value: 'featured' },
+							{ label: __('None', 'vk-pattern-directory-creator'), value: '' },							{ label: __('Use Featured Image', 'vk-pattern-directory-creator'), value: 'featured' },
 							{ label: __('Use iframe Only', 'vk-pattern-directory-creator'), value: 'iframe' },
 						]}
 						onChange={(value) => setAttributes({ display_image: value })}
@@ -263,44 +262,6 @@ export default function PostListEdit( props ) {
 						value={gapRow}
 						onChange={(value) => setAttributes({ gapRow: value })}
 					/>
-				</PanelBody>
-				<PanelBody title={__('Color Settings', 'vk-pattern-directory-creator')}>
-					<BaseControl
-						label={__('Post Background Color', 'vk-pattern-directory-creator')}
-					>
-						<ColorPalette
-							value={postBackgroundColor}
-							onChange={(value) => setAttributes({ postBackgroundColor: value })}
-							disableAlpha
-						/>
-					</BaseControl>
-					<BaseControl
-						label={__('Post Text Color', 'vk-pattern-directory-creator')}
-					>
-						<ColorPalette
-							value={postTextColor}
-							onChange={(value) => setAttributes({ postTextColor: value })}
-							disableAlpha
-						/>
-					</BaseControl>
-					<BaseControl
-						label={__('Button Background Color', 'vk-pattern-directory-creator')}
-					>
-						<ColorPalette
-							value={buttonBackgroundColor}
-							onChange={(value) => setAttributes({ buttonBackgroundColor: value })}
-							disableAlpha
-						/>
-					</BaseControl>
-					<BaseControl
-						label={__('Button Text Color', 'vk-pattern-directory-creator')}
-					>
-						<ColorPalette
-							value={buttonTextColor}
-							onChange={(value) => setAttributes({ buttonTextColor: value })}
-							disableAlpha
-						/>
-					</BaseControl>
 				</PanelBody>
 			</InspectorControls>
 			<div {...blockProps}>
