@@ -203,17 +203,6 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 	$query = ! empty( $query ) ? $query : $wp_query;
 	$theme = get_template();
 
-	$attributes = wp_parse_args(
-		$attributes,
-		[
-			'colWidthMin'       => '300px',
-			'colWidthMinTablet' => '300px',
-			'colWidthMinPC'     => '300px',
-			'gap'               => '1.5rem',
-			'gapRow'            => '1.5rem',
-		]
-	);
-
 	// 動的スタイルを生成
 	$styles = sprintf(
 		'--col-width-min: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
@@ -292,6 +281,11 @@ function vkpdc_get_block_default_attributes() {
         'new_date'               => 7,
         'new_text'               => 'New!!',
 		'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
+		'colWidthMin'            => '300px',
+        'colWidthMinTablet'      => '300px',
+        'colWidthMinPC'          => '300px',
+        'gap'                    => '1.5rem',
+        'gapRow'                 => '1.5rem',
     );
 }
 
@@ -314,7 +308,12 @@ function vkpdc_get_shortcode_default_attributes() {
         'new_date'               => 7,
         'new_text'               => 'New!!',
 		'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
-    );
+		'colWidthMin'            => '300px',
+        'colWidthMinTablet'      => '300px',
+        'colWidthMinPC'          => '300px',
+        'gap'                    => '1.5rem',
+        'gapRow'                 => '1.5rem',
+	);
 }
 
 /**
