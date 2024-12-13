@@ -258,3 +258,9 @@ function vkpdc_get_patterns_archive_shortcode() {
 	return $html;
 }
 add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_patterns_archive_shortcode' );
+
+function remove_image_sizes_attributes( $attr ) {
+    unset( $attr['style'] );
+    return $attr;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'remove_image_sizes_attributes', 10, 1 );
