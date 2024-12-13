@@ -11,6 +11,10 @@
 function vkpdc_iframe_sizes() {
 	$size_array = array(
 		array(
+			'label' => __( 'Full HD ( 1920px )', 'vk-patterns' ),
+			'value' => '1920px',
+		),
+		array(
 			'label' => __( 'Extra Extra Large ( 1400px )', 'vk-pattern-directory-creator' ),
 			'value' => '1400px',
 		),

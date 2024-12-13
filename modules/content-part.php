@@ -23,7 +23,7 @@ function vkpdc_get_size_selector( $page_type = 'single' ) {
 	// iframe の幅をコントロールするボタン.
 	$html  = '<div class="' . $outer_classes . '">';
 	$html .= '<select class="vkpdc_select vkpdc_select--size">';
-	$html .= '<option value="">' . __( 'Select Screen Size', 'vk-pattern-directory-creator'). '</option>';
+	$html .= '<option value="100%">' . __( 'Choose Screen Width / Full Width', 'vk-patterns' ) . '</option>';
 	foreach ( $size_array as $size ) {
 		$html .= '<option value="' . $size['value'] . '">' . $size['label'] . '</option>';
 	}

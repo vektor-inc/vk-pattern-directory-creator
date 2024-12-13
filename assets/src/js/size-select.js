@@ -15,11 +15,6 @@ function updateSizeOptionsAndIframe( selectSizeElement ) {
 					option.style.display = 'none';
 				} else {
 					option.style.display = 'block';
-					if ( ! selectFlag ) {
-						iframeContainer.style.width =
-							parseInt( option.value ) + 2 + 'px';
-						selectFlag = true;
-					}
 				}
 			}
 		} );
@@ -32,9 +27,13 @@ SelectSizeAll.forEach( ( selectSize ) => {
 
 	// セレクトボックス変更時のイベントリスナー
 	selectSize.onchange = () => {
-		iframeContainer.style.width = parseInt( selectSize.value ) + 2 + 'px';
+		if ( selectSize.value === '100%' ) {
+			iframeContainer.style.width = '100%';
+		} else {
+			iframeContainer.style.width = (parseInt(selectSize.value) + 2) + 'px';
+		}
 	};
-} );
+});
 
 // ウィンドウリサイズ時のイベントリスナー
 window.addEventListener( 'resize', () => {
