@@ -16,11 +16,20 @@ import {
     URLInput,
 } from '@wordpress/block-editor';
 import { link, linkOff, keyboardReturn } from '@wordpress/icons';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function PatternDisplayEdit( props ) {
     const { attributes, setAttributes } = props;
-    const { postUrl, displayPulldowns, displayButtons } = attributes;
+    const { postUrl,displayPulldowns, displayButtons } = attributes;
+
+    useEffect( () => {
+        if ( displayPulldowns === undefined ) {
+            setAttributes( { displayPulldowns: true } );
+        }
+        if ( displayButtons === undefined ) {
+            setAttributes( { displayButtons: true } );
+        }
+    }, [] );
 
     const blockProps = useBlockProps( {
         className: `vkpdc vkpdc_pattern-display`,
