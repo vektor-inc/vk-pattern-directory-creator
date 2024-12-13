@@ -260,7 +260,7 @@ function remove_image_sizes_attributes( $attr ) {
     unset( $attr['style'] );
     return $attr;
 }
-add_filter( 'wp_get_attachment_image_attributes', 'remove_image_sizes_attributes', 10, 1 );
+add_filter( 'wp_get_attachment_image_attributes', 'remove_image_sizes_attributes', 9999, 1 );
 
 // ブロック用の属性デフォルト
 function vkpdc_get_block_default_attributes() {
