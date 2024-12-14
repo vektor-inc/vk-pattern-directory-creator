@@ -1,171 +1,19 @@
-//@import url("../../../assets/src/scss/_variable.scss");
-@use "../../../assets/src/scss/_variable.scss";
-
-/*-------------------------------------------*/
-/* VK Patterns Libraryの設定項目
-/*-------------------------------------------*/
-//input
-.vk-patterns-input-wrap input[type=text]{
-    width: 100%;
-}
-//ラベル
-.vk-patterns-label{
-    margin: 1em 0 0.3em;
- }
-
-//編集画面用
-.editor-styles-wrapper{
-    /*-------------------------------------------*/
-    /* iframe
-    /*-------------------------------------------*/
-    .vk-patterns-iframe-wrapper {
-            
-        iframe {
-            width:100%;
-            height:100%;
-            padding: 0;
-            border:1px solid var(--border-color);
-        }	
-
-        &--single {
-            width: 1280px;
-            height: 720px;
-            margin:2rem auto 0;
-            padding-bottom: 2rem;
-        }
-
-        &--archive {
-            width: 100%;
-            height: 200px;
-            position: relative;
-            outline: 1px solid var(--border-color);
-            iframe {
-                pointer-events: none;
-                transform: scale(0.25);
-                transform-origin: 0 0;
-                width: 400%;
-                height:800px;
-            }
-        }
-
-    }
-    /*-------------------------------------------*/
-    /* VK filter serch
-    /*-------------------------------------------*/
-    // 検索ボタンの色
-    .vkfs{
-        background-color: #fff;
-        padding: 1em 1.6em 1.8em;
-        border-radius: var(--vk-size-radius);
-        box-shadow: 0 0 2px 0 rgba(0, 0, 0, .15);
-        
-        button[type="submit"]{
-            @include variable.btn-brand-color;
-        }
-    }
-
-    /*-------------------------------------------*/
-    /* .vk_posts パターン投稿一覧
-    /*-------------------------------------------*/
-    .vk_posts .vk_post-postType-vk-patterns{
-
-        .vk_post_title {
-            margin: 1.25rem 0;
-        }
-        .vk_post_taxonomy_title{
-            font-weight: normal;
-        }
-    
-        .vk_post_taxonomy_title_inner{
-            background-color:#fff;
-            border-radius: 3px;
-            border-color: var(--border-color-list);
-        }
-        
-        &.card{
-            box-shadow: 0 0 2px 0 rgb(0 0 0 / 15%);
-            border: none;
-        }
-        .card-body {
-            //ボタンを下付に必要
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .vk_post_taxonomies{
-            margin:0 0 1.25rem 0;
-            .vk_post_taxonomy{ //編集画面で余白がつくので追加
-                margin-bottom:0;
-            }
-        }
-        .vk-pattern-buttons-outer{
-            display:flex;
-            flex-wrap: wrap;
-            gap: 10px 10px; //余白
-            margin-top:auto;
-            justify-content: space-between;
-        }
-        .vk-post-button{
-            flex-grow: 1;
-        }
-    
-        .vk-patterns-copy--archive {
-            flex-grow: 1;
-            @media (min-width: 768px){
-                    margin: 0; //ボタンを下付に必要				
-            }	
-            @media (max-width: 767.98px){
-                flex-basis: 100%;
-            }
-        }
-        .vk-patterns-demo-site--archive,
-        .vk-patterns-favorite--archive{
-            flex-basis: 100%;
-        }
-    
-        .vk-pattern-buttons-outer{
-            .btn{				
-                //共通ボタンの余白
-                line-height: unset;
-                padding: 0.375rem 0.85rem;
-                width: 100%;
-                font-size: calc( var(--vk-size-text) * 0.875 );
-            }	
-        }		
-    }//.vk_posts
-
-    /*-------------------------------------------*/
-    /* ボタンの色共通
-    /*-------------------------------------------*/
-    .vk_posts .vk_post-postType-vk-patterns,
-    .single .vk-patterns {
-        .vk-patterns-faborite-button-remove,
-        .vk-patterns-copy-button{ //ボタンの色
-            @include variable.btn-brand-color();	
-        }
-        .vk-patterns-demo-site-button,	
-        .vk-patterns-faborite-button-add,
-        .vk-post-button .btn{ //ボタンの色
-            @include variable.btn-brand-outline-color();
-
-        }
-        .vk-patterns-faborite-button-remove,
-        .vk-patterns-copy-button{ //ボタンの色
-            @include variable.btn-brand-color();	
-        }
-        /* プレミアムパターンボタン */
-        .vk-patterns-premium {	
-            .vk-patterns-faborite-button-remove,
-            .vk-patterns-copy-button{ //ボタンの色
-                @include variable.btn-premium-color();
-            }
-            .vk-patterns-demo-site-button,	
-            .vk-patterns-faborite-button-add,
-            &.vk-post-button .btn{ 
-                @include variable.btn-premium-outline-color();
-        
-            }		
-        }
-    }
-    
+.editor-styles-wrapper {
+	.vkpdc {
+		&_iframe-wrapper--archive img {
+			height: 100%;
+		}
+		&_post {
+			&_taxonomy,
+			&_id {
+				margin-bottom: .375rem;
+			}
+		}
+	
+		&_button {
+			&--copy {
+				color: #fff;
+			}
+		}
+	}
 }
