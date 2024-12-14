@@ -5,6 +5,16 @@
  * @package VK Patterns
  */
 
+function vkpdc_enqueue_styles() {
+    wp_enqueue_style(
+        'vkpdc-style',
+        plugins_url( 'assets/build/css/style.css', __FILE__ ),
+        array(),
+        '0.1.0'
+    );
+}
+add_action( 'wp_enqueue_scripts', 'vkpdc_enqueue_styles' );
+
 function vkpdc_render_settings_page_with_shortcode() {
     if ( ! current_user_can( 'manage_options' ) ) {
         return;
@@ -98,17 +108,39 @@ function vkpdc_render_settings_page_with_shortcode() {
         <h2><?php esc_html_e( 'Generated Shortcode', 'vk-pattern-directory-creator' ); ?></h2>
         <textarea readonly rows="1" style="width: 100%;"><?php echo esc_html( $generated_shortcode ); ?></textarea>
         <p><?php esc_html_e( 'Copy the shortcode above and paste it into your post or page to display the archive.', 'vk-pattern-directory-creator' ); ?></p>
+        <h2><?php esc_html_e( 'Preview', 'vk-pattern-directory-creator' ); ?></h2>
+        <div id="vkpdc-preview">
+            <?php echo do_shortcode( $generated_shortcode ); ?>
+        </div>
     </div>
     <?php
 }
 
 function vkpdc_add_settings_page() {
-    add_options_page(
-        __( 'VK Patterns Settings', 'vk-pattern-directory-creator' ),
-        __( 'VK Patterns', 'vk-pattern-directory-creator' ),
-        'manage_options',
-        'vk-patterns-settings',
-        'vkpdc_render_settings_page_with_shortcode'
-    );
+    // 現在のテーマがクラシックテーマかどうかを確認
+    $theme = wp_get_theme();
+    if ( $theme->get( 'Template' ) || $theme->get_stylesheet() ) {
+        add_options_page(
+            __( 'VK Patterns Settings', 'vk-pattern-directory-creator' ),
+            __( 'VK Patterns', 'vk-pattern-directory-creator' ),
+            'manage_options',
+            'vk-patterns-settings',
+            'vkpdc_render_settings_page_with_shortcode'
+        );
+    }
 }
 add_action( 'admin_menu', 'vkpdc_add_settings_page' );
+
+// フックを提供して、アーカイブページの表示をカスタマイズ
+function vkpdc_customize_archive_page( $query ) {
+    if ( $query->is_main_query() && ! is_admin() && $query->is_post_type_archive( 'vk-patterns' ) ) {
+        $numberposts = get_option( 'vkpdc_numberposts', 6 );
+        $order       = get_option( 'vkpdc_order', 'DESC' );
+        $orderby     = get_option( 'vkpdc_orderby', 'date' );
+
+        $query->set( 'posts_per_page', $numberposts );
+        $query->set( 'order', $order );
+        $query->set( 'orderby', $orderby );
+    }
+}
+add_action( 'pre_get_posts', 'vkpdc_customize_archive_page' );
