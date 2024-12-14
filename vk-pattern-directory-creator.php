@@ -48,5 +48,8 @@ require_once $vkpdc_modules_path . 'content-single.php';
 // アーカイブページ
 require_once $vkpdc_modules_path . 'content-archive.php';
 
+// アーカイブページ設定
+require_once $vkpdc_modules_path . 'content-archive-settings.php';
+
 // ブロック
 require_once $vkpdc_modules_path . 'blocks.php';
