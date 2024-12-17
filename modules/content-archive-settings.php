@@ -10,7 +10,7 @@ function vkpdc_enqueue_styles() {
         'vkpdc-style',
         plugins_url( 'assets/build/css/style.css', __FILE__ ),
         array(),
-        '0.1.0'
+        filemtime( plugin_dir_path( __FILE__ ) . 'assets/build/css/style.css' )
     );
 }
 add_action( 'wp_enqueue_scripts', 'vkpdc_enqueue_styles' );
@@ -29,6 +29,11 @@ function vkpdc_render_settings_page_with_shortcode() {
             update_option( 'vkpdc_orderby', 'date' );
             update_option( 'vkpdc_display_image', 'featured' );
             update_option( 'vkpdc_display_btn_view_text', __( 'Read More', 'vk-pattern-directory-creator' ) );
+            update_option( 'vkpdc_colWidthMin', '300px' );
+            update_option( 'vkpdc_colWidthMinTablet', '300px' );
+            update_option( 'vkpdc_colWidthMinPC', '300px' );
+            update_option( 'vkpdc_gap', '1.5rem' );
+            update_option( 'vkpdc_gapRow', '1.5rem' );
             echo '<div class="updated"><p>' . __( 'Settings reset to default.', 'vk-pattern-directory-creator' ) . '</p></div>';
         } else {
             update_option( 'vkpdc_numberposts', intval( $_POST['numberposts'] ) );
@@ -36,6 +41,11 @@ function vkpdc_render_settings_page_with_shortcode() {
             update_option( 'vkpdc_orderby', sanitize_text_field( $_POST['orderby'] ) );
             update_option( 'vkpdc_display_image', sanitize_text_field( $_POST['display_image'] ) );
             update_option( 'vkpdc_display_btn_view_text', sanitize_text_field( $_POST['display_btn_view_text'] ) );
+            update_option( 'vkpdc_colWidthMin', sanitize_text_field( $_POST['colWidthMin'] ) );
+            update_option( 'vkpdc_colWidthMinTablet', sanitize_text_field( $_POST['colWidthMinTablet'] ) );
+            update_option( 'vkpdc_colWidthMinPC', sanitize_text_field( $_POST['colWidthMinPC'] ) );
+            update_option( 'vkpdc_gap', sanitize_text_field( $_POST['gap'] ) );
+            update_option( 'vkpdc_gapRow', sanitize_text_field( $_POST['gapRow'] ) );
             echo '<div class="updated"><p>' . __( 'Settings saved.', 'vk-pattern-directory-creator' ) . '</p></div>';
         }
     }
@@ -46,15 +56,25 @@ function vkpdc_render_settings_page_with_shortcode() {
     $orderby              = get_option( 'vkpdc_orderby', 'date' );
     $display_image        = get_option( 'vkpdc_display_image', 'featured' );
     $display_btn_view_text = get_option( 'vkpdc_display_btn_view_text', __( 'Read More', 'vk-pattern-directory-creator' ) );
+    $vkpdc_colWidthMin    = get_option( 'vkpdc_colWidthMin', '300px' );
+    $vkpdc_colWidthMinTablet = get_option( 'vkpdc_colWidthMinTablet', '300px' );
+    $vkpdc_colWidthMinPC  = get_option( 'vkpdc_colWidthMinPC', '300px' );
+    $vkpdc_gap            = get_option( 'vkpdc_gap', '1.5rem' );
+    $vkpdc_gapRow         = get_option( 'vkpdc_gapRow', '1.5rem' );
 
     // 動的ショートコード生成
     $generated_shortcode = sprintf(
-        '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_image="%s" display_btn_view_text="%s"]',
+        '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_image="%s" display_btn_view_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
         $numberposts,
         esc_attr( $order ),
         esc_attr( $orderby ),
         esc_attr( $display_image ),
-        esc_attr( $display_btn_view_text )
+        esc_attr( $display_btn_view_text ),
+        esc_attr( $vkpdc_colWidthMin ),
+        esc_attr( $vkpdc_colWidthMinTablet ),
+        esc_attr( $vkpdc_colWidthMinPC ),
+        esc_attr( $vkpdc_gap ),
+        esc_attr( $vkpdc_gapRow )
     );
 
     ?>
@@ -101,6 +121,28 @@ function vkpdc_render_settings_page_with_shortcode() {
                     <th><label for="display_btn_view_text"><?php esc_html_e( 'View Button Text', 'vk-pattern-directory-creator' ); ?></label></th>
                     <td><input type="text" id="display_btn_view_text" name="display_btn_view_text" value="<?php echo esc_attr( $display_btn_view_text ); ?>"></td>
                 </tr>
+                <!-- カラム幅設定 -->
+                <tr>
+                    <th><label for="colWidthMin"><?php esc_html_e( 'Column Min Width (Mobile)', 'vk-pattern-directory-creator' ); ?></label></th>
+                    <td><input type="text" id="colWidthMin" name="colWidthMin" value="<?php echo esc_attr( get_option( 'vkpdc_colWidthMin', '300px' ) ); ?>"></td>
+                </tr>
+                <tr>
+                    <th><label for="colWidthMinTablet"><?php esc_html_e( 'Column Min Width (Tablet)', 'vk-pattern-directory-creator' ); ?></label></th>
+                    <td><input type="text" id="colWidthMinTablet" name="colWidthMinTablet" value="<?php echo esc_attr( get_option( 'vkpdc_colWidthMinTablet', '300px' ) ); ?>"></td>
+                </tr>
+                <tr>
+                    <th><label for="colWidthMinPC"><?php esc_html_e( 'Column Min Width (PC)', 'vk-pattern-directory-creator' ); ?></label></th>
+                    <td><input type="text" id="colWidthMinPC" name="colWidthMinPC" value="<?php echo esc_attr( get_option( 'vkpdc_colWidthMinPC', '300px' ) ); ?>"></td>
+                </tr>
+                <!-- ギャップ設定 -->
+                <tr>
+                    <th><label for="gap"><?php esc_html_e( 'Column Gap Size', 'vk-pattern-directory-creator' ); ?></label></th>
+                    <td><input type="text" id="gap" name="gap" value="<?php echo esc_attr( get_option( 'vkpdc_gap', '1.5rem' ) ); ?>"></td>
+                </tr>
+                <tr>
+                    <th><label for="gapRow"><?php esc_html_e( 'Row Gap Size', 'vk-pattern-directory-creator' ); ?></label></th>
+                    <td><input type="text" id="gapRow" name="gapRow" value="<?php echo esc_attr( get_option( 'vkpdc_gapRow', '1.5rem' ) ); ?>"></td>
+                </tr>
             </table>
             <?php submit_button(); ?>
             <input type="submit" name="reset" class="button button-secondary" value="<?php esc_attr_e( 'Reset to Default', 'vk-pattern-directory-creator' ); ?>">
@@ -109,12 +151,59 @@ function vkpdc_render_settings_page_with_shortcode() {
         <textarea readonly rows="1" style="width: 100%;"><?php echo esc_html( $generated_shortcode ); ?></textarea>
         <p><?php esc_html_e( 'Copy the shortcode above and paste it into your post or page to display the archive.', 'vk-pattern-directory-creator' ); ?></p>
         <h2><?php esc_html_e( 'Preview', 'vk-pattern-directory-creator' ); ?></h2>
-        <div id="vkpdc-preview">
-            <?php echo do_shortcode( $generated_shortcode ); ?>
-        </div>
+<div id="vkpdc-preview" style="border: 1px solid #ddd; height: 600px; overflow: hidden;">
+    <iframe 
+        src="<?php echo esc_url( home_url( '/?vkpdc_preview=1' ) ); ?>" 
+        style="width: 100%; height: 100%; border: none;">
+    </iframe>
+</div>
+
     </div>
     <?php
 }
+
+/**
+ * プレビュー用のショートコード出力
+ */
+function vkpdc_render_preview_page() {
+    if ( isset( $_GET['vkpdc_preview'] ) && $_GET['vkpdc_preview'] === '1' ) {
+        // 管理画面で設定されたオプションを取得
+        $attributes = array(
+            'numberPosts'            => get_option( 'vkpdc_numberposts', 6 ),
+            'order'                  => get_option( 'vkpdc_order', 'DESC' ),
+            'orderby'                => get_option( 'vkpdc_orderby', 'date' ),
+            'display_image'          => get_option( 'vkpdc_display_image', 'featured' ),
+            'display_btn_view_text'  => get_option( 'vkpdc_display_btn_view_text', __( 'Read More', 'vk-pattern-directory-creator' ) ),
+            'colWidthMin'            => get_option( 'vkpdc_colWidthMin', '300px' ),
+            'colWidthMinTablet'      => get_option( 'vkpdc_colWidthMinTablet', '300px' ),
+            'colWidthMinPC'          => get_option( 'vkpdc_colWidthMinPC', '300px' ),
+            'gap'                    => get_option( 'vkpdc_gap', '1.5rem' ),
+            'gapRow'                 => get_option( 'vkpdc_gapRow', '1.5rem' ),
+        );
+
+        // ショートコード出力
+        echo '<!DOCTYPE html><html><head>';
+        wp_head();
+        echo '</head><body>';
+        echo do_shortcode( sprintf(
+            '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_image="%s" display_btn_view_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+            $attributes['numberPosts'],
+            esc_attr( $attributes['order'] ),
+            esc_attr( $attributes['orderby'] ),
+            esc_attr( $attributes['display_image'] ),
+            esc_attr( $attributes['display_btn_view_text'] ),
+            esc_attr( $attributes['colWidthMin'] ),
+            esc_attr( $attributes['colWidthMinTablet'] ),
+            esc_attr( $attributes['colWidthMinPC'] ),
+            esc_attr( $attributes['gap'] ),
+            esc_attr( $attributes['gapRow'] )
+        ) );
+        wp_footer();
+        echo '</body></html>';
+        exit;
+    }
+}
+add_action( 'template_redirect', 'vkpdc_render_preview_page' );
 
 function vkpdc_add_settings_page() {
     // 現在のテーマがクラシックテーマかどうかを確認
