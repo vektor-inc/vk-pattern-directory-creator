@@ -53,25 +53,43 @@ function vkpdc_save_settings() {
     check_admin_referer( 'vkpdc_save_settings', 'vkpdc_settings_nonce' );
     $defaults = vkpdc_get_default_options();
 
+    // チェックボックス項目
+    $checkbox_fields = [
+        'display_author',
+        'display_date_publiched',
+        'display_date_modified',
+        'display_new',
+        'display_taxonomies',
+        'pattern_id',
+        'display_btn_view',
+        'display_btn_copy',
+    ];
+
     if ( isset( $_POST['reset'] ) ) {
-        // リセット処理
+        // リセット処理：デフォルト値で上書き
         foreach ( $defaults as $key => $value ) {
             update_option( 'vkpdc_' . $key, $value );
         }
         return __( 'Settings reset to default.', 'vk-pattern-directory-creator' );
     } else {
-        // 保存処理
-        foreach ( $defaults as $key => $default ) {
-            $value = isset( $_POST[ $key ] ) ? ( $_POST[ $key ] === 'on' ? 1 : sanitize_text_field( $_POST[ $key ] ) ) : 0;
+        // チェックボックス項目は送信がない場合0にリセット
+        foreach ( $checkbox_fields as $key ) {
+            $value = isset( $_POST[ $key ] ) ? 1 : 0;
             update_option( 'vkpdc_' . $key, $value );
+        }
+
+        // その他の項目
+        foreach ( $defaults as $key => $default ) {
+            if ( ! in_array( $key, $checkbox_fields, true ) ) {
+                // テキストや数値のサニタイズ
+                $value = isset( $_POST[ $key ] ) ? sanitize_text_field( $_POST[ $key ] ) : $default;
+                update_option( 'vkpdc_' . $key, $value );
+            }
         }
         return __( 'Settings saved.', 'vk-pattern-directory-creator' );
     }
 }
 
-/**
- * 設定ページレンダリング
- */
 function vkpdc_render_settings_page_with_shortcode() {
     if ( ! current_user_can( 'manage_options' ) ) return;
 
@@ -81,11 +99,11 @@ function vkpdc_render_settings_page_with_shortcode() {
     }
 
     $defaults = vkpdc_get_default_options();
-    $options = array_map( function( $key ) {
-        return get_option( 'vkpdc_' . $key, '' );
-    }, array_keys( $defaults ));
-
-    $options = array_merge( $defaults, $options );
+    $options = [];
+    foreach ( $defaults as $key => $default ) {
+        // オプション値が保存されていればそれを取得
+        $options[ $key ] = get_option( 'vkpdc_' . $key, $default );
+    }
 
     ?>
     <div class="wrap">
