@@ -105,6 +105,32 @@ function vkpdc_render_settings_page_with_shortcode() {
         $options[ $key ] = get_option( 'vkpdc_' . $key, $default );
     }
 
+    // ショートコードを生成
+    $generated_shortcode = sprintf(
+        '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_image="%s" thumbnail_size="%s" display_author="%d" display_date_publiched="%d" display_date_modified="%d" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+        $options['numberposts'],
+        esc_attr( $options['order'] ),
+        esc_attr( $options['orderby'] ),
+        esc_attr( $options['display_image'] ),
+        esc_attr( $options['thumbnail_size'] ),
+        intval( $options['display_author'] ),
+        intval( $options['display_date_publiched'] ),
+        intval( $options['display_date_modified'] ),
+        intval( $options['display_new'] ),
+        intval( $options['display_taxonomies'] ),
+        intval( $options['pattern_id'] ),
+        intval( $options['display_btn_view'] ),
+        intval( $options['display_btn_copy'] ),
+        esc_attr( $options['display_btn_view_text'] ),
+        intval( $options['new_date'] ),
+        esc_attr( $options['new_text'] ),
+        esc_attr( $options['colWidthMin'] ),
+        esc_attr( $options['colWidthMinTablet'] ),
+        esc_attr( $options['colWidthMinPC'] ),
+        esc_attr( $options['gap'] ),
+        esc_attr( $options['gapRow'] )
+    );
+
     ?>
     <div class="wrap">
         <h1><?php esc_html_e( 'VK Patterns Settings', 'vk-pattern-directory-creator' ); ?></h1>
@@ -143,12 +169,42 @@ function vkpdc_render_settings_page_with_shortcode() {
                     <td><input type="text" id="new_text" name="new_text" value="<?php echo esc_attr( $options['new_text'] ); ?>"></td>
                 </tr>
             </table>
-            <?php submit_button(); ?>
-            <input type="submit" name="reset" class="button button-secondary" value="<?php esc_attr_e( 'Reset to Default', 'vk-pattern-directory-creator' ); ?>">
-        </form>
+			<?php submit_button(); ?>
+			<input type="submit" name="reset" class="button button-secondary" value="<?php esc_attr_e( 'Reset to Default', 'vk-pattern-directory-creator' ); ?>">
+		</form>
+
+		<!-- ショートコード生成部分 -->
+		<h2><?php esc_html_e( 'Generated Shortcode', 'vk-pattern-directory-creator' ); ?></h2>
+		<div style="display: flex; align-items: center;">
+			<textarea id="vkpdc_shortcode" readonly rows="1" style="width: 100%; margin-right: 10px;"><?php echo esc_html( $generated_shortcode ); ?></textarea>
+			<button type="button" id="vkpdc_copy_shortcode" class="button button-primary">
+				<?php esc_html_e( 'Copy Shortcode', 'vk-pattern-directory-creator' ); ?>
+			</button>
+		</div>
+		<p id="vkpdc_copy_message" style="display:none; color: green; margin-top: 5px;">
+			<?php esc_html_e( 'Shortcode copied to clipboard!', 'vk-pattern-directory-creator' ); ?>
+		</p>
+
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const copyButton = document.getElementById('vkpdc_copy_shortcode');
+			const shortcodeField = document.getElementById('vkpdc_shortcode');
+			const copyMessage = document.getElementById('vkpdc_copy_message');
+
+			copyButton.addEventListener('click', function() {
+				shortcodeField.select();
+				document.execCommand('copy');
+				copyMessage.style.display = 'block';
+				setTimeout(() => {
+					copyMessage.style.display = 'none';
+				}, 2000);
+			});
+		});
+		</script>
     </div>
     <?php
 }
+
 
 /**
  * 設定ページ追加
