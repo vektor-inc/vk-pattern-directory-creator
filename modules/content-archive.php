@@ -239,7 +239,6 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 	return $html;
 }
 
-
 function vkpdc_get_patterns_archive_shortcode( $atts ) {
     $attributes = shortcode_atts( vkpdc_get_shortcode_default_attributes(), $atts );
 
