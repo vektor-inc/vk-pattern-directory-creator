@@ -23,10 +23,8 @@ add_action( 'wp_enqueue_scripts', 'vkpdc_enqueue_styles' );
 function vkpdc_get_default_options() {
     return array(
         'numberposts'           => 6,
-        'order'                 => 'DESC',
-        'orderby'               => 'date',
-        'display_image'         => 'featured',
-        'thumbnail_size'        => 'large',
+        'order'                 =>  __( 'DESC', 'vk-pattern-directory-creator' ),
+        'orderby'               =>  __( 'date', 'vk-pattern-directory-creator' ),
         'display_author'        => 1,
         'display_date_publiched'=> 1,
         'display_date_modified' => 1,
@@ -36,8 +34,10 @@ function vkpdc_get_default_options() {
         'display_btn_view'      => 1,
         'display_btn_copy'      => 1,
         'display_btn_view_text' => __( 'Read More', 'vk-pattern-directory-creator' ),
-        'new_date'              => 7,
-        'new_text'              => 'NEW!!',
+        'display_image'         => __( 'featured', 'vk-pattern-directory-creator' ),
+        'thumbnail_size'        => __( 'large', 'vk-pattern-directory-creator' ),
+		'new_date'              => 7,
+        'new_text'              =>  __( 'NEW!!', 'vk-pattern-directory-creator' ),
         'colWidthMin'           => '300px',
         'colWidthMinTablet'     => '300px',
         'colWidthMinPC'         => '300px',
@@ -107,7 +107,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 
     // ショートコードを生成
     $generated_shortcode = sprintf(
-        '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_image="%s" thumbnail_size="%s" display_author="%d" display_date_publiched="%d" display_date_modified="%d" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+        '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_author="%d" display_date_publiched="%d" display_date_modified="%d" display_image="%s" thumbnail_size="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
         $options['numberposts'],
         esc_attr( $options['order'] ),
         esc_attr( $options['orderby'] ),
@@ -140,15 +140,12 @@ function vkpdc_render_settings_page_with_shortcode() {
         <form method="POST">
             <?php wp_nonce_field( 'vkpdc_save_settings', 'vkpdc_settings_nonce' ); ?>
             <table class="form-table">
-                <!-- Number of Posts -->
                 <tr>
                     <th><label for="numberposts"><?php esc_html_e( 'Number of Posts', 'vk-pattern-directory-creator' ); ?></label></th>
                     <td>
                         <input type="number" id="numberposts" name="numberposts" value="<?php echo esc_attr( $options['numberposts'] ); ?>" min="1" max="100">
                     </td>
                 </tr>
-
-                <!-- チェックボックス項目 -->
                 <?php foreach ( ['display_author', 'display_date_publiched', 'display_date_modified', 'display_new', 'display_taxonomies', 'pattern_id', 'display_btn_view', 'display_btn_copy'] as $key ) : ?>
                     <tr>
                         <th><label for="<?php echo esc_attr( $key ); ?>"><?php echo ucfirst( str_replace( '_', ' ', $key ) ); ?></label></th>
@@ -158,8 +155,27 @@ function vkpdc_render_settings_page_with_shortcode() {
                         </td>
                     </tr>
                 <?php endforeach; ?>
-
-                <!-- テキストオプション -->
+				<tr>
+					<th><label for="display_image"><?php esc_html_e( 'Display Image', 'vk-pattern-directory-creator' ); ?></label></th>
+					<td>
+						<select id="display_image" name="display_image">
+							<option value="none" <?php selected( $options['display_image'], 'none' ); ?>><?php esc_html_e( 'None', 'vk-pattern-directory-creator' ); ?></option>
+							<option value="featured" <?php selected( $options['display_image'], 'featured' ); ?>><?php esc_html_e( 'Featured Image', 'vk-pattern-directory-creator' ); ?></option>
+							<option value="iframe" <?php selected( $options['display_image'], 'iframe' ); ?>><?php esc_html_e( 'Iframe Only', 'vk-pattern-directory-creator' ); ?></option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th><label for="thumbnail_size"><?php esc_html_e( 'Thumbnail Size', 'vk-pattern-directory-creator' ); ?></label></th>
+					<td>
+						<select id="thumbnail_size" name="thumbnail_size">
+							<option value="thumbnail" <?php selected( $options['thumbnail_size'], 'thumbnail' ); ?>><?php esc_html_e( 'Thumbnail', 'vk-pattern-directory-creator' ); ?></option>
+							<option value="medium" <?php selected( $options['thumbnail_size'], 'medium' ); ?>><?php esc_html_e( 'Medium', 'vk-pattern-directory-creator' ); ?></option>
+							<option value="large" <?php selected( $options['thumbnail_size'], 'large' ); ?>><?php esc_html_e( 'Large', 'vk-pattern-directory-creator' ); ?></option>
+							<option value="full" <?php selected( $options['thumbnail_size'], 'full' ); ?>><?php esc_html_e( 'Full', 'vk-pattern-directory-creator' ); ?></option>
+						</select>
+					</td>
+				</tr>
                 <tr>
                     <th><label for="display_btn_view_text"><?php esc_html_e( 'View Button Text', 'vk-pattern-directory-creator' ); ?></label></th>
                     <td><input type="text" id="display_btn_view_text" name="display_btn_view_text" value="<?php echo esc_attr( $options['display_btn_view_text'] ); ?>"></td>
