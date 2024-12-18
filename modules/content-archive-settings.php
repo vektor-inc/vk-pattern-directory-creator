@@ -180,10 +180,37 @@ function vkpdc_render_settings_page_with_shortcode() {
                     <th><label for="display_btn_view_text"><?php esc_html_e( 'View Button Text', 'vk-pattern-directory-creator' ); ?></label></th>
                     <td><input type="text" id="display_btn_view_text" name="display_btn_view_text" value="<?php echo esc_attr( $options['display_btn_view_text'] ); ?>"></td>
                 </tr>
+				<tr>
+					<th><label for="new_date"><?php esc_html_e( 'New Post Duration', 'vk-pattern-directory-creator' ); ?></label></th>
+					<td>
+						<input type="number" id="new_date" name="new_date" value="<?php echo esc_attr( $options['new_date'] ); ?>" min="1" max="365">
+						<span><?php esc_html_e( 'days', 'vk-pattern-directory-creator' ); ?></span>
+					</td>
+				</tr>
                 <tr>
                     <th><label for="new_text"><?php esc_html_e( 'New Post Mark', 'vk-pattern-directory-creator' ); ?></label></th>
                     <td><input type="text" id="new_text" name="new_text" value="<?php echo esc_attr( $options['new_text'] ); ?>"></td>
                 </tr>
+				<tr>
+					<th><label for="colWidthMin"><?php esc_html_e( 'Minimum Column Width', 'vk-pattern-directory-creator' ); ?></label></th>
+					<td><input type="text" id="colWidthMin" name="colWidthMin" value="<?php echo esc_attr( $options['colWidthMin'] ); ?>"></td>
+				</tr>
+				<tr>
+					<th><label for="colWidthMinTablet"><?php esc_html_e( 'Minimum Column Width (Tablet)', 'vk-pattern-directory-creator' ); ?></label></th>
+					<td><input type="text" id="colWidthMinTablet" name="colWidthMinTablet" value="<?php echo esc_attr( $options['colWidthMinTablet'] ); ?>"></td>
+				</tr>
+				<tr>
+					<th><label for="colWidthMinPC"><?php esc_html_e( 'Minimum Column Width (PC)', 'vk-pattern-directory-creator' ); ?></label></th>
+					<td><input type="text" id="colWidthMinPC" name="colWidthMinPC" value="<?php echo esc_attr( $options['colWidthMinPC'] ); ?>"></td>
+				</tr>
+				<tr>
+					<th><label for="gap"><?php esc_html_e( 'Gap', 'vk-pattern-directory-creator' ); ?></label></th>
+					<td><input type="text" id="gap" name="gap" value="<?php echo esc_attr( $options['gap'] ); ?>"></td>
+				</tr>
+				<tr>
+					<th><label for="gapRow"><?php esc_html_e( 'Row Gap', 'vk-pattern-directory-creator' ); ?></label></th>
+					<td><input type="text" id="gapRow" name="gapRow" value="<?php echo esc_attr( $options['gapRow'] ); ?>"></td>
+				</tr>
             </table>
 			<?php submit_button(); ?>
 			<input type="submit" name="reset" class="button button-secondary" value="<?php esc_attr_e( 'Reset to Default', 'vk-pattern-directory-creator' ); ?>">
