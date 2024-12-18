@@ -13,12 +13,12 @@ function vkpdc_get_default_options() {
 		'numberposts'           => 6,
 		'order'                 =>  __( 'DESC', 'vk-pattern-directory-creator' ),
 		'orderby'               =>  __( 'date', 'vk-pattern-directory-creator' ),
-		'display_author'        => 1,
-		'display_date_publiched'=> 1,
-		'display_date_modified' => 1,
 		'display_new'           => 1,
 		'display_taxonomies'    => 1,
 		'pattern_id'            => 1,
+		'display_date_publiched'=> 1,
+		'display_date_modified' => 1,
+		'display_author'        => 1,
 		'display_btn_view'      => 1,
 		'display_btn_copy'      => 1,
 		'display_btn_view_text' => __( 'Read More', 'vk-pattern-directory-creator' ),
@@ -42,12 +42,12 @@ function vkpdc_save_settings() {
     $defaults = vkpdc_get_default_options();
 
     $checkbox_fields = [
-        'display_author',
-        'display_date_publiched',
-        'display_date_modified',
         'display_new',
         'display_taxonomies',
         'pattern_id',
+        'display_date_publiched',
+        'display_date_modified',
+        'display_author',
         'display_btn_view',
         'display_btn_copy',
     ];
@@ -91,18 +91,18 @@ function vkpdc_render_settings_page_with_shortcode() {
 
 	// ショートコードを生成
 	$generated_shortcode = sprintf(
-		'[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_author="%d" display_date_publiched="%d" display_date_modified="%d" display_image="%s" thumbnail_size="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+		'[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
 		intval( $options['numberposts'] ),
 		esc_attr( $options['order'] ),
 		esc_attr( $options['orderby'] ),
-		intval( $options['display_author'] ),
-		intval( $options['display_date_publiched'] ),
-		intval( $options['display_date_modified'] ),
-		esc_attr( $options['display_image'] ),
-		esc_attr( $options['thumbnail_size'] ),
 		intval( $options['display_new'] ),
 		intval( $options['display_taxonomies'] ),
 		intval( $options['pattern_id'] ),
+		intval( $options['display_date_publiched'] ),
+		intval( $options['display_date_modified'] ),
+		intval( $options['display_author'] ),
+		esc_attr( $options['display_image'] ),
+		esc_attr( $options['thumbnail_size'] ),
 		intval( $options['display_btn_view'] ),
 		intval( $options['display_btn_copy'] ),
 		esc_attr( $options['display_btn_view_text'] ),
@@ -154,7 +154,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 						</select>
 					</td>
 				</tr>
-				<?php foreach ( ['display_author', 'display_date_publiched', 'display_date_modified', 'display_new', 'display_taxonomies', 'pattern_id', 'display_btn_view', 'display_btn_copy'] as $key ) : ?>
+				<?php foreach ( ['display_new', 'display_taxonomies', 'pattern_id', 'display_date_publiched', 'display_date_modified', 'display_author', 'display_btn_view', 'display_btn_copy'] as $key ) : ?>
 					<tr>
 						<th><label for="<?php echo esc_attr( $key ); ?>"><?php echo ucfirst( str_replace( '_', ' ', $key ) ); ?></label></th>
 						<td>
@@ -168,8 +168,8 @@ function vkpdc_render_settings_page_with_shortcode() {
 					<td>
 						<select id="display_image" name="display_image">
 							<option value="none" <?php selected( $options['display_image'], 'none' ); ?>><?php esc_html_e( 'None', 'vk-pattern-directory-creator' ); ?></option>
-							<option value="featured" <?php selected( $options['display_image'], 'featured' ); ?>><?php esc_html_e( 'Featured Image', 'vk-pattern-directory-creator' ); ?></option>
-							<option value="iframe" <?php selected( $options['display_image'], 'iframe' ); ?>><?php esc_html_e( 'Iframe Only', 'vk-pattern-directory-creator' ); ?></option>
+							<option value="featured" <?php selected( $options['display_image'], 'featured' ); ?>><?php esc_html_e( 'Prioritize Featured Image', 'vk-pattern-directory-creator' ); ?></option>
+							<option value="iframe" <?php selected( $options['display_image'], 'iframe' ); ?>><?php esc_html_e( 'Iframe only', 'vk-pattern-directory-creator' ); ?></option>
 						</select>
 					</td>
 				</tr>
@@ -281,18 +281,18 @@ add_action( 'template_redirect', function () {
         <body>';
 
         echo do_shortcode( sprintf(
-            '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_author="%d" display_date_publiched="%d" display_date_modified="%d" display_image="%s" thumbnail_size="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+            '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
             $options['numberposts'],
             esc_attr( $options['order'] ),
             esc_attr( $options['orderby'] ),
-            intval( $options['display_author'] ),
-            intval( $options['display_date_publiched'] ),
-            intval( $options['display_date_modified'] ),
-			esc_attr( $options['display_image'] ),
-            esc_attr( $options['thumbnail_size'] ),
             intval( $options['display_new'] ),
             intval( $options['display_taxonomies'] ),
             intval( $options['pattern_id'] ),
+            intval( $options['display_date_publiched'] ),
+            intval( $options['display_date_modified'] ),
+            intval( $options['display_author'] ),
+			esc_attr( $options['display_image'] ),
+            esc_attr( $options['thumbnail_size'] ),
             intval( $options['display_btn_view'] ),
             intval( $options['display_btn_copy'] ),
             esc_attr( $options['display_btn_view_text'] ),
