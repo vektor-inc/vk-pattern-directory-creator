@@ -209,15 +209,15 @@ function vkpdc_render_settings_page_with_shortcode() {
             <div id="column-width-setting" class="tab-content" style="display:none;">
                 <table class="form-table">
                     <tr>
-                        <th><label for="colWidthMin"><?php esc_html_e( 'Minimum Column Width', 'vk-pattern-directory-creator' ); ?></label></th>
+                        <th><label for="colWidthMin"><?php esc_html_e( 'Column min width (Mobile)', 'vk-pattern-directory-creator' ); ?></label></th>
                         <td><input type="text" id="colWidthMin" name="colWidthMin" value="<?php echo esc_attr( $options['colWidthMin'] ); ?>"></td>
                     </tr>
                     <tr>
-                        <th><label for="colWidthMinTablet"><?php esc_html_e( 'Minimum Column Width (Tablet)', 'vk-pattern-directory-creator' ); ?></label></th>
+                        <th><label for="colWidthMinTablet"><?php esc_html_e( 'Column min width (Tablet)', 'vk-pattern-directory-creator' ); ?></label></th>
                         <td><input type="text" id="colWidthMinTablet" name="colWidthMinTablet" value="<?php echo esc_attr( $options['colWidthMinTablet'] ); ?>"></td>
                     </tr>
                     <tr>
-                        <th><label for="colWidthMinPC"><?php esc_html_e( 'Minimum Column Width (PC)', 'vk-pattern-directory-creator' ); ?></label></th>
+                        <th><label for="colWidthMinPC"><?php esc_html_e( 'Column min width (PC)', 'vk-pattern-directory-creator' ); ?></label></th>
                         <td><input type="text" id="colWidthMinPC" name="colWidthMinPC" value="<?php echo esc_attr( $options['colWidthMinPC'] ); ?>"></td>
                     </tr>
                     <tr>
