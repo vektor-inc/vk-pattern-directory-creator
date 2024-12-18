@@ -7,7 +7,6 @@ import {
 	SelectControl,
 	CheckboxControl,
 	RangeControl,
-	ColorPalette,
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
@@ -20,7 +19,6 @@ export default function PostListEdit( props ) {
 		numberPosts,
 		order,
 		orderby,
-		display_image, //eslint-disable-line camelcase
 		display_author, //eslint-disable-line camelcase
 		display_date_publiched, //eslint-disable-line camelcase
 		display_date_modified, //eslint-disable-line camelcase
@@ -30,24 +28,20 @@ export default function PostListEdit( props ) {
 		display_btn_view, //eslint-disable-line camelcase
 		display_btn_view_text, //eslint-disable-line camelcase
 		display_btn_copy, //eslint-disable-line camelcase
+		display_image, //eslint-disable-line camelcase
+		thumbnail_size, //eslint-disable-line camelcase
 		new_date, //eslint-disable-line camelcase
 		new_text, //eslint-disable-line camelcase
-		thumbnail_size, //eslint-disable-line camelcase
 		colWidthMin,
 		colWidthMinTablet,
 		colWidthMinPC,
 		gap,
 		gapRow,
-		postBackgroundColor,
-		postTextColor,
-		buttonBackgroundColor,
-		buttonTextColor,
 	} = attributes;
 
 	const blockProps = useBlockProps();
 
 	useEffect(() => {
-		if (display_image === undefined) setAttributes({ display_image: true });
 		if (display_new === undefined) setAttributes({ display_new: true });
 		if (display_taxonomies === undefined) setAttributes({ display_taxonomies: true });
 		if (pattern_id === undefined) setAttributes({ pattern_id: true });
@@ -56,14 +50,15 @@ export default function PostListEdit( props ) {
 		if (display_author === undefined) setAttributes({ display_author: true });
 		if (display_btn_view === undefined) setAttributes({ display_btn_view: true });
 		if (display_btn_copy === undefined) setAttributes({ display_btn_copy: true });
-        if (new_date === undefined || isNaN(new_date)) setAttributes({ new_date: 7 });
-        if (new_text === undefined) setAttributes({ new_text: 'NEW!!' });
+		if (display_image === undefined) setAttributes({ display_image: true });
+		if (!thumbnail_size) setAttributes({ thumbnail_size: 'full' });
+		if (new_date === undefined || isNaN(new_date)) setAttributes({ new_date: 7 });
+		if (new_text === undefined) setAttributes({ new_text: 'NEW!!' });
 		if (!colWidthMin) setAttributes({ colWidthMin: '300px' });
 		if (!colWidthMinTablet) setAttributes({ colWidthMinTablet: '300px' });
 		if (!colWidthMinPC) setAttributes({ colWidthMinPC: '300px' });
 		if (!gap) setAttributes({ gap: '1.5rem' });
 		if (!gapRow) setAttributes({ gapRow: '1.5rem' });
-		if (!thumbnail_size) setAttributes({ thumbnail_size: 'full' });
 
 	}, []);
 
