@@ -183,8 +183,9 @@ export default function PostListEdit( props ) {
 						label={__('Display Image Option', 'vk-pattern-directory-creator')}
 						value={display_image}
 						options={[
-							{ label: __('None', 'vk-pattern-directory-creator'), value: '' },							{ label: __('Use Featured Image', 'vk-pattern-directory-creator'), value: 'featured' },
-							{ label: __('Use iframe Only', 'vk-pattern-directory-creator'), value: 'iframe' },
+							{ label: __('None', 'vk-pattern-directory-creator'), value: '' },
+							{ label: __('Prioritize Featured Image', 'vk-pattern-directory-creator'), value: 'featured' },
+							{ label: __('Iframe Only', 'vk-pattern-directory-creator'), value: 'iframe' },
 						]}
 						onChange={(value) => setAttributes({ display_image: value })}
 						defaultValue="featured"
