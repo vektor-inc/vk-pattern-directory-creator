@@ -230,8 +230,19 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 }
 
 function vkpdc_get_patterns_archive_shortcode( $atts ) {
-    $attributes = shortcode_atts( vkpdc_get_shortcode_default_attributes(), $atts );
+    // ショートコードのデフォルト値
+    $default_attributes = vkpdc_get_shortcode_default_attributes();
 
+    // 管理画面の保存値を取得してデフォルト値に統合
+    foreach ( $default_attributes as $key => $default ) {
+        $option_value = get_option( 'vkpdc_' . $key, $default );
+        $default_attributes[ $key ] = $option_value;
+    }
+
+    // ショートコード引数を適用（引数が優先される）
+    $attributes = shortcode_atts( $default_attributes, $atts );
+
+    // WP_Query 引数を生成
     $query_args = array(
         'post_type'      => 'vk-patterns',
         'posts_per_page' => intval( $attributes['numberPosts'] ),
