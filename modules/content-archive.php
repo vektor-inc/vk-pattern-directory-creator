@@ -203,21 +203,11 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 	$query = ! empty( $query ) ? $query : $wp_query;
 	$theme = get_template();
 
-	// 動的スタイルを生成
-	$styles = sprintf(
-		'--col-width-min: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
-		esc_attr( $attributes['colWidthMin'] ),
-		esc_attr( $attributes['colWidthMinTablet'] ),
-		esc_attr( $attributes['colWidthMinPC'] ),
-		esc_attr( $attributes['gap'] ),
-		esc_attr( $attributes['gapRow'] )
-	);
-
 	$html = '';
 
 	
 	if ( $query->have_posts() ) {
-		$html .= '<div class="vkpdc_posts vkpdc_posts_theme--' . esc_attr( $theme ) . '" style="' . esc_attr( $styles ) . '">';
+		$html .= '<div class="vkpdc_posts vkpdc_posts_theme--' . esc_attr( $theme ) . '">';
 
 		while ( $query->have_posts() ) {
 			$query->the_post();
@@ -325,8 +315,18 @@ function vkpdc_get_shortcode_default_attributes() {
 function vkpdc_generate_archive_html( $query, $attributes ) {
     $html = '';
 
+    // 動的スタイルを生成
+    $styles = sprintf(
+        '--col-width-min: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
+        esc_attr( $attributes['colWidthMin'] ),
+        esc_attr( $attributes['colWidthMinTablet'] ),
+        esc_attr( $attributes['colWidthMinPC'] ),
+        esc_attr( $attributes['gap'] ),
+        esc_attr( $attributes['gapRow'] )
+    );
+
     if ( $query->have_posts() ) {
-        $html .= '<div class="vkpdc_posts">';
+        $html .= '<div class="vkpdc_posts" style="' . esc_attr( $styles ) . '">';
 
         while ( $query->have_posts() ) {
             $query->the_post();
