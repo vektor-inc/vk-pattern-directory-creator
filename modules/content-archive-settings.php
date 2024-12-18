@@ -10,7 +10,7 @@
  */
 function vkpdc_get_default_options() {
 	return array(
-		'numberposts'           => 6,
+		'numberPosts'           => 6,
 		'order'                 =>  __( 'DESC', 'vk-pattern-directory-creator' ),
 		'orderby'               =>  __( 'date', 'vk-pattern-directory-creator' ),
 		'display_new'           => 1,
@@ -92,8 +92,8 @@ function vkpdc_render_settings_page_with_shortcode() {
 
     // ショートコードを生成
     $generated_shortcode = sprintf(
-        '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
-        intval( $options['numberposts'] ),
+        '[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+        intval( $options['numberPosts'] ),
         esc_attr( $options['order'] ),
         esc_attr( $options['orderby'] ),
         intval( $options['display_new'] ),
@@ -133,9 +133,9 @@ function vkpdc_render_settings_page_with_shortcode() {
             <div id="display-conditions" class="tab-content">
                 <table class="form-table">
                     <tr>
-                        <th><label for="numberposts"><?php esc_html_e( 'Number of Posts', 'vk-pattern-directory-creator' ); ?></label></th>
+                        <th><label for="numberPosts"><?php esc_html_e( 'Number of Posts', 'vk-pattern-directory-creator' ); ?></label></th>
                         <td>
-                            <input type="number" id="numberposts" name="numberposts" value="<?php echo esc_attr( $options['numberposts'] ); ?>" min="1" max="100">
+                            <input type="number" id="numberPosts" name="numberPosts" value="<?php echo esc_attr( $options['numberPosts'] ); ?>" min="1" max="100">
                         </td>
                     </tr>
                     <tr>
@@ -321,8 +321,8 @@ function vkpdc_preview_output() {
         <body>';
 
         echo do_shortcode( sprintf(
-            '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
-            intval( $options['numberposts'] ),
+            '[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+            intval( $options['numberPosts'] ),
             esc_attr( $options['order'] ),
             esc_attr( $options['orderby'] ),
             intval( $options['display_new'] ),
@@ -372,8 +372,8 @@ function vkpdc_execute_shortcode_on_hook() {
 
     // ショートコードを生成
     echo do_shortcode( sprintf(
-        '[vkpdc_archive_loop numberposts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
-        intval( $options['numberposts'] ),
+        '[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+        intval( $options['numberPosts'] ),
         esc_attr( $options['order'] ),
         esc_attr( $options['orderby'] ),
         intval( $options['display_new'] ),
