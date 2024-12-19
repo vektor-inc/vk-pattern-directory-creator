@@ -153,11 +153,11 @@ function vkpdc_render_settings_page_with_shortcode() {
 				<a href="#archive-settings" class="nav-tab"><?php esc_html_e( 'Archive Settings (Option)', 'vk-pattern-directory-creator' ); ?></a>
 			</h2>
 			<div id="pattern-list-settings" class="tab-content" style="display: block;">
-			<h2 class="nav-tab-wrapper">
-				<a href="#display-conditions" class="nav-tab nav-tab-active"><?php esc_html_e( 'Display Conditions', 'vk-pattern-directory-creator' ); ?></a>
-				<a href="#display-items" class="nav-tab"><?php esc_html_e( 'Display Items', 'vk-pattern-directory-creator' ); ?></a>
-				<a href="#column-width-setting" class="nav-tab"><?php esc_html_e( 'Column Width Setting', 'vk-pattern-directory-creator' ); ?></a>
-			</h2>
+				<h2 class="nav-tab-wrapper">
+					<a href="#display-conditions" class="nav-tab nav-tab-active"><?php esc_html_e( 'Display Conditions', 'vk-pattern-directory-creator' ); ?></a>
+					<a href="#display-items" class="nav-tab"><?php esc_html_e( 'Display Items', 'vk-pattern-directory-creator' ); ?></a>
+					<a href="#column-width-setting" class="nav-tab"><?php esc_html_e( 'Column Width Setting', 'vk-pattern-directory-creator' ); ?></a>
+				</h2>
 				<div id="display-conditions" class="nested-tab-content" style="display: block;">
 					<table class="form-table">
 						<tr>
@@ -265,7 +265,6 @@ function vkpdc_render_settings_page_with_shortcode() {
 						<?php esc_html_e( 'Generate Shortcode', 'vk-pattern-directory-creator' ); ?>
 					</button>
 				</div>
-			</div>
 			</div>
 			<div id="archive-settings" class="tab-content" style="display:none;">
 				<table class="form-table">
