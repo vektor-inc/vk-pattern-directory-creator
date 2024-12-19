@@ -33,8 +33,17 @@ function vkpdc_get_default_options() {
 		'colWidthMinPC'         => '300px',
 		'gap'                   => '1.5rem',
 		'gapRow'                => '1.5rem',
-		'hook_name'             => '',
+		'hook_name'             => vkpdc_get_default_hook_name(),
 	);
+}
+
+// テーマが lightning の場合のデフォルトフック名を取得
+function vkpdc_get_default_hook_name() {
+    // 現在のテーマが lightning の場合、デフォルトフック名を設定
+    if ( wp_get_theme()->get( 'TextDomain' ) === 'lightning' ) {
+        return 'lightning_extend_loop';
+    }
+    return ''; // その他のテーマの場合は空
 }
 
 // デフォルトオプションを初期化
@@ -251,11 +260,11 @@ function vkpdc_render_settings_page_with_shortcode() {
 						</tr>
 					</table>
 				</div>
-				<div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
-				<button type="button" id="vkpdc_generate_shortcode" class="button button-secondary">
-					<?php esc_html_e( 'Generate Shortcode', 'vk-pattern-directory-creator' ); ?>
-				</button>
-				<input type="submit" name="reset" class="button button-secondary" value="<?php esc_attr_e( 'Reset to Default', 'vk-pattern-directory-creator' ); ?>">
+				<div style="margin: 1.5rem auto;">
+					<button type="button" id="vkpdc_generate_shortcode" class="button button-secondary">
+						<?php esc_html_e( 'Generate Shortcode', 'vk-pattern-directory-creator' ); ?>
+					</button>
+				</div>
 			</div>
 			</div>
 			<div id="archive-settings" class="tab-content" style="display:none;">
@@ -267,10 +276,17 @@ function vkpdc_render_settings_page_with_shortcode() {
 							<p class="description"><?php _e( 'Ex) lightning_extend_loop', 'vk-pattern-directory-creator' ); ?></p>
 						</td>
 					</tr>
+					<tr>
+						<th><label for="hook_name"><?php esc_html_e( 'Archive Preview', 'vk-pattern-directory-creator' ); ?></label></th>
+						<td>
+							<a href="/pattern" target="_blank"><?php _e( 'Click here to preview the archive with the current settings.', 'vk-pattern-directory-creator' ); ?></a>
+						</td>
+					</tr>
 				</table>
 			</div>
-			<div style="margin: 1.5rem auto;">
+			<div style="display: flex; gap: 1rem; align-items: center; margin: 1.5rem auto 2.6rem;">
 				<?php submit_button( __( 'Save Settings', 'vk-pattern-directory-creator' ), 'primary', '', false ); ?>
+				<input type="submit" name="reset" class="button button-secondary" value="<?php esc_attr_e( 'Reset to Default', 'vk-pattern-directory-creator' ); ?>">
 			</div>
 		</form>
 		<script>
