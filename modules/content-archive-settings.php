@@ -23,6 +23,7 @@ function vkpdc_get_default_options() {
 		'display_author'        => 1,
 		'display_btn_view'      => 1,
 		'display_btn_copy'      => 1,
+		'display_paged'         => 1,
 		'display_btn_view_text' => __( 'Read More', 'vk-pattern-directory-creator' ),
 		'display_image'         => 'featured',
 		'thumbnail_size'        => 'full',
@@ -73,6 +74,7 @@ function vkpdc_save_settings() {
 		'display_author',
 		'display_btn_view',
 		'display_btn_copy',
+		'display_paged',
 	];
 
 	if ( isset( $_POST['reset'] ) ) {
@@ -115,7 +117,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 
 	// ショートコードを生成
 	$generated_shortcode = sprintf(
-		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
+		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_paged="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
 		intval( $options['numberPosts'] ),
 		esc_attr( $options['order'] ),
 		esc_attr( $options['orderby'] ),
@@ -129,6 +131,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 		esc_attr( $options['thumbnail_size'] ),
 		intval( $options['display_btn_view'] ),
 		intval( $options['display_btn_copy'] ),
+		intval( $options['display_paged'] ),
 		esc_attr( $options['display_btn_view_text'] ),
 		intval( $options['new_date'] ),
 		esc_attr( $options['new_text'] ),
@@ -189,7 +192,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 				</div>
 				<div id="display-items" class="nested-tab-content" style="display: none;">
 					<table class="form-table">
-						<?php foreach ( ['display_new', 'display_taxonomies', 'pattern_id', 'display_date_publiched', 'display_date_modified', 'display_author', 'display_btn_view', 'display_btn_copy'] as $key ) : ?>
+						<?php foreach ( ['display_new', 'display_taxonomies', 'pattern_id', 'display_date_publiched', 'display_date_modified', 'display_author', 'display_btn_view', 'display_btn_copy', 'display_paged'] as $key ) : ?>
 							<tr>
 								<th><label for="<?php echo esc_attr( $key ); ?>"><?php echo ucfirst( str_replace( '_', ' ', $key ) ); ?></label></th>
 								<td>
@@ -417,7 +420,7 @@ add_action( 'init', 'vkpdc_register_shortcode_on_hook' );
 function vkpdc_execute_shortcode_on_hook() {
 	$options = vkpdc_get_default_options();
 	$shortcode = sprintf(
-		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
+		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_paged="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
 		intval( $options['numberPosts'] ),
 		esc_attr( $options['order'] ),
 		esc_attr( $options['orderby'] ),
@@ -431,6 +434,7 @@ function vkpdc_execute_shortcode_on_hook() {
 		esc_attr( $options['thumbnail_size'] ),
 		intval( $options['display_btn_view'] ),
 		intval( $options['display_btn_copy'] ),
+		intval( $options['display_paged'] ),
 		esc_attr( $options['display_btn_view_text'] ),
 		intval( $options['new_date'] ),
 		esc_attr( $options['new_text'] ),
@@ -467,7 +471,7 @@ function vkpdc_preview_output() {
 		<body>';
 
 		echo do_shortcode( sprintf(
-			'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
+			'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_paged="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
 			intval( $options['numberPosts'] ),
 			esc_attr( $options['order'] ),
 			esc_attr( $options['orderby'] ),
@@ -481,6 +485,7 @@ function vkpdc_preview_output() {
 			esc_attr( $options['thumbnail_size'] ),
 			intval( $options['display_btn_view'] ),
 			intval( $options['display_btn_copy'] ),
+			intval( $options['display_paged'] ),
 			esc_attr( $options['display_btn_view_text'] ),
 			intval( $options['new_date'] ),
 			esc_attr( $options['new_text'] ),
