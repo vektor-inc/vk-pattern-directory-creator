@@ -109,7 +109,7 @@ function vkpdc_add_pattern_list_block() {
 					'type'    => 'string',
 					'default' => 'Read More',
 				),
-				'colWidthMin' => array(
+				'colWidthMinMobile' => array(
 					'type'    => 'string',
 					'default' => '300px',
 				),
