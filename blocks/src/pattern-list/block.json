@@ -70,7 +70,7 @@
 			"type": "string",
 			"default": "Read More"
 		},
-		"colWidthMin": {
+		"colWidthMinMobile": {
 			"type": "string",
 			"default": "300px"
 		},
