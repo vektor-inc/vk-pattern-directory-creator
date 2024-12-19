@@ -28,7 +28,7 @@ function vkpdc_get_default_options() {
 		'thumbnail_size'        => 'full',
 		'new_date'              => 7,
 		'new_text'              =>  __( 'NEW!!', 'vk-pattern-directory-creator' ),
-		'colWidthMin'           => '300px',
+		'colWidthMinMobile'           => '300px',
 		'colWidthMinTablet'     => '300px',
 		'colWidthMinPC'         => '300px',
 		'gap'                   => '1.5rem',
@@ -115,7 +115,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 
 	// ショートコードを生成
 	$generated_shortcode = sprintf(
-		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
 		intval( $options['numberPosts'] ),
 		esc_attr( $options['order'] ),
 		esc_attr( $options['orderby'] ),
@@ -132,7 +132,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 		esc_attr( $options['display_btn_view_text'] ),
 		intval( $options['new_date'] ),
 		esc_attr( $options['new_text'] ),
-		esc_attr( $options['colWidthMin'] ),
+		esc_attr( $options['colWidthMinMobile'] ),
 		esc_attr( $options['colWidthMinTablet'] ),
 		esc_attr( $options['colWidthMinPC'] ),
 		esc_attr( $options['gap'] ),
@@ -239,8 +239,8 @@ function vkpdc_render_settings_page_with_shortcode() {
 				<div id="column-width-setting" class="nested-tab-content" style="display:none;">
 					<table class="form-table">
 						<tr>
-							<th><label for="colWidthMin"><?php esc_html_e( 'Column min width (Mobile)', 'vk-pattern-directory-creator' ); ?></label></th>
-							<td><input type="text" id="colWidthMin" name="colWidthMin" value="<?php echo esc_attr( $options['colWidthMin'] ); ?>"></td>
+							<th><label for="colWidthMinMobile"><?php esc_html_e( 'Column min width (Mobile)', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td><input type="text" id="colWidthMinMobile" name="colWidthMinMobile" value="<?php echo esc_attr( $options['colWidthMinMobile'] ); ?>"></td>
 						</tr>
 						<tr>
 							<th><label for="colWidthMinTablet"><?php esc_html_e( 'Column min width (Tablet)', 'vk-pattern-directory-creator' ); ?></label></th>
@@ -417,7 +417,7 @@ add_action( 'init', 'vkpdc_register_shortcode_on_hook' );
 function vkpdc_execute_shortcode_on_hook() {
 	$options = vkpdc_get_default_options();
 	$shortcode = sprintf(
-		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
 		intval( $options['numberPosts'] ),
 		esc_attr( $options['order'] ),
 		esc_attr( $options['orderby'] ),
@@ -434,7 +434,7 @@ function vkpdc_execute_shortcode_on_hook() {
 		esc_attr( $options['display_btn_view_text'] ),
 		intval( $options['new_date'] ),
 		esc_attr( $options['new_text'] ),
-		esc_attr( $options['colWidthMin'] ),
+		esc_attr( $options['colWidthMinMobile'] ),
 		esc_attr( $options['colWidthMinTablet'] ),
 		esc_attr( $options['colWidthMinPC'] ),
 		esc_attr( $options['gap'] ),
@@ -467,7 +467,7 @@ function vkpdc_preview_output() {
 		<body>';
 
 		echo do_shortcode( sprintf(
-			'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMin="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+			'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
 			intval( $options['numberPosts'] ),
 			esc_attr( $options['order'] ),
 			esc_attr( $options['orderby'] ),
@@ -484,7 +484,7 @@ function vkpdc_preview_output() {
 			esc_attr( $options['display_btn_view_text'] ),
 			intval( $options['new_date'] ),
 			esc_attr( $options['new_text'] ),
-			esc_attr( $options['colWidthMin'] ),
+			esc_attr( $options['colWidthMinMobile'] ),
 			esc_attr( $options['colWidthMinTablet'] ),
 			esc_attr( $options['colWidthMinPC'] ),
 			esc_attr( $options['gap'] ),
