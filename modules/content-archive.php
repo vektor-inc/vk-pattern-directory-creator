@@ -328,7 +328,7 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
 
     // 動的スタイルを生成
     $styles = sprintf(
-        '--col-width-min: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
+        '--col-width-min-mobile: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
         esc_attr( $attributes['colWidthMinMobile'] ),
         esc_attr( $attributes['colWidthMinTablet'] ),
         esc_attr( $attributes['colWidthMinPC'] ),
