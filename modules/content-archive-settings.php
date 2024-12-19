@@ -132,119 +132,124 @@ function vkpdc_render_settings_page_with_shortcode() {
 
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Shortcode and Archive Setting', 'vk-pattern-directory-creator' ); ?></h1>
+		<h1><?php esc_html_e( 'Archive and Shortcode Setting', 'vk-pattern-directory-creator' ); ?></h1>
 		<?php if ( $message ) : ?>
 			<div class="updated"><p><?php echo esc_html( $message ); ?></p></div>
 		<?php endif; ?>
 		<form method="POST">
 			<?php wp_nonce_field( 'vkpdc_save_settings', 'vkpdc_settings_nonce' ); ?>
 			<h2 class="nav-tab-wrapper">
-				<a href="display-conditions" class="nav-tab nav-tab-active"><?php esc_html_e( 'Display conditions', 'vk-pattern-directory-creator' ); ?></a>
-				<a href="#display-items" class="nav-tab"><?php esc_html_e( 'Display Items', 'vk-pattern-directory-creator' ); ?></a>
-				<a href="#column-width-setting" class="nav-tab"><?php esc_html_e( 'Column Width Setting', 'vk-pattern-directory-creator' ); ?></a>
+				<a href="#pattern-list-settings" class="nav-tab nav-tab-active"><?php esc_html_e( 'Pattern List Settings', 'vk-pattern-directory-creator' ); ?></a>
 				<a href="#advanced-settings" class="nav-tab"><?php esc_html_e( 'Advanced Settings', 'vk-pattern-directory-creator' ); ?></a>
 			</h2>
-			<div id="display-conditions" class="tab-content">
-				<table class="form-table">
-					<tr>
-						<th><label for="numberPosts"><?php esc_html_e( 'Number of Posts', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td>
-							<input type="number" id="numberPosts" name="numberPosts" value="<?php echo esc_attr( $options['numberPosts'] ); ?>" min="1" max="100">
-						</td>
-					</tr>
-					<tr>
-						<th><label for="order"><?php esc_html_e( 'Order', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td>
-							<select id="order" name="order">
-								<option value="ASC" <?php selected( $options['order'], 'ASC' ); ?>><?php esc_html_e( 'ASC', 'vk-pattern-directory-creator' ); ?></option>
-								<option value="DESC" <?php selected( $options['order'], 'DESC' ); ?>><?php esc_html_e( 'DESC', 'vk-pattern-directory-creator' ); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th><label for="orderby"><?php esc_html_e( 'Orderby', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td>
-							<select id="orderby" name="orderby">
-								<option value="date" <?php selected( $options['orderby'], 'date' ); ?>><?php esc_html_e( 'Date', 'vk-pattern-directory-creator' ); ?></option>
-								<option value="title" <?php selected( $options['orderby'], 'title' ); ?>><?php esc_html_e( 'Title', 'vk-pattern-directory-creator' ); ?></option>
-								<option value="rand" <?php selected( $options['orderby'], 'rand' ); ?>><?php esc_html_e( 'Random', 'vk-pattern-directory-creator' ); ?></option>
-							</select>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<div id="display-items" class="tab-content" style="display:none;">
-				<table class="form-table">
-					<?php foreach ( ['display_new', 'display_taxonomies', 'pattern_id', 'display_date_publiched', 'display_date_modified', 'display_author', 'display_btn_view', 'display_btn_copy'] as $key ) : ?>
+			<div id="pattern-list-settings" class="tab-content" style="display: block;">
+			<h2 class="nav-tab-wrapper">
+				<a href="#display-conditions" class="nav-tab nav-tab-active"><?php esc_html_e( 'Display Conditions', 'vk-pattern-directory-creator' ); ?></a>
+				<a href="#display-items" class="nav-tab"><?php esc_html_e( 'Display Items', 'vk-pattern-directory-creator' ); ?></a>
+				<a href="#column-width-setting" class="nav-tab"><?php esc_html_e( 'Column Width Setting', 'vk-pattern-directory-creator' ); ?></a>
+			</h2>
+				<div id="display-conditions" class="nested-tab-content" style="display: block;">
+					<table class="form-table">
 						<tr>
-							<th><label for="<?php echo esc_attr( $key ); ?>"><?php echo ucfirst( str_replace( '_', ' ', $key ) ); ?></label></th>
+							<th><label for="numberPosts"><?php esc_html_e( 'Number of Posts', 'vk-pattern-directory-creator' ); ?></label></th>
 							<td>
-								<input type="checkbox" id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" <?php checked( $options[ $key ], 1 ); ?>>
-								<label><?php esc_html_e( 'Enable', 'vk-pattern-directory-creator' ); ?></label>
+								<input type="number" id="numberPosts" name="numberPosts" value="<?php echo esc_attr( $options['numberPosts'] ); ?>" min="1" max="100">
 							</td>
 						</tr>
-					<?php endforeach; ?>
-					<tr>
-						<th><label for="display_image"><?php esc_html_e( 'Display Image', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td>
-							<select id="display_image" name="display_image">
-								<option value="none" <?php selected( $options['display_image'], 'none' ); ?>><?php esc_html_e( 'None', 'vk-pattern-directory-creator' ); ?></option>
-								<option value="featured" <?php selected( $options['display_image'], 'featured' ); ?>><?php esc_html_e( 'Prioritize Featured Image', 'vk-pattern-directory-creator' ); ?></option>
-								<option value="iframe" <?php selected( $options['display_image'], 'iframe' ); ?>><?php esc_html_e( 'Iframe only', 'vk-pattern-directory-creator' ); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th><label for="thumbnail_size"><?php esc_html_e( 'Thumbnail Size', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td>
-							<select id="thumbnail_size" name="thumbnail_size">
-								<option value="thumbnail" <?php selected( $options['thumbnail_size'], 'thumbnail' ); ?>><?php esc_html_e( 'Thumbnail', 'vk-pattern-directory-creator' ); ?></option>
-								<option value="medium" <?php selected( $options['thumbnail_size'], 'medium' ); ?>><?php esc_html_e( 'Medium', 'vk-pattern-directory-creator' ); ?></option>
-								<option value="large" <?php selected( $options['thumbnail_size'], 'large' ); ?>><?php esc_html_e( 'Large', 'vk-pattern-directory-creator' ); ?></option>
-								<option value="full" <?php selected( $options['thumbnail_size'], 'full' ); ?>><?php esc_html_e( 'Full', 'vk-pattern-directory-creator' ); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th><label for="display_btn_view_text"><?php esc_html_e( 'View Button Text', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td><input type="text" id="display_btn_view_text" name="display_btn_view_text" value="<?php echo esc_attr( $options['display_btn_view_text'] ); ?>"></td>
-					</tr>
-					<tr>
-						<th><label for="new_date"><?php esc_html_e( 'New Post Duration', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td>
-							<input type="number" id="new_date" name="new_date" value="<?php echo esc_attr( $options['new_date'] ); ?>" min="1" max="365">
-							<span><?php esc_html_e( 'days', 'vk-pattern-directory-creator' ); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<th><label for="new_text"><?php esc_html_e( 'New Post Mark', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td><input type="text" id="new_text" name="new_text" value="<?php echo esc_attr( $options['new_text'] ); ?>"></td>
-					</tr>
-				</table>
-			</div>
-			<div id="column-width-setting" class="tab-content" style="display:none;">
-				<table class="form-table">
-					<tr>
-						<th><label for="colWidthMin"><?php esc_html_e( 'Column min width (Mobile)', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td><input type="text" id="colWidthMin" name="colWidthMin" value="<?php echo esc_attr( $options['colWidthMin'] ); ?>"></td>
-					</tr>
-					<tr>
-						<th><label for="colWidthMinTablet"><?php esc_html_e( 'Column min width (Tablet)', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td><input type="text" id="colWidthMinTablet" name="colWidthMinTablet" value="<?php echo esc_attr( $options['colWidthMinTablet'] ); ?>"></td>
-					</tr>
-					<tr>
-						<th><label for="colWidthMinPC"><?php esc_html_e( 'Column min width (PC)', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td><input type="text" id="colWidthMinPC" name="colWidthMinPC" value="<?php echo esc_attr( $options['colWidthMinPC'] ); ?>"></td>
-					</tr>
-					<tr>
-						<th><label for="gap"><?php esc_html_e( 'Gap', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td><input type="text" id="gap" name="gap" value="<?php echo esc_attr( $options['gap'] ); ?>"></td>
-					</tr>
-					<tr>
-						<th><label for="gapRow"><?php esc_html_e( 'Row Gap', 'vk-pattern-directory-creator' ); ?></label></th>
-						<td><input type="text" id="gapRow" name="gapRow" value="<?php echo esc_attr( $options['gapRow'] ); ?>"></td>
-					</tr>
-				</table>
+						<tr>
+							<th><label for="order"><?php esc_html_e( 'Order', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td>
+								<select id="order" name="order">
+									<option value="ASC" <?php selected( $options['order'], 'ASC' ); ?>><?php esc_html_e( 'ASC', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="DESC" <?php selected( $options['order'], 'DESC' ); ?>><?php esc_html_e( 'DESC', 'vk-pattern-directory-creator' ); ?></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="orderby"><?php esc_html_e( 'Orderby', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td>
+								<select id="orderby" name="orderby">
+									<option value="date" <?php selected( $options['orderby'], 'date' ); ?>><?php esc_html_e( 'Date', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="title" <?php selected( $options['orderby'], 'title' ); ?>><?php esc_html_e( 'Title', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="rand" <?php selected( $options['orderby'], 'rand' ); ?>><?php esc_html_e( 'Random', 'vk-pattern-directory-creator' ); ?></option>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="display-items" class="nested-tab-content" style="display: none;">
+					<table class="form-table">
+						<?php foreach ( ['display_new', 'display_taxonomies', 'pattern_id', 'display_date_publiched', 'display_date_modified', 'display_author', 'display_btn_view', 'display_btn_copy'] as $key ) : ?>
+							<tr>
+								<th><label for="<?php echo esc_attr( $key ); ?>"><?php echo ucfirst( str_replace( '_', ' ', $key ) ); ?></label></th>
+								<td>
+									<input type="checkbox" id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" <?php checked( $options[ $key ], 1 ); ?>>
+									<label><?php esc_html_e( 'Enable', 'vk-pattern-directory-creator' ); ?></label>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+						<tr>
+							<th><label for="display_image"><?php esc_html_e( 'Display Image', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td>
+								<select id="display_image" name="display_image">
+									<option value="none" <?php selected( $options['display_image'], 'none' ); ?>><?php esc_html_e( 'None', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="featured" <?php selected( $options['display_image'], 'featured' ); ?>><?php esc_html_e( 'Prioritize Featured Image', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="iframe" <?php selected( $options['display_image'], 'iframe' ); ?>><?php esc_html_e( 'Iframe only', 'vk-pattern-directory-creator' ); ?></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="thumbnail_size"><?php esc_html_e( 'Thumbnail Size', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td>
+								<select id="thumbnail_size" name="thumbnail_size">
+									<option value="thumbnail" <?php selected( $options['thumbnail_size'], 'thumbnail' ); ?>><?php esc_html_e( 'Thumbnail', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="medium" <?php selected( $options['thumbnail_size'], 'medium' ); ?>><?php esc_html_e( 'Medium', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="large" <?php selected( $options['thumbnail_size'], 'large' ); ?>><?php esc_html_e( 'Large', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="full" <?php selected( $options['thumbnail_size'], 'full' ); ?>><?php esc_html_e( 'Full', 'vk-pattern-directory-creator' ); ?></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="display_btn_view_text"><?php esc_html_e( 'View Button Text', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td><input type="text" id="display_btn_view_text" name="display_btn_view_text" value="<?php echo esc_attr( $options['display_btn_view_text'] ); ?>"></td>
+						</tr>
+						<tr>
+							<th><label for="new_date"><?php esc_html_e( 'New Post Duration', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td>
+								<input type="number" id="new_date" name="new_date" value="<?php echo esc_attr( $options['new_date'] ); ?>" min="1" max="365">
+								<span><?php esc_html_e( 'days', 'vk-pattern-directory-creator' ); ?></span>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="new_text"><?php esc_html_e( 'New Post Mark', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td><input type="text" id="new_text" name="new_text" value="<?php echo esc_attr( $options['new_text'] ); ?>"></td>
+						</tr>
+					</table>
+				</div>
+				<div id="column-width-setting" class="nested-tab-content" style="display:none;">
+					<table class="form-table">
+						<tr>
+							<th><label for="colWidthMin"><?php esc_html_e( 'Column min width (Mobile)', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td><input type="text" id="colWidthMin" name="colWidthMin" value="<?php echo esc_attr( $options['colWidthMin'] ); ?>"></td>
+						</tr>
+						<tr>
+							<th><label for="colWidthMinTablet"><?php esc_html_e( 'Column min width (Tablet)', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td><input type="text" id="colWidthMinTablet" name="colWidthMinTablet" value="<?php echo esc_attr( $options['colWidthMinTablet'] ); ?>"></td>
+						</tr>
+						<tr>
+							<th><label for="colWidthMinPC"><?php esc_html_e( 'Column min width (PC)', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td><input type="text" id="colWidthMinPC" name="colWidthMinPC" value="<?php echo esc_attr( $options['colWidthMinPC'] ); ?>"></td>
+						</tr>
+						<tr>
+							<th><label for="gap"><?php esc_html_e( 'Gap', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td><input type="text" id="gap" name="gap" value="<?php echo esc_attr( $options['gap'] ); ?>"></td>
+						</tr>
+						<tr>
+							<th><label for="gapRow"><?php esc_html_e( 'Row Gap', 'vk-pattern-directory-creator' ); ?></label></th>
+							<td><input type="text" id="gapRow" name="gapRow" value="<?php echo esc_attr( $options['gapRow'] ); ?>"></td>
+						</tr>
+					</table>
+				</div>
 			</div>
 			<div id="advanced-settings" class="tab-content" style="display:none;">
 				<table class="form-table">
@@ -257,56 +262,102 @@ function vkpdc_render_settings_page_with_shortcode() {
 					</tr>
 				</table>
 			</div>
-			<?php submit_button(); ?>
+
+			<div style="margin-bottom: 20px;">
+				<button type="button" id="vkpdc_generate_shortcode" class="button button-secondary">
+					<?php esc_html_e( 'Generate Shortcode', 'vk-pattern-directory-creator' ); ?>
+				</button>
+			</div>
+			<?php submit_button( __( 'Save Settings for Archive', 'vk-pattern-directory-creator' ) ); ?>
 			<input type="submit" name="reset" class="button button-secondary" value="<?php esc_attr_e( 'Reset to Default', 'vk-pattern-directory-creator' ); ?>">
 		</form>
+		<script>
+			// タブ切り替え
+			document.addEventListener('DOMContentLoaded', function () {
+				// 大カテゴリのタブ切り替え
+				const mainTabs = document.querySelectorAll('.nav-tab-wrapper > .nav-tab');
+				const mainContents = document.querySelectorAll('.tab-content');
+
+				mainTabs.forEach(tab => {
+					tab.addEventListener('click', function (e) {
+						e.preventDefault();
+
+						// 大カテゴリのタブ切り替え
+						mainTabs.forEach(t => t.classList.remove('nav-tab-active'));
+						tab.classList.add('nav-tab-active');
+
+						const target = tab.getAttribute('href').substring(1); // #を除外
+						mainContents.forEach(content => {
+							content.style.display = content.id === target ? 'block' : 'none';
+						});
+					});
+				});
+
+				// ネストされたタブの切り替え
+				const nestedTabsWrapper = document.querySelector('#pattern-list-settings .nav-tab-wrapper');
+				const nestedTabs = nestedTabsWrapper.querySelectorAll('.nav-tab');
+				const nestedContents = document.querySelectorAll('#pattern-list-settings .nested-tab-content');
+
+				nestedTabs.forEach(tab => {
+					tab.addEventListener('click', function (e) {
+						e.preventDefault();
+
+						// ネストされたタブの切り替え
+						nestedTabs.forEach(t => t.classList.remove('nav-tab-active'));
+						tab.classList.add('nav-tab-active');
+
+						// 対応するコンテンツの切り替え
+						const target = tab.getAttribute('href').substring(1); // #を除外
+						nestedContents.forEach(content => {
+							content.style.display = content.id === target ? 'block' : 'none';
+						});
+
+						// 親の`pattern-list-settings`は表示を維持
+						document.getElementById('pattern-list-settings').style.display = 'block';
+					});
+				});
+
+				// 初期表示設定
+				mainTabs[0]?.classList.add('nav-tab-active'); // 大カテゴリの最初のタブをアクティブ化
+				mainContents.forEach((content, index) => {
+					content.style.display = index === 0 ? 'block' : 'none'; // 最初のコンテンツだけ表示
+				});
+
+				nestedTabs[0]?.classList.add('nav-tab-active'); // ネストされたタブの最初のタブをアクティブ化
+				nestedContents.forEach((content, index) => {
+					content.style.display = index === 0 ? 'block' : 'none'; // 最初のネストされたコンテンツだけ表示
+				});
+			});
+
+			// ショートコード生成
+			document.addEventListener('DOMContentLoaded', function () {
+				const generateButton = document.getElementById('vkpdc_generate_shortcode');
+				const shortcodeTextarea = document.createElement('textarea');
+
+				generateButton.addEventListener('click', function () {
+					const shortcode = '<?php echo esc_js( $generated_shortcode ); ?>';
+
+					// テキストエリアに表示して選択
+					shortcodeTextarea.value = shortcode;
+					shortcodeTextarea.style.width = '100%';
+					shortcodeTextarea.style.height = '100px';
+					document.body.appendChild(shortcodeTextarea);
+					shortcodeTextarea.select();
+
+					// コピー実行
+					document.execCommand('copy');
+					alert('<?php esc_html_e( 'Shortcode copied to clipboard!', 'vk-pattern-directory-creator' ); ?>');
+
+					// 一時的なテキストエリアを削除
+					document.body.removeChild(shortcodeTextarea);
+				});
+			});
+		</script>
 
 		<div id="vkpdc-preview-container" style="border: 1px solid #ddd; padding: 10px; margin-top: 20px;">
 			<iframe id="vkpdc-preview-iframe" style="width: 100%; height: 600px;" src="<?php echo esc_url( site_url() . '/?vkpdc_preview=true&rand=' . rand() ); ?>"></iframe>
 		</div>
 
-		<h2><?php esc_html_e( 'Generated Shortcode', 'vk-pattern-directory-creator' ); ?></h2>
-		<div style="display: flex; align-items: center;">
-			<textarea id="vkpdc_shortcode" readonly rows="3" style="width: 100%; margin-right: 10px;"><?php echo esc_html( $generated_shortcode ); ?></textarea>
-			<button type="button" id="vkpdc_copy_shortcode" class="button button-primary">
-				<?php esc_html_e( 'Copy Shortcode', 'vk-pattern-directory-creator' ); ?>
-			</button>
-		</div>
-		<p id="vkpdc_copy_message" style="display:none; color: green; margin-top: 5px;">
-			<?php esc_html_e( 'Shortcode copied to clipboard!', 'vk-pattern-directory-creator' ); ?>
-		</p>
-
-		<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			const copyButton = document.getElementById('vkpdc_copy_shortcode');
-			const shortcodeField = document.getElementById('vkpdc_shortcode');
-			const copyMessage = document.getElementById('vkpdc_copy_message');
-
-			copyButton.addEventListener('click', function () {
-				shortcodeField.select();
-				document.execCommand('copy');
-				copyMessage.style.display = 'block';
-				setTimeout(() => {
-					copyMessage.style.display = 'none';
-				}, 2000);
-			});
-
-			const tabs = document.querySelectorAll('.nav-tab');
-			const tabContents = document.querySelectorAll('.tab-content');
-
-			tabs.forEach(tab => {
-				tab.addEventListener('click', function (e) {
-					e.preventDefault();
-					tabs.forEach(t => t.classList.remove('nav-tab-active'));
-					tab.classList.add('nav-tab-active');
-					const target = tab.getAttribute('href').substring(1);
-					tabContents.forEach(tc => {
-						tc.style.display = tc.id === target ? 'block' : 'none';
-					});
-				});
-			});
-		});
-		</script>
 	</div>
 	<?php
 }
@@ -435,8 +486,8 @@ add_action( 'template_redirect', 'vkpdc_preview_output' );
 function add_shortcode_archive_settings_page() {
 	add_submenu_page(
 		'edit.php?post_type=vk-patterns',
-		__( 'Shortcode and Archive Setting', 'vk-pattern-directory-creator' ),
-		__( 'Shortcode and Archive Setting', 'vk-pattern-directory-creator' ),
+		__( 'Archive and Shortcode Setting', 'vk-pattern-directory-creator' ),
+		__( 'Archive and Shortcode Setting', 'vk-pattern-directory-creator' ),
 		'manage_options',
 		'vk-patterns-shortcode-archive-settings',
 		'vkpdc_render_settings_page_with_shortcode'
