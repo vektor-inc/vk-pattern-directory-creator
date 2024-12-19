@@ -32,7 +32,7 @@ export default function PostListEdit( props ) {
 		thumbnail_size, //eslint-disable-line camelcase
 		new_date, //eslint-disable-line camelcase
 		new_text, //eslint-disable-line camelcase
-		colWidthMin,
+		colWidthMinMobile,
 		colWidthMinTablet,
 		colWidthMinPC,
 		gap,
@@ -49,12 +49,13 @@ export default function PostListEdit( props ) {
 		if (display_date_modified === undefined) setAttributes({ display_date_modified: true });
 		if (display_author === undefined) setAttributes({ display_author: true });
 		if (display_btn_view === undefined) setAttributes({ display_btn_view: true });
+		if (!display_btn_view_text) setAttributes({ display_btn_view_text: __('View', 'vk-pattern-directory-creator') });
 		if (display_btn_copy === undefined) setAttributes({ display_btn_copy: true });
-		if (display_image === undefined) setAttributes({ display_image: true });
+		if (display_image === undefined) setAttributes({ display_image: __('featured', 'vk-pattern-directory-creator') });
 		if (!thumbnail_size) setAttributes({ thumbnail_size: 'full' });
 		if (new_date === undefined || isNaN(new_date)) setAttributes({ new_date: 7 });
 		if (new_text === undefined) setAttributes({ new_text: 'NEW!!' });
-		if (!colWidthMin) setAttributes({ colWidthMin: '300px' });
+		if (!colWidthMinMobile) setAttributes({ colWidthMinMobile: '300px' });
 		if (!colWidthMinTablet) setAttributes({ colWidthMinTablet: '300px' });
 		if (!colWidthMinPC) setAttributes({ colWidthMinPC: '300px' });
 		if (!gap) setAttributes({ gap: '1.5rem' });
@@ -233,8 +234,8 @@ export default function PostListEdit( props ) {
 				<PanelBody title={__('Column Width Setting', 'vk-pattern-directory-creator')}>
 					<UnitControl
 						label={__('Column min width (Mobile)', 'vk-pattern-directory-creator')}
-						value={colWidthMin}
-						onChange={(value) => setAttributes({ colWidthMin: value })}
+						value={colWidthMinMobile}
+						onChange={(value) => setAttributes({ colWidthMinMobile: value })}
 					/>
 					<UnitControl
 						label={__('Column min width (Tablet)', 'vk-pattern-directory-creator')}
