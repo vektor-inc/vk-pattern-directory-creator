@@ -352,7 +352,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 				const shortcodeTextarea = document.createElement('textarea');
 
 				generateButton.addEventListener('click', function () {
-					const shortcode = '<?php echo esc_js( $generated_shortcode ); ?>';
+					const shortcode = `<?php echo $generated_shortcode; ?>`;
 
 					// テキストエリアに表示して選択
 					shortcodeTextarea.value = shortcode;
