@@ -133,6 +133,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Archive and Shortcode Setting', 'vk-pattern-directory-creator' ); ?></h1>
+		<p><?php _e( 'Please configure your archive display using either a hook or a shortcode, depending on your needs.', 'vk-pattern-directory-creator' ); ?><br><?php _e( 'Use the shortcode generator to customize and copy the desired layout, or specify a WordPress hook to integrate the archive display seamlessly into your theme.', 'vk-pattern-directory-creator' ); ?></p>
 		<?php if ( $message ) : ?>
 			<div class="updated"><p><?php echo esc_html( $message ); ?></p></div>
 		<?php endif; ?>
@@ -140,7 +141,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 			<?php wp_nonce_field( 'vkpdc_save_settings', 'vkpdc_settings_nonce' ); ?>
 			<h2 class="nav-tab-wrapper">
 				<a href="#pattern-list-settings" class="nav-tab nav-tab-active"><?php esc_html_e( 'Pattern List Settings', 'vk-pattern-directory-creator' ); ?></a>
-				<a href="#advanced-settings" class="nav-tab"><?php esc_html_e( 'Advanced Settings', 'vk-pattern-directory-creator' ); ?></a>
+				<a href="#archive-settings" class="nav-tab"><?php esc_html_e( 'Archive Settings (Option)', 'vk-pattern-directory-creator' ); ?></a>
 			</h2>
 			<div id="pattern-list-settings" class="tab-content" style="display: block;">
 			<h2 class="nav-tab-wrapper">
@@ -250,26 +251,27 @@ function vkpdc_render_settings_page_with_shortcode() {
 						</tr>
 					</table>
 				</div>
+				<div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+				<button type="button" id="vkpdc_generate_shortcode" class="button button-secondary">
+					<?php esc_html_e( 'Generate Shortcode', 'vk-pattern-directory-creator' ); ?>
+				</button>
+				<input type="submit" name="reset" class="button button-secondary" value="<?php esc_attr_e( 'Reset to Default', 'vk-pattern-directory-creator' ); ?>">
 			</div>
-			<div id="advanced-settings" class="tab-content" style="display:none;">
+			</div>
+			<div id="archive-settings" class="tab-content" style="display:none;">
 				<table class="form-table">
 					<tr>
 						<th><label for="hook_name"><?php esc_html_e( 'Hook Name', 'vk-pattern-directory-creator' ); ?></label></th>
 						<td>
-							<input type="text" id="hook_name" name="hook_name" value="<?php echo esc_attr( $options['hook_name'] ); ?>" placeholder="e.g., lightning_extend_loop">
-							<p class="description"><?php esc_html_e( 'Specify the WordPress hook where the shortcode should be executed.', 'vk-pattern-directory-creator' ); ?></p>
+							<input type="text" id="hook_name" name="hook_name" value="<?php echo esc_attr( $options['hook_name'] ); ?>">
+							<p class="description"><?php _e( 'Ex) lightning_extend_loop', 'vk-pattern-directory-creator' ); ?></p>
 						</td>
 					</tr>
 				</table>
 			</div>
-
-			<div style="margin-bottom: 20px;">
-				<button type="button" id="vkpdc_generate_shortcode" class="button button-secondary">
-					<?php esc_html_e( 'Generate Shortcode', 'vk-pattern-directory-creator' ); ?>
-				</button>
+			<div style="margin: 1.5rem auto;">
+				<?php submit_button( __( 'Save Settings', 'vk-pattern-directory-creator' ), 'primary', '', false ); ?>
 			</div>
-			<?php submit_button( __( 'Save Settings for Archive', 'vk-pattern-directory-creator' ) ); ?>
-			<input type="submit" name="reset" class="button button-secondary" value="<?php esc_attr_e( 'Reset to Default', 'vk-pattern-directory-creator' ); ?>">
 		</form>
 		<script>
 			// タブ切り替え
@@ -354,6 +356,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 			});
 		</script>
 
+		<h2><?php esc_html_e( 'Preview', 'vk-pattern-directory-creator' ); ?></h2>
 		<div id="vkpdc-preview-container" style="border: 1px solid #ddd; padding: 10px; margin-top: 20px;">
 			<iframe id="vkpdc-preview-iframe" style="width: 100%; height: 600px;" src="<?php echo esc_url( site_url() . '/?vkpdc_preview=true&rand=' . rand() ); ?>"></iframe>
 		</div>
