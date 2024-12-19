@@ -35,7 +35,7 @@ export const settings = {
 			new_date: 7,
 			new_text: 'NEW!!',
 			display_btn_view_text: 'Read More',
-			colWidthMin: '300px',
+			colWidthMinMobile: '300px',
 			colWidthMinTablet: '300px',
 			colWidthMinPC: '300px',
 			gap: '1.5rem',
