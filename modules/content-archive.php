@@ -291,7 +291,9 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
             $pagination_args['total'] = $query->max_num_pages;
         }
 
-        $html .= vkpdc_paginate_links( $query, $pagination_args );
+		if ( $query->max_num_pages > 1 ) {
+			$html .= vkpdc_paginate_links( $query, array(), ! empty( $attributes['display_paged'] ) );
+		}
     }
 
     wp_reset_postdata();
@@ -368,7 +370,11 @@ function vkpdc_get_shortcode_default_attributes() {
  * @param array $args Custom arguments for pagination.
  * @return string The HTML for pagination.
  */
-function vkpdc_paginate_links( $wp_query, $args = array() ) {
+function vkpdc_paginate_links( $wp_query, $args = array(), $display_paged = true ) {
+	if ( ! $display_paged ) {
+        return '';
+    }
+
     $args = wp_parse_args(
         $args,
         array(
