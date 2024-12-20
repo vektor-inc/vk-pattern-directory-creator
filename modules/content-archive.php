@@ -271,26 +271,56 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
     $html = vkpdc_generate_archive_html( $query, $attributes );
 
     // ページネーションリンクの生成
-    if ( $query->max_num_pages > 1 ) {
-        $pagination_args = array(
-            'current'   => $current_page,
-            'total'     => $query->max_num_pages,
-            'prev_text' => '&laquo;',
-            'next_text' => '&raquo;',
-            'mid_size'  => 1,
-        );
-
-        if ( is_archive() ) {
-            // アーカイブ用のページネーションリンク生成
-            $pagination_args['base'] = trailingslashit( get_post_type_archive_link( 'vk-patterns' ) ) . 'page/%#%/';
-        } else {
-            // ショートコード用のページネーションリンク生成
-            $pagination_args['base'] = add_query_arg( 'vkpdc_page', '%#%' );
-        }
-
-        $html .= '<div class="vkpdc-pagination">' . paginate_links( $pagination_args ) . '</div>';
-    }
-
+	if ( $query->max_num_pages > 1 ) {
+		$pagination_args = array(
+			'current'   => $current_page,
+			'total'     => $query->max_num_pages,
+			'prev_text' => '&laquo;',
+			'next_text' => '&raquo;',
+			'mid_size'  => 1,
+			'class'     => 'pagination',
+		);
+	
+		if ( is_archive() ) {
+			// アーカイブ用のページネーションリンク生成
+			$pagination_args['base'] = trailingslashit( get_post_type_archive_link( 'vk-patterns' ) ) . 'page/%#%/';
+		} else {
+			// ショートコード用のページネーションリンク生成
+			$pagination_args['base'] = add_query_arg( 'vkpdc_page', '%#%' );
+		}
+	
+		// ページネーションリンクを統一的なHTML構造で出力
+		$html .= '<nav class="navigation ' . esc_attr( $pagination_args['class'] ) . '" role="navigation" aria-label="' . __( '投稿のページ送り', 'textdomain' ) . '">';
+		$html .= '<h2 class="screen-reader-text">' . __( '投稿のページ送り', 'textdomain' ) . '</h2>';
+		$html .= '<div class="nav-links">';
+		$html .= '<ul class="page-numbers">';
+	
+		// 前のリンク
+		if ( $current_page > 1 ) {
+			$prev_link = add_query_arg( 'vkpdc_page', $current_page - 1 );
+			$html .= '<li><a class="prev page-numbers" href="' . esc_url( $prev_link ) . '">' . esc_html( $pagination_args['prev_text'] ) . '</a></li>';
+		}
+	
+		// ページ番号リンク
+		for ( $i = 1; $i <= $pagination_args['total']; $i++ ) {
+			$page_link = add_query_arg( 'vkpdc_page', $i );
+			if ( $i === $current_page ) {
+				$html .= '<li><span aria-current="page" class="page-numbers current">' . esc_html( $i ) . '</span></li>';
+			} else {
+				$html .= '<li><a class="page-numbers" href="' . esc_url( $page_link ) . '">' . esc_html( $i ) . '</a></li>';
+			}
+		}
+	
+		// 次のリンク
+		if ( $current_page < $pagination_args['total'] ) {
+			$next_link = add_query_arg( 'vkpdc_page', $current_page + 1 );
+			$html .= '<li><a class="next page-numbers" href="' . esc_url( $next_link ) . '">' . esc_html( $pagination_args['next_text'] ) . '</a></li>';
+		}
+	
+		$html .= '</ul>';
+		$html .= '</div></nav>';
+	}
+	
     wp_reset_postdata();
 
     return $html;
