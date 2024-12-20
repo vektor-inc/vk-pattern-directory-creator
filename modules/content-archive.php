@@ -246,8 +246,14 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
     // ショートコード引数を適用（引数が優先される）
     $attributes = shortcode_atts( $default_attributes, $atts );
 
-    // 現在のページ番号を取得（GETパラメータを確認）
-    $current_page = isset( $_GET['vkpdc_page'] ) ? intval( $_GET['vkpdc_page'] ) : 1;
+    // 現在のページ番号を取得
+    if ( is_archive() ) {
+        // アーカイブページでは WordPress の paged クエリを取得
+        $current_page = max( 1, get_query_var( 'paged', 1 ) );
+    } else {
+        // ショートコード経由の場合は GET パラメータを取得
+        $current_page = isset( $_GET['vkpdc_page'] ) ? intval( $_GET['vkpdc_page'] ) : 1;
+    }
 
     // WP_Query 引数を生成
     $query_args = array(
@@ -255,7 +261,7 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
         'posts_per_page' => intval( $attributes['numberPosts'] ),
         'order'          => $attributes['order'],
         'orderby'        => $attributes['orderby'],
-        'paged'          => $current_page,
+        'paged'          => $current_page, // ページ番号を反映
     );
 
     // WP_Query を実行
@@ -265,13 +271,23 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
     $html = vkpdc_generate_archive_html( $query, $attributes );
 
     // ページネーションリンクの生成
-    if ( $attributes['display_paged'] && $query->max_num_pages > 1 ) {
+    if ( $query->max_num_pages > 1 ) {
         $pagination_args = array(
-            'base'    => add_query_arg( 'vkpdc_page', '%#%' ),
-            'format'  => '',
-            'current' => $current_page,
-            'total'   => $query->max_num_pages,
+            'current'   => $current_page,
+            'total'     => $query->max_num_pages,
+            'prev_text' => '&laquo;',
+            'next_text' => '&raquo;',
+            'mid_size'  => 1,
         );
+
+        if ( is_archive() ) {
+            // アーカイブ用のページネーションリンク生成
+            $pagination_args['base'] = trailingslashit( get_post_type_archive_link( 'vk-patterns' ) ) . 'page/%#%/';
+        } else {
+            // ショートコード用のページネーションリンク生成
+            $pagination_args['base'] = add_query_arg( 'vkpdc_page', '%#%' );
+        }
+
         $html .= '<div class="vkpdc-pagination">' . paginate_links( $pagination_args ) . '</div>';
     }
 
@@ -405,15 +421,6 @@ function vkpdc_paginate_links( $wp_query, $args = array() ) {
     }
 
     return $html;
-}
-
-// Example Usage.
-if ( have_posts() ) {
-    while ( have_posts() ) {
-        the_post();
-        // Display post content.
-    }
-
 }
 
 /**
