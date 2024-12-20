@@ -284,7 +284,7 @@ function vkpdc_get_block_default_attributes() {
 		'pattern_id'             => true,
 		'display_btn_view'       => true,
 		'display_btn_copy'       => true,
-		'display_paged'          => true,
+		'display_paged'          => false,
 		'display_image'          => 'featured',
 		'thumbnail_size'         => 'full',
 		'new_date'               => 7,
@@ -312,7 +312,7 @@ function vkpdc_get_shortcode_default_attributes() {
 		'pattern_id'             => true,
 		'display_btn_view'       => true,
 		'display_btn_copy'       => true,
-		'display_paged'			 => true,
+		'display_paged'			 => false,
 		'display_image'          => 'featured',
 		'thumbnail_size'         => 'full',
 		'new_date'               => 7,
@@ -397,8 +397,6 @@ if ( have_posts() ) {
         // Display post content.
     }
 
-    // Display pagination.
-    echo vkpdc_paginate_links( $wp_query );
 }
 
 /**
@@ -432,11 +430,7 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
 
 		$html .= '</div>';
 
-		// カスタムページネーションを追加
-		if ( $attributes['display_paged'] && $query->max_num_pages > 1 ) {
-			// ページネーションはここでのみ呼び出し
-			$html .= vkpdc_paginate_links( $query );
-		}
+
 	} else {
 		$html .= '<div class="vkpdc_posts vkpdc_posts--none">';
 		$html .= '<div class="vkpdc_post_title">' . __( 'No posts found.', 'vk-pattern-directory-creator' ) . '</div>';
