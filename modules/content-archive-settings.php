@@ -418,33 +418,40 @@ function vkpdc_register_shortcode_on_hook() {
 add_action( 'init', 'vkpdc_register_shortcode_on_hook' );
 
 function vkpdc_execute_shortcode_on_hook() {
-	$options = vkpdc_get_default_options();
-	$shortcode = sprintf(
-		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_paged="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
-		intval( $options['numberPosts'] ),
-		esc_attr( $options['order'] ),
-		esc_attr( $options['orderby'] ),
-		intval( $options['display_new'] ),
-		intval( $options['display_taxonomies'] ),
-		intval( $options['pattern_id'] ),
-		intval( $options['display_date_publiched'] ),
-		intval( $options['display_date_modified'] ),
-		intval( $options['display_author'] ),
-		esc_attr( $options['display_image'] ),
-		esc_attr( $options['thumbnail_size'] ),
-		intval( $options['display_btn_view'] ),
-		intval( $options['display_btn_copy'] ),
-		intval( $options['display_paged'] ),
-		esc_attr( $options['display_btn_view_text'] ),
-		intval( $options['new_date'] ),
-		esc_attr( $options['new_text'] ),
-		esc_attr( $options['colWidthMinMobile'] ),
-		esc_attr( $options['colWidthMinTablet'] ),
-		esc_attr( $options['colWidthMinPC'] ),
-		esc_attr( $options['gap'] ),
-		esc_attr( $options['gapRow'] )
-	);
-	echo do_shortcode( $shortcode ); // ショートコードの結果のみを出力
+    // 現在のオプションを取得
+    $options = [];
+    $defaults = vkpdc_get_default_options();
+    foreach ( $defaults as $key => $default ) {
+        $options[ $key ] = get_option( 'vkpdc_' . $key, $default );
+    }
+
+    // ショートコードを生成して出力
+    $shortcode = sprintf(
+        '[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_paged="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+        intval( $options['numberPosts'] ),
+        esc_attr( $options['order'] ),
+        esc_attr( $options['orderby'] ),
+        intval( $options['display_new'] ),
+        intval( $options['display_taxonomies'] ),
+        intval( $options['pattern_id'] ),
+        intval( $options['display_date_publiched'] ),
+        intval( $options['display_date_modified'] ),
+        intval( $options['display_author'] ),
+        esc_attr( $options['display_image'] ),
+        esc_attr( $options['thumbnail_size'] ),
+        intval( $options['display_btn_view'] ),
+        intval( $options['display_btn_copy'] ),
+        intval( $options['display_paged'] ),
+        esc_attr( $options['display_btn_view_text'] ),
+        intval( $options['new_date'] ),
+        esc_attr( $options['new_text'] ),
+        esc_attr( $options['colWidthMinMobile'] ),
+        esc_attr( $options['colWidthMinTablet'] ),
+        esc_attr( $options['colWidthMinPC'] ),
+        esc_attr( $options['gap'] ),
+        esc_attr( $options['gapRow'] )
+    );
+    echo do_shortcode( $shortcode );
 }
 
 /**
