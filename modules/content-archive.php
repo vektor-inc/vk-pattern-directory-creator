@@ -234,7 +234,7 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 }
 
 function vkpdc_get_patterns_archive_shortcode( $atts ) {
-    // ショートコードのデフォルト値
+    // ショートコードのデフォルト値を取得
     $default_attributes = vkpdc_get_shortcode_default_attributes();
 
     // 管理画面の保存値を取得してデフォルト値に統合
@@ -246,14 +246,16 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
     // ショートコード引数を適用（引数が優先される）
     $attributes = shortcode_atts( $default_attributes, $atts );
 
+    // `display_paged` を明示的に boolean 型に変換
+    $attributes['display_paged'] = isset( $attributes['display_paged'] ) && filter_var( $attributes['display_paged'], FILTER_VALIDATE_BOOLEAN );
+
+    // ページネーションの有効性を確認
+    $enable_custom_pagination = $attributes['display_paged'];
+
     // 現在のページ番号を取得
-    if ( is_archive() ) {
-        // アーカイブページでは WordPress の paged クエリを取得
-        $current_page = max( 1, get_query_var( 'paged', 1 ) );
-    } else {
-        // ショートコード経由の場合は GET パラメータを取得
-        $current_page = isset( $_GET['vkpdc_page'] ) ? intval( $_GET['vkpdc_page'] ) : 1;
-    }
+    $current_page = $enable_custom_pagination 
+        ? ( isset( $_GET['vkpdc_page'] ) ? intval( $_GET['vkpdc_page'] ) : 1 )
+        : ( get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1 );
 
     // WP_Query 引数を生成
     $query_args = array(
@@ -261,68 +263,38 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
         'posts_per_page' => intval( $attributes['numberPosts'] ),
         'order'          => $attributes['order'],
         'orderby'        => $attributes['orderby'],
-        'paged'          => $current_page, // ページ番号を反映
+        'paged'          => $current_page,
     );
 
-    // WP_Query を実行
     $query = new WP_Query( $query_args );
 
     // アーカイブHTML生成
     $html = vkpdc_generate_archive_html( $query, $attributes );
 
     // ページネーションリンクの生成
-	if ( $query->max_num_pages > 1 ) {
-		$pagination_args = array(
-			'current'   => $current_page,
-			'total'     => $query->max_num_pages,
-			'prev_text' => '&laquo;',
-			'next_text' => '&raquo;',
-			'mid_size'  => 1,
-			'class'     => 'pagination',
-		);
-	
-		if ( is_archive() ) {
-			// アーカイブ用のページネーションリンク生成
-			$pagination_args['base'] = trailingslashit( get_post_type_archive_link( 'vk-patterns' ) ) . 'page/%#%/';
-		} else {
-			// ショートコード用のページネーションリンク生成
-			$pagination_args['base'] = add_query_arg( 'vkpdc_page', '%#%' );
-		}
-	
-		// ページネーションリンクを統一的なHTML構造で出力
-		$html .= '<nav class="navigation ' . esc_attr( $pagination_args['class'] ) . '" role="navigation" aria-label="' . __( '投稿のページ送り', 'textdomain' ) . '">';
-		$html .= '<h2 class="screen-reader-text">' . __( '投稿のページ送り', 'textdomain' ) . '</h2>';
-		$html .= '<div class="nav-links">';
-		$html .= '<ul class="page-numbers">';
-	
-		// 前のリンク
-		if ( $current_page > 1 ) {
-			$prev_link = add_query_arg( 'vkpdc_page', $current_page - 1 );
-			$html .= '<li><a class="prev page-numbers" href="' . esc_url( $prev_link ) . '">' . esc_html( $pagination_args['prev_text'] ) . '</a></li>';
-		}
-	
-		// ページ番号リンク
-		for ( $i = 1; $i <= $pagination_args['total']; $i++ ) {
-			$page_link = add_query_arg( 'vkpdc_page', $i );
-			if ( $i === $current_page ) {
-				$html .= '<li><span aria-current="page" class="page-numbers current">' . esc_html( $i ) . '</span></li>';
-			} else {
-				$html .= '<li><a class="page-numbers" href="' . esc_url( $page_link ) . '">' . esc_html( $i ) . '</a></li>';
-			}
-		}
-	
-		// 次のリンク
-		if ( $current_page < $pagination_args['total'] ) {
-			$next_link = add_query_arg( 'vkpdc_page', $current_page + 1 );
-			$html .= '<li><a class="next page-numbers" href="' . esc_url( $next_link ) . '">' . esc_html( $pagination_args['next_text'] ) . '</a></li>';
-		}
-	
-		$html .= '</ul>';
-		$html .= '</div></nav>';
-	}
-	
-    wp_reset_postdata();
+    if ( $query->max_num_pages > 1 ) {
+        $pagination_args = array(
+            'mid_size' => 1,
+            'prev_text' => '&laquo;',
+            'next_text' => '&raquo;',
+        );
 
+        if ( $enable_custom_pagination ) {
+            // Enable のチェックがある場合
+            $pagination_args['base'] = add_query_arg( 'vkpdc_page', '%#%' );
+            $pagination_args['current'] = $current_page;
+            $pagination_args['total'] = $query->max_num_pages;
+        } else {
+            // Enable のチェックがない場合
+            $pagination_args['base'] = trailingslashit( get_permalink() ) . 'page/%#%/';
+            $pagination_args['current'] = $current_page;
+            $pagination_args['total'] = $query->max_num_pages;
+        }
+
+        $html .= vkpdc_paginate_links( $query, $pagination_args );
+    }
+
+    wp_reset_postdata();
     return $html;
 }
 add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_patterns_archive_shortcode' );
