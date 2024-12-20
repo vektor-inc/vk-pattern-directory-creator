@@ -392,7 +392,8 @@ function vkpdc_paginate_links( $wp_query, $args = array() ) {
 
     if ( $max_num_pages > 1 ) {
         $html .= '<nav class="navigation ' . esc_attr( $args['class'] ) . '" role="navigation" aria-label="' . esc_attr( $args['aria_label'] ) . '">';
-        $html .= '<h4 class="screen-reader-text">' . esc_html( $args['screen_reader_text'] ) . '</h4>';
+        $html .= '<h2 class="screen-reader-text">' . esc_html( $args['screen_reader_text'] ) . '</h2>';
+        $html .= '<div class="nav-links">';
         $html .= '<ul class="page-numbers">';
 
         // Previous Page Link.
@@ -419,6 +420,7 @@ function vkpdc_paginate_links( $wp_query, $args = array() ) {
         }
 
         $html .= '</ul>';
+		$html .= '</div>';
         $html .= '</nav>';
     }
 
