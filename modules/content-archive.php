@@ -218,11 +218,9 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 		$html .= '</div>';
 		
 	} else {
-
 		$html .= '<div class="vkpdc_posts vkpdc_posts--none">';
 		$html .= '<div class="vkpdc_post_title">' . __( 'No posts found.', 'vk-pattern-directory-creator' ) . '</div>';
 		$html .= '</div>';
-
 	}
 
 	if ( isset( $_GET['paged'] ) ) {
@@ -430,6 +428,11 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
 
 		$html .= '</div>';
 
+// カスタムページネーションを追加
+if ( $attributes['display_paged'] && $query->max_num_pages > 1 ) {
+    // アーカイブページ以外でカスタムページネーションを追加しない
+        $html .= vkpdc_paginate_links( $query );
+    }
 
 	} else {
 		$html .= '<div class="vkpdc_posts vkpdc_posts--none">';
