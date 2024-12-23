@@ -40,11 +40,11 @@ function vkpdc_get_default_options() {
 
 // テーマが lightning の場合のデフォルトフック名を取得
 function vkpdc_get_default_hook_name() {
-    // 現在のテーマが lightning の場合、デフォルトフック名を設定
-    if ( wp_get_theme()->get( 'TextDomain' ) === 'lightning' ) {
-        return 'lightning_extend_loop';
-    }
-    return ''; // その他のテーマの場合は空
+	// 現在のテーマが lightning の場合、デフォルトフック名を設定
+	if ( wp_get_theme()->get( 'TextDomain' ) === 'lightning' ) {
+		return 'lightning_extend_loop';
+	}
+	return ''; // その他のテーマの場合は空
 }
 
 // デフォルトオプションを初期化
@@ -275,7 +275,10 @@ function vkpdc_render_settings_page_with_shortcode() {
 						<th><label for="hook_name"><?php esc_html_e( 'Hook Name', 'vk-pattern-directory-creator' ); ?></label></th>
 						<td>
 							<input type="text" id="hook_name" name="hook_name" value="<?php echo esc_attr( $options['hook_name'] ); ?>">
-							<p class="description"><?php _e( 'Ex) lightning_extend_loop', 'vk-pattern-directory-creator' ); ?></p>
+							<p class="description">
+								<?php _e( 'For better control of pagination, adjust the "Blog pages show at most" setting in ', 'vk-pattern-directory-creator' ); ?>
+								<a href="<?php echo admin_url( 'options-reading.php' ); ?>" target="_blank"><?php _e( 'Settings > Reading', 'vk-pattern-directory-creator' ); ?></a>.
+							</p>
 						</td>
 					</tr>
 					<tr>
@@ -418,40 +421,40 @@ function vkpdc_register_shortcode_on_hook() {
 add_action( 'init', 'vkpdc_register_shortcode_on_hook' );
 
 function vkpdc_execute_shortcode_on_hook() {
-    // 現在のオプションを取得
-    $options = [];
-    $defaults = vkpdc_get_default_options();
-    foreach ( $defaults as $key => $default ) {
-        $options[ $key ] = get_option( 'vkpdc_' . $key, $default );
-    }
+	// 現在のオプションを取得
+	$options = [];
+	$defaults = vkpdc_get_default_options();
+	foreach ( $defaults as $key => $default ) {
+		$options[ $key ] = get_option( 'vkpdc_' . $key, $default );
+	}
 
-    // ショートコードを生成して出力
-    $shortcode = sprintf(
-        '[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_paged="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
-        intval( $options['numberPosts'] ),
-        esc_attr( $options['order'] ),
-        esc_attr( $options['orderby'] ),
-        intval( $options['display_new'] ),
-        intval( $options['display_taxonomies'] ),
-        intval( $options['pattern_id'] ),
-        intval( $options['display_date_publiched'] ),
-        intval( $options['display_date_modified'] ),
-        intval( $options['display_author'] ),
-        esc_attr( $options['display_image'] ),
-        esc_attr( $options['thumbnail_size'] ),
-        intval( $options['display_btn_view'] ),
-        intval( $options['display_btn_copy'] ),
-        intval( $options['display_paged'] ),
-        esc_attr( $options['display_btn_view_text'] ),
-        intval( $options['new_date'] ),
-        esc_attr( $options['new_text'] ),
-        esc_attr( $options['colWidthMinMobile'] ),
-        esc_attr( $options['colWidthMinTablet'] ),
-        esc_attr( $options['colWidthMinPC'] ),
-        esc_attr( $options['gap'] ),
-        esc_attr( $options['gapRow'] )
-    );
-    echo do_shortcode( $shortcode );
+	// ショートコードを生成して出力
+	$shortcode = sprintf(
+		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_paged="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinTablet="%s" colWidthMinPC="%s" gap="%s" gapRow="%s"]',
+		intval( $options['numberPosts'] ),
+		esc_attr( $options['order'] ),
+		esc_attr( $options['orderby'] ),
+		intval( $options['display_new'] ),
+		intval( $options['display_taxonomies'] ),
+		intval( $options['pattern_id'] ),
+		intval( $options['display_date_publiched'] ),
+		intval( $options['display_date_modified'] ),
+		intval( $options['display_author'] ),
+		esc_attr( $options['display_image'] ),
+		esc_attr( $options['thumbnail_size'] ),
+		intval( $options['display_btn_view'] ),
+		intval( $options['display_btn_copy'] ),
+		intval( $options['display_paged'] ),
+		esc_attr( $options['display_btn_view_text'] ),
+		intval( $options['new_date'] ),
+		esc_attr( $options['new_text'] ),
+		esc_attr( $options['colWidthMinMobile'] ),
+		esc_attr( $options['colWidthMinTablet'] ),
+		esc_attr( $options['colWidthMinPC'] ),
+		esc_attr( $options['gap'] ),
+		esc_attr( $options['gapRow'] )
+	);
+	echo do_shortcode( $shortcode );
 }
 
 /**
