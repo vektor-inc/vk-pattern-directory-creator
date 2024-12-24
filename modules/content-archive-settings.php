@@ -141,8 +141,8 @@ function vkpdc_render_settings_page_with_shortcode() {
 
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Archive and Shortcode Setting', 'vk-pattern-directory-creator' ); ?></h1>
-		<p><?php _e( 'Please configure your archive display using either a hook or a shortcode, depending on your needs.', 'vk-pattern-directory-creator' ); ?><br><?php _e( 'Use the shortcode generator to customize and copy the desired layout, or specify a WordPress hook to integrate the archive display seamlessly into your theme.', 'vk-pattern-directory-creator' ); ?></p>
+		<h1><?php esc_html_e( 'Archive Setting', 'vk-pattern-directory-creator' ); ?></h1>
+		<p><?php _e( 'You can configure the pattern archive list here. For more details on archive display settings, please visit <a href="#archive-settings">this page</a>.', 'vk-pattern-directory-creator' ); ?><br><?php _e( 'Use the shortcode generator to customize and copy the desired layout, or specify a WordPress hook to integrate the archive display seamlessly into your theme.', 'vk-pattern-directory-creator' ); ?></p>
 		<?php if ( $message ) : ?>
 			<div class="updated"><p><?php echo esc_html( $message ); ?></p></div>
 		<?php endif; ?>
@@ -180,8 +180,9 @@ function vkpdc_render_settings_page_with_shortcode() {
 							<td>
 								<select id="orderby" name="orderby">
 									<option value="date" <?php selected( $options['orderby'], 'date' ); ?>><?php esc_html_e( 'Date', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="modified" <?php selected( $options['orderby'], 'modified' ); ?>><?php esc_html_e( 'Modified', 'vk-pattern-directory-creator' ); ?></option>
 									<option value="title" <?php selected( $options['orderby'], 'title' ); ?>><?php esc_html_e( 'Title', 'vk-pattern-directory-creator' ); ?></option>
-									<option value="rand" <?php selected( $options['orderby'], 'rand' ); ?>><?php esc_html_e( 'Random', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="random" <?php selected( $options['orderby'], 'random' ); ?>><?php esc_html_e( 'Random', 'vk-pattern-directory-creator' ); ?></option>
 								</select>
 							</td>
 						</tr>
@@ -260,11 +261,6 @@ function vkpdc_render_settings_page_with_shortcode() {
 						</tr>
 					</table>
 				</div>
-				<div style="margin: 1.5rem auto;">
-					<button type="button" id="vkpdc_generate_shortcode" class="button button-secondary">
-						<?php esc_html_e( 'Generate Shortcode', 'vk-pattern-directory-creator' ); ?>
-					</button>
-				</div>
 			</div>
 			<div id="archive-settings" class="tab-content" style="display:none;">
 				<table class="form-table">
@@ -276,9 +272,17 @@ function vkpdc_render_settings_page_with_shortcode() {
 						</td>
 					</tr>
 					<tr>
-						<th><label for="hook_name"><?php esc_html_e( 'Archive Preview', 'vk-pattern-directory-creator' ); ?></label></th>
+						<th><label for="hook_name"><?php esc_html_e( 'Shortcode setting', 'vk-pattern-directory-creator' ); ?></label></th>
 						<td>
-							<a href="/pattern" target="_blank"><?php _e( 'Click here to preview the archive with the current settings.', 'vk-pattern-directory-creator' ); ?></a>
+						<p class="description"><?php _e( 'In addition to using hooks, you can also use a shortcode. Copy and paste the following code as needed:', 'vk-pattern-directory-creator' ); ?></p>
+						<div style="margin-top: .75rem;">
+							<label for="shortcode_do_shortcode"><?php _e( 'For PHP files:', 'vk-pattern-directory-creator' ); ?></label>
+							<input id="shortcode_do_shortcode" type="text" readonly style="width: 100%; padding: 0.3rem; font-family: monospace; cursor: pointer;" value="&lt;?php echo do_shortcode('[vkpdc_archive_loop]'); ?&gt;" onclick="this.select();">
+						</div>
+						<div>
+							<label for="shortcode_direct"><?php _e( 'For posts or pages:', 'vk-pattern-directory-creator' ); ?></label>
+							<input id="shortcode_direct" type="text" readonly style="width: 100%; padding: 0.3rem; font-family: monospace; cursor: pointer;" value="[vkpdc_archive_loop]" onclick="this.select();">
+						</div>
 						</td>
 					</tr>
 				</table>
@@ -289,9 +293,8 @@ function vkpdc_render_settings_page_with_shortcode() {
 			</div>
 		</form>
 		<script>
-			// タブ切り替え
 			document.addEventListener('DOMContentLoaded', function () {
-				// 大カテゴリのタブ切り替え
+				// タブ切り替え
 				const mainTabs = document.querySelectorAll('.nav-tab-wrapper > .nav-tab');
 				const mainContents = document.querySelectorAll('.tab-content');
 
@@ -345,35 +348,11 @@ function vkpdc_render_settings_page_with_shortcode() {
 					content.style.display = index === 0 ? 'block' : 'none'; // 最初のネストされたコンテンツだけ表示
 				});
 			});
-
-			// ショートコード生成
-			document.addEventListener('DOMContentLoaded', function () {
-				const generateButton = document.getElementById('vkpdc_generate_shortcode');
-				const shortcodeTextarea = document.createElement('textarea');
-
-				generateButton.addEventListener('click', function () {
-					const shortcode = `<?php echo $generated_shortcode; ?>`;
-
-					// テキストエリアに表示して選択
-					shortcodeTextarea.value = shortcode;
-					shortcodeTextarea.style.width = '100%';
-					shortcodeTextarea.style.height = '100px';
-					document.body.appendChild(shortcodeTextarea);
-					shortcodeTextarea.select();
-
-					// コピー実行
-					document.execCommand('copy');
-					alert('<?php esc_html_e( 'Shortcode copied to clipboard!', 'vk-pattern-directory-creator' ); ?>');
-
-					// 一時的なテキストエリアを削除
-					document.body.removeChild(shortcodeTextarea);
-				});
-			});
 		</script>
 
 		<h2><?php esc_html_e( 'Preview', 'vk-pattern-directory-creator' ); ?></h2>
 		<div id="vkpdc-preview-container" style="border: 1px solid #ddd; padding: 10px; margin-top: 20px;">
-			<iframe id="vkpdc-preview-iframe" style="width: 100%; height: 600px;" src="<?php echo esc_url( site_url() . '/?vkpdc_preview=true&rand=' . rand() ); ?>"></iframe>
+		<iframe id="vkpdc-preview-iframe" style="width: 100%; height: 600px;" src="<?php echo esc_url( site_url( '/pattern' ) ); ?>"></iframe>
 		</div>
 
 	</div>
@@ -440,7 +419,7 @@ function vkpdc_execute_shortcode_on_hook() {
 		esc_attr( $options['gap'] ),
 		esc_attr( $options['gapRow'] )
 	);
-	echo do_shortcode( $shortcode ); // ショートコードの結果のみを出力
+	echo do_shortcode( $shortcode );
 }
 
 /**
@@ -457,7 +436,7 @@ function vkpdc_preview_output() {
 
 		// ショートコードを出力
 		echo '<!DOCTYPE html>
-		<html lang="en"style="margin: 0 !important; padding: 1.5rem;">
+		<html lang="en" style="margin: 0 !important; padding: 1.5rem;">
 		<head>
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -490,6 +469,7 @@ function vkpdc_preview_output() {
 			esc_attr( $options['gap'] ),
 			esc_attr( $options['gapRow'] )
 		) );
+		echo '</div>';
 
 		echo '</body></html>';
 
@@ -504,8 +484,8 @@ add_action( 'template_redirect', 'vkpdc_preview_output' );
 function add_shortcode_archive_settings_page() {
 	add_submenu_page(
 		'edit.php?post_type=vk-patterns',
-		__( 'Archive and Shortcode Setting', 'vk-pattern-directory-creator' ),
-		__( 'Archive and Shortcode Setting', 'vk-pattern-directory-creator' ),
+		__( 'Archive Setting', 'vk-pattern-directory-creator' ),
+		__( 'Archive Setting', 'vk-pattern-directory-creator' ),
 		'manage_options',
 		'vk-patterns-shortcode-archive-settings',
 		'vkpdc_render_settings_page_with_shortcode'
