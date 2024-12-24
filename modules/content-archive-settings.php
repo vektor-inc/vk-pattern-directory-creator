@@ -142,7 +142,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Archive Setting', 'vk-pattern-directory-creator' ); ?></h1>
-		<p><?php _e( 'You can configure the pattern archive list here. For more details on archive display settings, please visit <a href="#advanced-setting">this page</a>.', 'vk-pattern-directory-creator' ); ?><br><?php _e( 'Use the shortcode generator to customize and copy the desired layout, or specify a WordPress hook to integrate the archive display seamlessly into your theme.', 'vk-pattern-directory-creator' ); ?></p>
+		<p><?php _e( 'You can configure the pattern archive list here. For more details on archive display settings, please visit "Advanced Setting (Option)".', 'vk-pattern-directory-creator' ); ?><br><?php _e( 'Use the shortcode generator to customize and copy the desired layout, or specify a WordPress hook to integrate the archive display seamlessly into your theme.', 'vk-pattern-directory-creator' ); ?></p>
 		<?php if ( $message ) : ?>
 			<div class="updated"><p><?php echo esc_html( $message ); ?></p></div>
 		<?php endif; ?>
