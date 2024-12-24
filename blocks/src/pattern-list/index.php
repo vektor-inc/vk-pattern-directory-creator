@@ -89,6 +89,10 @@ function vkpdc_add_pattern_list_block() {
 					'type'    => 'boolean',
 					'default' => true,
 				),
+				'display_paged' => array(
+					'type'    => 'boolean',
+					'default' => true,
+				),
 				'display_image' => array(
 					'type'    => 'string',
 					'default' => 'featured',
@@ -139,25 +143,3 @@ function vkpdc_add_pattern_list_block() {
 	);
 }
 add_action( 'init', 'vkpdc_add_pattern_list_block', 9999 );
-
-/**
- * Post list render callback
- *
- * @param array $attributes Block attributes.
- * @return string
- */
-function vkpdc_render_pattern_list_callback( $attributes ) {
-    $default_attributes = vkpdc_get_block_default_attributes();
-    $attributes = wp_parse_args( $attributes, $default_attributes );
-
-    $query_args = array(
-        'post_type'      => 'vk-patterns',
-        'posts_per_page' => intval( $attributes['numberPosts'] ),
-        'order'          => $attributes['order'],
-        'orderby'        => $attributes['orderby'],
-    );
-
-    $query = new WP_Query( $query_args );
-
-    return '<div class="vkpdc-pattern-list">' . vkpdc_generate_archive_html( $query, $attributes ) . '</div>';
-}

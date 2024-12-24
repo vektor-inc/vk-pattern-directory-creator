@@ -50,6 +50,10 @@
 			"type": "boolean",
 			"default": true
 		},
+		"display_paged": {
+			"type": "boolean",
+			"default": true
+		},
 		"display_image": {
 			"type": "string",
 			"default": "featured"
