@@ -51,8 +51,8 @@
 			"default": true
 		},
 		"display_paged": {
-			"type": "number",
-			"default": 1
+			"type": "boolean",
+			"default": true
 		},
 		"display_image": {
 			"type": "string",
