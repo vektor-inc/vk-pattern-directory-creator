@@ -364,3 +364,79 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
     wp_reset_postdata();
     return $html;
 }
+
+/**
+ * Post list render callback
+ *
+ * @param array $attributes Block attributes.
+ * @return string
+ */
+function vkpdc_render_pattern_list_callback( $attributes ) {
+    $default_attributes = vkpdc_get_block_default_attributes();
+    $attributes = wp_parse_args( $attributes, $default_attributes );
+
+    // 現在のページを取得
+    $current_page = isset( $_GET['vkpdc_page'] ) ? intval( $_GET['vkpdc_page'] ) : 1;
+
+    // クエリの設定
+    $query_args = array(
+        'post_type'      => 'vk-patterns',
+        'posts_per_page' => intval( $attributes['numberPosts'] ),
+        'order'          => $attributes['order'],
+        'orderby'        => $attributes['orderby'],
+        'paged'          => $current_page,
+    );
+
+    $query = new WP_Query( $query_args );
+
+    // 投稿リストのラッパーを開始
+    $html = '<div class="vkpdc_posts" style="--col-width-min-mobile: ' . esc_attr( $attributes['colWidthMinMobile'] ) . '; --col-width-min-tablet: ' . esc_attr( $attributes['colWidthMinTablet'] ) . '; --col-width-min-pc: ' . esc_attr( $attributes['colWidthMinPC'] ) . '; --gap: ' . esc_attr( $attributes['gap'] ) . '; --gap-row: ' . esc_attr( $attributes['gapRow'] ) . ';">';
+
+    // 投稿ループ
+    if ( $query->have_posts() ) {
+        while ( $query->have_posts() ) {
+            $query->the_post();
+
+            // 各投稿のHTMLを取得
+            $html .= vkpdc_get_archive_single_post( get_post(), $attributes );
+        }
+    } else {
+        $html .= '<p>' . __( 'No patterns found.', 'vk-pattern-directory-creator' ) . '</p>';
+    }
+
+    $html .= '</div>';
+
+    // ページネーションの生成
+    if ( $attributes['display_paged'] ) {
+        $pagination = paginate_links( array(
+            'total'     => $query->max_num_pages,
+            'current'   => $current_page,
+            'format'    => '?vkpdc_page=%#%',
+            'type'      => 'array',
+            'prev_text' => '&laquo;',
+            'next_text' => '&raquo;',
+        ) );
+
+        if ( $pagination ) {
+            $html .= '<nav class="navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
+            $html .= '<h2 class="screen-reader-text">' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '</h2>';
+            $html .= '<div class="nav-links"><ul class="page-numbers">';
+
+            // ページリンクをリスト化
+            foreach ( $pagination as $link ) {
+                if ( strpos( $link, 'current' ) !== false ) {
+                    $html .= '<li><span class="page-numbers current">' . strip_tags( $link ) . '</span></li>';
+                } else {
+                    $html .= '<li>' . $link . '</li>';
+                }
+            }
+
+            $html .= '</ul></div></nav>';
+        }
+    }
+
+    // 投稿データをリセット
+    wp_reset_postdata();
+
+    return $html;
+}
