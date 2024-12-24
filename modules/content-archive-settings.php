@@ -142,7 +142,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Archive Setting', 'vk-pattern-directory-creator' ); ?></h1>
-		<p><?php _e( 'You can configure the pattern archive list here. For more details on archive display settings, please visit <a href="#archive-settings">this page</a>.', 'vk-pattern-directory-creator' ); ?><br><?php _e( 'Use the shortcode generator to customize and copy the desired layout, or specify a WordPress hook to integrate the archive display seamlessly into your theme.', 'vk-pattern-directory-creator' ); ?></p>
+		<p><?php _e( 'You can configure the pattern archive list here. For more details on archive display settings, please visit <a href="#advanced-setting">this page</a>.', 'vk-pattern-directory-creator' ); ?><br><?php _e( 'Use the shortcode generator to customize and copy the desired layout, or specify a WordPress hook to integrate the archive display seamlessly into your theme.', 'vk-pattern-directory-creator' ); ?></p>
 		<?php if ( $message ) : ?>
 			<div class="updated"><p><?php echo esc_html( $message ); ?></p></div>
 		<?php endif; ?>
@@ -150,7 +150,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 			<?php wp_nonce_field( 'vkpdc_save_settings', 'vkpdc_settings_nonce' ); ?>
 			<h2 class="nav-tab-wrapper">
 				<a href="#pattern-list-settings" class="nav-tab nav-tab-active"><?php esc_html_e( 'Pattern List Settings', 'vk-pattern-directory-creator' ); ?></a>
-				<a href="#archive-settings" class="nav-tab"><?php esc_html_e( 'Archive Settings (Option)', 'vk-pattern-directory-creator' ); ?></a>
+				<a href="#advanced-setting" class="nav-tab"><?php esc_html_e( 'Advanced Setting (Option)', 'vk-pattern-directory-creator' ); ?></a>
 			</h2>
 			<div id="pattern-list-settings" class="tab-content" style="display: block;">
 				<h2 class="nav-tab-wrapper">
