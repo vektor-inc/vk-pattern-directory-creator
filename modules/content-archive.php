@@ -6,12 +6,153 @@
  */
 
 /**
- * Archive Single Pattern 
- *
- * @param string $post 投稿のオブジェクト.
- * @param array $attributes ブロックの属性.
+ * Archive Loop
  */
-function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
+function vkpdc_adjust_query( $query ) {
+    if ( ! is_admin() && is_post_type_archive( 'vk-patterns' ) && $query->query_vars['post_type'] === 'vk-patterns' ) {
+        $query->set( 'posts_per_page', get_option( 'vkpdc_numberPosts', 6 ) );
+        $query->set( 'paged', get_query_var( 'paged', 1 ) );
+    }
+}
+add_action( 'pre_get_posts', 'vkpdc_adjust_query', 20 );
+
+/**
+ * Get Block Default Attributes
+ */
+function vkpdc_get_block_default_attributes() {
+    return array(
+        'numberPosts'            => 6,
+        'order'                  => 'DESC',
+        'orderby'                => 'date',
+        'display_author'         => true,
+        'display_date_publiched' => true,
+        'display_date_modified'  => true,
+        'display_new'            => true,
+        'display_taxonomies'     => true,
+        'pattern_id'             => true,
+		'display_btn_view'       => true,
+		'display_btn_copy'       => true,
+		'display_image'          => 'featured',
+		'thumbnail_size'         => 'full',
+        'new_date'               => 7,
+        'new_text'               => 'New!!',
+	'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
+	'colWidthMinMobile'            => '300px',
+        'colWidthMinTablet'      => '300px',
+        'colWidthMinPC'          => '300px',
+        'gap'                    => '1.5rem',
+        'gapRow'                 => '1.5rem',
+    );
+}
+
+/* 
+ * Get Shortcode Default Attributes
+ */
+function vkpdc_get_shortcode_default_attributes() {
+    return array(
+        'numberPosts'            => 6,
+        'order'                  => 'DESC',
+        'orderby'                => 'date',
+        'display_author'         => true,
+        'display_date_publiched' => true,
+        'display_date_modified'  => true,
+        'display_new'            => true,
+        'display_taxonomies'     => true,
+        'pattern_id'             => true,
+	'display_btn_view'       => true,
+	'display_btn_copy'       => true,
+	'display_image'          => 'featured',
+	'thumbnail_size'         => 'full',
+        'new_date'               => 7,
+        'new_text'               => 'New!!',
+	'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
+	'colWidthMinMobile'            => '300px',
+        'colWidthMinTablet'      => '300px',
+        'colWidthMinPC'          => '300px',
+        'gap'                    => '1.5rem',
+        'gapRow'                 => '1.5rem',
+	);
+}
+
+/* 
+ * Generate Shortcode
+ */
+function vkpdc_get_patterns_archive_shortcode( $atts ) {
+    // ショートコードのデフォルト値
+    $default_attributes = vkpdc_get_shortcode_default_attributes();
+
+    // 管理画面の保存値を取得してデフォルト値に統合
+    foreach ( $default_attributes as $key => $default ) {
+        $option_value = get_option( 'vkpdc_' . $key, $default );
+        $default_attributes[ $key ] = $option_value;
+    }
+
+    // ショートコード引数を適用（引数が優先される）
+    $attributes = shortcode_atts( $default_attributes, $atts );
+
+    // WP_Query 引数を生成
+    $query_args = array(
+        'post_type'      => 'vk-patterns',
+        'posts_per_page' => intval( $attributes['numberPosts'] ),
+        'order'          => $attributes['order'],
+        'orderby'        => $attributes['orderby'],
+		'paged'          => get_query_var( 'paged', 1 ),
+    );
+
+    $query = new WP_Query( $query_args );
+
+    return vkpdc_generate_archive_html( $query, $attributes );
+}
+add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_patterns_archive_shortcode' );
+
+/**
+ * Generate HTML
+ *
+ * @param WP_Query $query クエリオブジェクト.
+ * @param array $attributes ブロックの属性.
+ * @return string HTMLコンテンツ.
+ */
+function vkpdc_generate_archive_html( $query, $attributes ) {
+    $html = '';
+
+    // 動的スタイルを生成
+    $styles = sprintf(
+        '--col-width-min-mobile: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
+        esc_attr( $attributes['colWidthMinMobile'] ),
+        esc_attr( $attributes['colWidthMinTablet'] ),
+        esc_attr( $attributes['colWidthMinPC'] ),
+        esc_attr( $attributes['gap'] ),
+        esc_attr( $attributes['gapRow'] )
+    );
+
+    if ( $query->have_posts() ) {
+        $html .= '<div class="vkpdc_posts" style="' . esc_attr( $styles ) . '">';
+
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $post  = get_post( get_the_ID() );
+            $html .= vkpdc_generate_single_page_html( $post, $attributes );
+        }
+
+        $html .= '</div>';
+    } else {
+        $html .= '<div class="vkpdc_posts vkpdc_posts--none">';
+        $html .= '<div class="vkpdc_post_title">' . __( 'No posts found.', 'vk-pattern-directory-creator' ) . '</div>';
+        $html .= '</div>';
+    }
+
+    wp_reset_postdata();
+    return $html;
+}
+
+/**
+ * Generate Single Page HTML
+ *
+ * @param WP_Post $post 投稿オブジェクト.
+ * @param array $attributes ブロックの属性.
+ * @return string HTMLコンテンツ.
+ */
+function vkpdc_generate_single_page_html( $post = null, $attributes = [] ) {
 
 	$html    = '';
 	$post = ! empty( $post ) ? $post : get_post( get_the_ID() );
@@ -193,7 +334,7 @@ function vkpdc_get_archive_single_post( $post = null, $attributes = [] ) {
 }
 
 /**
- * Archive Loop
+ * Generate Archive Loop
  * 
  * @param string $query クエリ.
  */
@@ -212,7 +353,7 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			$post  = get_post( get_the_ID() );
-			$html .= vkpdc_get_archive_single_post( $post, $attributes );
+			$html .= vkpdc_generate_single_page_html( $post, $attributes );
 		}
 		
 		$html .= '</div>';
@@ -227,142 +368,6 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 
 	wp_reset_postdata();
 	return $html;
-}
-
-function vkpdc_get_patterns_archive_shortcode( $atts ) {
-    // ショートコードのデフォルト値
-    $default_attributes = vkpdc_get_shortcode_default_attributes();
-
-    // 管理画面の保存値を取得してデフォルト値に統合
-    foreach ( $default_attributes as $key => $default ) {
-        $option_value = get_option( 'vkpdc_' . $key, $default );
-        $default_attributes[ $key ] = $option_value;
-    }
-
-    // ショートコード引数を適用（引数が優先される）
-    $attributes = shortcode_atts( $default_attributes, $atts );
-
-    // WP_Query 引数を生成
-    $query_args = array(
-        'post_type'      => 'vk-patterns',
-        'posts_per_page' => intval( $attributes['numberPosts'] ),
-        'order'          => $attributes['order'],
-        'orderby'        => $attributes['orderby'],
-		'paged'          => get_query_var( 'paged', 1 ),
-    );
-
-    $query = new WP_Query( $query_args );
-
-    return vkpdc_generate_archive_html( $query, $attributes );
-}
-add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_patterns_archive_shortcode' );
-
-function vkpdc_adjust_query( $query ) {
-    if ( ! is_admin() && is_post_type_archive( 'vk-patterns' ) && $query->query_vars['post_type'] === 'vk-patterns' ) {
-        $query->set( 'posts_per_page', get_option( 'vkpdc_numberPosts', 6 ) );
-        $query->set( 'paged', get_query_var( 'paged', 1 ) );
-    }
-}
-add_action( 'pre_get_posts', 'vkpdc_adjust_query', 20 );
-
-function remove_image_sizes_attributes( $attr ) {
-    unset( $attr['style'] );
-    return $attr;
-}
-add_filter( 'wp_get_attachment_image_attributes', 'remove_image_sizes_attributes', 9999, 1 );
-
-// ブロック用の属性デフォルト
-function vkpdc_get_block_default_attributes() {
-    return array(
-        'numberPosts'            => 6,
-        'order'                  => 'DESC',
-        'orderby'                => 'date',
-        'display_author'         => true,
-        'display_date_publiched' => true,
-        'display_date_modified'  => true,
-        'display_new'            => true,
-        'display_taxonomies'     => true,
-        'pattern_id'             => true,
-		'display_btn_view'       => true,
-		'display_btn_copy'       => true,
-		'display_image'          => 'featured',
-		'thumbnail_size'         => 'full',
-        'new_date'               => 7,
-        'new_text'               => 'New!!',
-	'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
-	'colWidthMinMobile'            => '300px',
-        'colWidthMinTablet'      => '300px',
-        'colWidthMinPC'          => '300px',
-        'gap'                    => '1.5rem',
-        'gapRow'                 => '1.5rem',
-    );
-}
-
-// ショートコード用の属性デフォルト
-function vkpdc_get_shortcode_default_attributes() {
-    return array(
-        'numberPosts'            => 6,
-        'order'                  => 'DESC',
-        'orderby'                => 'date',
-        'display_author'         => true,
-        'display_date_publiched' => true,
-        'display_date_modified'  => true,
-        'display_new'            => true,
-        'display_taxonomies'     => true,
-        'pattern_id'             => true,
-	'display_btn_view'       => true,
-	'display_btn_copy'       => true,
-	'display_image'          => 'featured',
-	'thumbnail_size'         => 'full',
-        'new_date'               => 7,
-        'new_text'               => 'New!!',
-	'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
-	'colWidthMinMobile'            => '300px',
-        'colWidthMinTablet'      => '300px',
-        'colWidthMinPC'          => '300px',
-        'gap'                    => '1.5rem',
-        'gapRow'                 => '1.5rem',
-	);
-}
-
-/**
- * Generate Archive HTML
- *
- * @param WP_Query $query クエリオブジェクト.
- * @param array $attributes ブロックの属性.
- * @return string HTMLコンテンツ.
- */
-function vkpdc_generate_archive_html( $query, $attributes ) {
-    $html = '';
-
-    // 動的スタイルを生成
-    $styles = sprintf(
-        '--col-width-min-mobile: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
-        esc_attr( $attributes['colWidthMinMobile'] ),
-        esc_attr( $attributes['colWidthMinTablet'] ),
-        esc_attr( $attributes['colWidthMinPC'] ),
-        esc_attr( $attributes['gap'] ),
-        esc_attr( $attributes['gapRow'] )
-    );
-
-    if ( $query->have_posts() ) {
-        $html .= '<div class="vkpdc_posts" style="' . esc_attr( $styles ) . '">';
-
-        while ( $query->have_posts() ) {
-            $query->the_post();
-            $post  = get_post( get_the_ID() );
-            $html .= vkpdc_get_archive_single_post( $post, $attributes );
-        }
-
-        $html .= '</div>';
-    } else {
-        $html .= '<div class="vkpdc_posts vkpdc_posts--none">';
-        $html .= '<div class="vkpdc_post_title">' . __( 'No posts found.', 'vk-pattern-directory-creator' ) . '</div>';
-        $html .= '</div>';
-    }
-
-    wp_reset_postdata();
-    return $html;
 }
 
 /**
@@ -398,7 +403,7 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
             $query->the_post();
 
             // 各投稿のHTMLを取得
-            $html .= vkpdc_get_archive_single_post( get_post(), $attributes );
+            $html .= vkpdc_generate_single_page_html( get_post(), $attributes );
         }
     } else {
         $html .= '<p>' . __( 'No patterns found.', 'vk-pattern-directory-creator' ) . '</p>';
@@ -440,3 +445,12 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 
     return $html;
 }
+
+/**
+ * Utility: Get iframe content
+ */
+function remove_image_sizes_attributes( $attr ) {
+    unset( $attr['style'] );
+    return $attr;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'remove_image_sizes_attributes', 9999, 1 );
