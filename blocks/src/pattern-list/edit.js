@@ -28,6 +28,7 @@ export default function PostListEdit( props ) {
 		display_btn_view, //eslint-disable-line camelcase
 		display_btn_view_text, //eslint-disable-line camelcase
 		display_btn_copy, //eslint-disable-line camelcase
+		display_paged, //eslint-disable-line camelcase
 		display_image, //eslint-disable-line camelcase
 		thumbnail_size, //eslint-disable-line camelcase
 		new_date, //eslint-disable-line camelcase
@@ -51,6 +52,7 @@ export default function PostListEdit( props ) {
 		if (display_btn_view === undefined) setAttributes({ display_btn_view: true });
 		if (!display_btn_view_text) setAttributes({ display_btn_view_text: __('View', 'vk-pattern-directory-creator') });
 		if (display_btn_copy === undefined) setAttributes({ display_btn_copy: true });
+		if (display_paged === undefined) setAttributes({ display_paged: true });
 		if (display_image === undefined) setAttributes({ display_image: __('featured', 'vk-pattern-directory-creator') });
 		if (!thumbnail_size) setAttributes({ thumbnail_size: 'full' });
 		if (new_date === undefined || isNaN(new_date)) setAttributes({ new_date: 7 });
@@ -178,7 +180,12 @@ export default function PostListEdit( props ) {
 						label={__('Copy Button', 'vk-pattern-directory-creator')}
 						checked={display_btn_copy}
 						onChange={(checked) => setAttributes({ display_btn_copy: checked })}
-						/>
+					/>
+					<CheckboxControl
+						label={__('Pagenation', 'vk-pattern-directory-creator')}
+						checked={display_paged}
+						onChange={(checked) => setAttributes({ display_paged: checked })}
+					/>
 					<h4>{__('Image option', 'vk-pattern-directory-creator')}</h4>
 					<SelectControl
 						label={__('Display Image Option', 'vk-pattern-directory-creator')}
