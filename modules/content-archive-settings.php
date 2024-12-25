@@ -257,7 +257,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 					</table>
 				</div>
 			</div>
-			<div id="archive-settings" class="tab-content" style="display:none;">
+			<div id="advanced-setting" class="tab-content" style="display:none;">
 				<table class="form-table">
 					<tr>
 						<th><label for="hook_name"><?php esc_html_e( 'Hook Name', 'vk-pattern-directory-creator' ); ?></label></th>
