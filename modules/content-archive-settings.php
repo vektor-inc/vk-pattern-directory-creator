@@ -267,7 +267,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 						</td>
 					</tr>
 					<tr>
-						<th><label for="hook_name"><?php esc_html_e( 'Shortcode setting', 'vk-pattern-directory-creator' ); ?></label></th>
+						<th><label for="shortcode_setting"><?php esc_html_e( 'Shortcode setting', 'vk-pattern-directory-creator' ); ?></label></th>
 						<td>
 						<p class="description"><?php _e( 'In addition to using hooks, you can also use a shortcode. Copy and paste the following code as needed:', 'vk-pattern-directory-creator' ); ?></p>
 						<div style="margin-top: .75rem;">
@@ -392,12 +392,12 @@ function vkpdc_render_settings_page_with_shortcode() {
  * フック設定
  */
 function vkpdc_register_shortcode_on_hook() {
-	$hook_name = get_option( 'vkpdc_hook_name', '' ); // 保存されたフック名を取得
+	$hook_name = get_option( 'vkpdc_hook_name', '' );
 	if ( ! empty( $hook_name ) ) {
 		// フックの実行時に既存のアクションをすべて削除
 		add_action( $hook_name, function() use ( $hook_name ) {
 			global $wp_filter;
-		
+
 			if ( isset( $wp_filter[ $hook_name ] ) ) {
 				foreach ( $wp_filter[ $hook_name ]->callbacks as $priority => $actions ) {
 					foreach ( $actions as $key => $action ) {
@@ -409,10 +409,14 @@ function vkpdc_register_shortcode_on_hook() {
 				}
 			}
 		}, PHP_INT_MIN );
-		
 
 		// ショートコードを実行
 		add_action( $hook_name, 'vkpdc_execute_shortcode_on_hook', PHP_INT_MAX ); // 最高優先度でショートコードを追加
+
+		// フック名が `lightning_extend_loop` の場合、`lightning_is_extend_loop` を有効化
+		if ( $hook_name === 'lightning_extend_loop' ) {
+			add_filter( 'lightning_is_extend_loop', '__return_true' );
+		}
 	}
 }
 add_action( 'init', 'vkpdc_register_shortcode_on_hook' );
