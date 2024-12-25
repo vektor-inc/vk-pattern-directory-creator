@@ -486,7 +486,7 @@ function vkpdc_preview_output() {
 
 		// 投稿リスト生成
 		$query_args = array(
-			'post_type'      => 'vk-patterns', // カスタム投稿タイプを指定
+			'post_type'      => 'vk-patterns',
 			'posts_per_page' => intval( $attributes['numberPosts'] ),
 			'order'          => esc_attr( $attributes['order'] ),
 			'orderby'        => esc_attr( $attributes['orderby'] ),
