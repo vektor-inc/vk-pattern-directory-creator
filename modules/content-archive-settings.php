@@ -413,7 +413,7 @@ function vkpdc_register_shortcode_on_hook() {
 		// ショートコードを実行
 		add_action( $hook_name, 'vkpdc_execute_shortcode_on_hook', PHP_INT_MAX ); // 最高優先度でショートコードを追加
 
-        // フック名が `lightning_extend_loop` の場合、アーカイブページでのみフィルターを追加
+		// フック名が `lightning_extend_loop` の場合、アーカイブページでのみフィルターを追加
 		add_action( 'template_redirect', function() {
 			$hook_name = get_option( 'vkpdc_hook_name', '' );
 			if ( $hook_name === 'lightning_extend_loop' && is_archive() && get_post_type() === 'vk-patterns' ) {
