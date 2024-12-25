@@ -157,7 +157,7 @@ function vkpdc_generate_single_page_html( $post = null, $attributes = [] ) {
 	$html    = '';
 	$post = ! empty( $post ) ? $post : get_post( get_the_ID() );
 
-	if ( ! empty( $post ) ) {        
+	if ( ! empty( $post ) ) {
 
 		/* iframe */
 		$iframe = vkpdc_get_iframe_content( $post->ID, 'archive' );
