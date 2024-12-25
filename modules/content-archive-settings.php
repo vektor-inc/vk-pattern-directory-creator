@@ -523,7 +523,7 @@ function vkpdc_preview_output() {
 			) );
 
 			if ( $pagination ) {
-				echo '<nav class="navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
+				echo '<nav class="vkpdc_pagination navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
 				echo '<h2 class="screen-reader-text">' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '</h2>';
 				echo '<div class="nav-links"><ul class="page-numbers">';
 
@@ -540,7 +540,6 @@ function vkpdc_preview_output() {
 			}
 		}
 
-		// フッター出力
 		wp_footer();
 		echo '</body></html>';
 		exit;
