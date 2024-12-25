@@ -413,10 +413,14 @@ function vkpdc_register_shortcode_on_hook() {
 		// ショートコードを実行
 		add_action( $hook_name, 'vkpdc_execute_shortcode_on_hook', PHP_INT_MAX ); // 最高優先度でショートコードを追加
 
-		// フック名が `lightning_extend_loop` の場合、`lightning_is_extend_loop` を有効化
-		if ( $hook_name === 'lightning_extend_loop' ) {
-			add_filter( 'lightning_is_extend_loop', '__return_true' );
-		}
+        // フック名が `lightning_extend_loop` の場合、アーカイブページでのみフィルターを追加
+        if ( $hook_name === 'lightning_extend_loop' ) {
+            add_action( 'wp', function() {
+                if ( is_archive() && ! is_admin() && get_post_type() === 'vk-patterns' ) {
+                    add_filter( 'lightning_is_extend_loop', '__return_true' );
+                }
+            } );
+        }
 	}
 }
 add_action( 'init', 'vkpdc_register_shortcode_on_hook' );
