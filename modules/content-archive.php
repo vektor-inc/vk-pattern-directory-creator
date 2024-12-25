@@ -133,6 +133,8 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
             $post  = get_post( get_the_ID() );
             $html .= vkpdc_generate_single_page_html( $post, $attributes );
         }
+        
+        $html .= vkpdc_add_placeholder_articles( $query, $attributes );
 
         $html .= '</div>';
     } else {
@@ -447,10 +449,38 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 }
 
 /**
- * Utility: Get iframe content
+ * Remove image size attributes
+ * 
+ * @param array $attr Image attributes.
+ * @return array
  */
 function remove_image_sizes_attributes( $attr ) {
     unset( $attr['style'] );
     return $attr;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'remove_image_sizes_attributes', 9999, 1 );
+
+/**
+ * Add placeholder articles to maintain grid structure on the last page.
+ *
+ * @param WP_Query $query WP_Query instance.
+ * @param array    $attributes Block attributes.
+ * @return string HTML content with placeholders.
+ */
+function vkpdc_add_placeholder_articles( $query, $attributes ) {
+    $html = '';
+    $posts_per_page = intval( $attributes['numberPosts'] );
+    $current_count = $query->post_count;
+
+    // ダミー記事の数を計算
+    $placeholders_needed = $posts_per_page - $current_count;
+
+    // ダミー記事を生成
+    if ( $placeholders_needed > 0 ) {
+        for ( $i = 0; $i < $placeholders_needed; $i++ ) {
+            $html .= '<article class="placeholder-article"></article>';
+        }
+    }
+
+    return $html;
+}
