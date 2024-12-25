@@ -423,7 +423,7 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 		) );
 
 		if ( $pagination ) {
-			$html .= '<nav class="navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
+			$html .= '<nav class="vkpdc_posts navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
 			$html .= '<h2 class="screen-reader-text">' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '</h2>';
 			$html .= '<div class="nav-links"><ul class="page-numbers">';
 
