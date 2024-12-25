@@ -397,24 +397,19 @@ function vkpdc_register_shortcode_on_hook() {
 		// フックの実行時に既存のアクションをすべて削除
 		add_action( $hook_name, function() use ( $hook_name ) {
 			global $wp_filter;
-
+		
 			if ( isset( $wp_filter[ $hook_name ] ) ) {
-				$callbacks = $wp_filter[ $hook_name ]->callbacks;
-
-				// すべてのアクションを削除
-				foreach ( $callbacks as $priority => $actions ) {
+				foreach ( $wp_filter[ $hook_name ]->callbacks as $priority => $actions ) {
 					foreach ( $actions as $key => $action ) {
-						// ショートコードのアクションを例外にする
-						if (
-							is_string( $action['function'] ) && $action['function'] === 'vkpdc_execute_shortcode_on_hook'
-						) {
+						if ( is_string( $action['function'] ) && $action['function'] === 'vkpdc_execute_shortcode_on_hook' ) {
 							continue;
 						}
 						remove_action( $hook_name, $action['function'], $priority );
 					}
 				}
 			}
-		}, PHP_INT_MIN ); // 最低優先度で実行
+		}, PHP_INT_MIN );
+		
 
 		// ショートコードを実行
 		add_action( $hook_name, 'vkpdc_execute_shortcode_on_hook', PHP_INT_MAX ); // 最高優先度でショートコードを追加
