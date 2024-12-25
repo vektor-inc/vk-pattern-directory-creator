@@ -11,10 +11,12 @@
  * @return array
  */
 function vkpdc_get_default_options() {
-	return array(
+	error_log( 'vkpdc_get_default_options' );
+
+	$defaults = array(
 		'numberPosts'           => 6,
-		'order'                 =>  __( 'DESC', 'vk-pattern-directory-creator' ),
-		'orderby'               =>  __( 'date', 'vk-pattern-directory-creator' ),
+		'order'                 => __( 'DESC', 'vk-pattern-directory-creator' ),
+		'orderby'               => __( 'date', 'vk-pattern-directory-creator' ),
 		'display_new'           => 1,
 		'display_taxonomies'    => 1,
 		'pattern_id'            => 1,
@@ -27,23 +29,35 @@ function vkpdc_get_default_options() {
 		'display_image'         => 'featured',
 		'thumbnail_size'        => 'full',
 		'new_date'              => 7,
-		'new_text'              =>  __( 'NEW!!', 'vk-pattern-directory-creator' ),
-		'colWidthMinMobile'           => '300px',
+		'new_text'              => __( 'NEW!!', 'vk-pattern-directory-creator' ),
+		'colWidthMinMobile'     => '300px',
 		'colWidthMinTablet'     => '300px',
 		'colWidthMinPC'         => '300px',
 		'gap'                   => '1.5rem',
 		'gapRow'                => '1.5rem',
 		'hook_name'             => vkpdc_get_default_hook_name(),
 	);
+
+	error_log( 'vkpdc_get_default_options array end' );
+
+	foreach ( $defaults as $key => $default ) {
+		$option_value = get_option( 'vkpdc_' . $key, $default );
+		error_log( "get_option for $key: " . print_r( $option_value, true ) );
+		$defaults[ $key ] = $option_value;
+	}
+
+	error_log( 'vkpdc_get_default_options end' );
+
+	return $defaults;
 }
 
 // テーマが lightning の場合のデフォルトフック名を取得
 function vkpdc_get_default_hook_name() {
-    // 現在のテーマが lightning の場合、デフォルトフック名を設定
-    if ( wp_get_theme()->get( 'TextDomain' ) === 'lightning' ) {
-        return 'lightning_extend_loop';
-    }
-    return ''; // その他のテーマの場合は空
+	// 現在のテーマが lightning の場合、デフォルトフック名を設定
+	if ( wp_get_theme()->get( 'TextDomain' ) === 'lightning' ) {
+		return 'lightning_extend_loop';
+	}
+	return ''; // その他のテーマの場合は空
 }
 
 // デフォルトオプションを初期化
@@ -63,6 +77,11 @@ register_activation_hook( __FILE__, 'vkpdc_initialize_default_options' );
 function vkpdc_save_settings() {
 	check_admin_referer( 'vkpdc_save_settings', 'vkpdc_settings_nonce' );
 	$defaults = vkpdc_get_default_options();
+
+	foreach ( vkpdc_get_default_options() as $key => $default ) {
+		$current_value = get_option( 'vkpdc_' . $key );
+		error_log( "After save: $key = " . print_r( $current_value, true ) );
+	}
 
 	$checkbox_fields = [
 		'display_new',
@@ -94,6 +113,8 @@ function vkpdc_save_settings() {
 				update_option( 'vkpdc_' . $key, $value );
 			}
 		}
+
+		wp_cache_flush(); // キャッシュをクリア
 		return __( 'Settings saved.', 'vk-pattern-directory-creator' );
 	}
 }
@@ -113,36 +134,10 @@ function vkpdc_render_settings_page_with_shortcode() {
 		$options[ $key ] = get_option( 'vkpdc_' . $key, $default );
 	}
 
-	// ショートコードを生成
-	$generated_shortcode = sprintf(
-		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
-		intval( $options['numberPosts'] ),
-		esc_attr( $options['order'] ),
-		esc_attr( $options['orderby'] ),
-		intval( $options['display_new'] ),
-		intval( $options['display_taxonomies'] ),
-		intval( $options['pattern_id'] ),
-		intval( $options['display_date_publiched'] ),
-		intval( $options['display_date_modified'] ),
-		intval( $options['display_author'] ),
-		esc_attr( $options['display_image'] ),
-		esc_attr( $options['thumbnail_size'] ),
-		intval( $options['display_btn_view'] ),
-		intval( $options['display_btn_copy'] ),
-		esc_attr( $options['display_btn_view_text'] ),
-		intval( $options['new_date'] ),
-		esc_attr( $options['new_text'] ),
-		esc_attr( $options['colWidthMinMobile'] ),
-		esc_attr( $options['colWidthMinTablet'] ),
-		esc_attr( $options['colWidthMinPC'] ),
-		esc_attr( $options['gap'] ),
-		esc_attr( $options['gapRow'] )
-	);	
-
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Archive and Shortcode Setting', 'vk-pattern-directory-creator' ); ?></h1>
-		<p><?php _e( 'Please configure your archive display using either a hook or a shortcode, depending on your needs.', 'vk-pattern-directory-creator' ); ?><br><?php _e( 'Use the shortcode generator to customize and copy the desired layout, or specify a WordPress hook to integrate the archive display seamlessly into your theme.', 'vk-pattern-directory-creator' ); ?></p>
+		<h1><?php esc_html_e( 'Archive Setting', 'vk-pattern-directory-creator' ); ?></h1>
+		<p><?php _e( 'You can configure the pattern archive list here. For more details on archive display settings, please visit "Advanced Setting (Option)".', 'vk-pattern-directory-creator' ); ?><br><?php _e( 'Use the shortcode generator to customize and copy the desired layout, or specify a WordPress hook to integrate the archive display seamlessly into your theme.', 'vk-pattern-directory-creator' ); ?></p>
 		<?php if ( $message ) : ?>
 			<div class="updated"><p><?php echo esc_html( $message ); ?></p></div>
 		<?php endif; ?>
@@ -150,7 +145,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 			<?php wp_nonce_field( 'vkpdc_save_settings', 'vkpdc_settings_nonce' ); ?>
 			<h2 class="nav-tab-wrapper">
 				<a href="#pattern-list-settings" class="nav-tab nav-tab-active"><?php esc_html_e( 'Pattern List Settings', 'vk-pattern-directory-creator' ); ?></a>
-				<a href="#archive-settings" class="nav-tab"><?php esc_html_e( 'Archive Settings (Option)', 'vk-pattern-directory-creator' ); ?></a>
+				<a href="#advanced-setting" class="nav-tab"><?php esc_html_e( 'Advanced Setting (Option)', 'vk-pattern-directory-creator' ); ?></a>
 			</h2>
 			<div id="pattern-list-settings" class="tab-content" style="display: block;">
 				<h2 class="nav-tab-wrapper">
@@ -180,8 +175,9 @@ function vkpdc_render_settings_page_with_shortcode() {
 							<td>
 								<select id="orderby" name="orderby">
 									<option value="date" <?php selected( $options['orderby'], 'date' ); ?>><?php esc_html_e( 'Date', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="modified" <?php selected( $options['orderby'], 'modified' ); ?>><?php esc_html_e( 'Modified', 'vk-pattern-directory-creator' ); ?></option>
 									<option value="title" <?php selected( $options['orderby'], 'title' ); ?>><?php esc_html_e( 'Title', 'vk-pattern-directory-creator' ); ?></option>
-									<option value="rand" <?php selected( $options['orderby'], 'rand' ); ?>><?php esc_html_e( 'Random', 'vk-pattern-directory-creator' ); ?></option>
+									<option value="random" <?php selected( $options['orderby'], 'random' ); ?>><?php esc_html_e( 'Random', 'vk-pattern-directory-creator' ); ?></option>
 								</select>
 							</td>
 						</tr>
@@ -260,13 +256,8 @@ function vkpdc_render_settings_page_with_shortcode() {
 						</tr>
 					</table>
 				</div>
-				<div style="margin: 1.5rem auto;">
-					<button type="button" id="vkpdc_generate_shortcode" class="button button-secondary">
-						<?php esc_html_e( 'Generate Shortcode', 'vk-pattern-directory-creator' ); ?>
-					</button>
-				</div>
 			</div>
-			<div id="archive-settings" class="tab-content" style="display:none;">
+			<div id="advanced-setting" class="tab-content" style="display:none;">
 				<table class="form-table">
 					<tr>
 						<th><label for="hook_name"><?php esc_html_e( 'Hook Name', 'vk-pattern-directory-creator' ); ?></label></th>
@@ -276,9 +267,17 @@ function vkpdc_render_settings_page_with_shortcode() {
 						</td>
 					</tr>
 					<tr>
-						<th><label for="hook_name"><?php esc_html_e( 'Archive Preview', 'vk-pattern-directory-creator' ); ?></label></th>
+						<th><label for="hook_name"><?php esc_html_e( 'Shortcode setting', 'vk-pattern-directory-creator' ); ?></label></th>
 						<td>
-							<a href="/pattern" target="_blank"><?php _e( 'Click here to preview the archive with the current settings.', 'vk-pattern-directory-creator' ); ?></a>
+						<p class="description"><?php _e( 'In addition to using hooks, you can also use a shortcode. Copy and paste the following code as needed:', 'vk-pattern-directory-creator' ); ?></p>
+						<div style="margin-top: .75rem;">
+							<label for="shortcode_do_shortcode"><?php _e( 'For PHP files:', 'vk-pattern-directory-creator' ); ?></label>
+							<input id="shortcode_do_shortcode" type="text" readonly style="width: 100%; padding: 0.3rem; font-family: monospace; cursor: pointer;" value="&lt;?php echo do_shortcode('[vkpdc_archive_loop]'); ?&gt;" onclick="this.select();">
+						</div>
+						<div>
+							<label for="shortcode_direct"><?php _e( 'For posts or pages:', 'vk-pattern-directory-creator' ); ?></label>
+							<input id="shortcode_direct" type="text" readonly style="width: 100%; padding: 0.3rem; font-family: monospace; cursor: pointer;" value="[vkpdc_archive_loop]" onclick="this.select();">
+						</div>
 						</td>
 					</tr>
 				</table>
@@ -289,9 +288,8 @@ function vkpdc_render_settings_page_with_shortcode() {
 			</div>
 		</form>
 		<script>
-			// タブ切り替え
 			document.addEventListener('DOMContentLoaded', function () {
-				// 大カテゴリのタブ切り替え
+				// タブ切り替え
 				const mainTabs = document.querySelectorAll('.nav-tab-wrapper > .nav-tab');
 				const mainContents = document.querySelectorAll('.tab-content');
 
@@ -345,36 +343,46 @@ function vkpdc_render_settings_page_with_shortcode() {
 					content.style.display = index === 0 ? 'block' : 'none'; // 最初のネストされたコンテンツだけ表示
 				});
 			});
-
-			// ショートコード生成
-			document.addEventListener('DOMContentLoaded', function () {
-				const generateButton = document.getElementById('vkpdc_generate_shortcode');
-				const shortcodeTextarea = document.createElement('textarea');
-
-				generateButton.addEventListener('click', function () {
-					const shortcode = `<?php echo $generated_shortcode; ?>`;
-
-					// テキストエリアに表示して選択
-					shortcodeTextarea.value = shortcode;
-					shortcodeTextarea.style.width = '100%';
-					shortcodeTextarea.style.height = '100px';
-					document.body.appendChild(shortcodeTextarea);
-					shortcodeTextarea.select();
-
-					// コピー実行
-					document.execCommand('copy');
-					alert('<?php esc_html_e( 'Shortcode copied to clipboard!', 'vk-pattern-directory-creator' ); ?>');
-
-					// 一時的なテキストエリアを削除
-					document.body.removeChild(shortcodeTextarea);
-				});
-			});
 		</script>
 
 		<h2><?php esc_html_e( 'Preview', 'vk-pattern-directory-creator' ); ?></h2>
 		<div id="vkpdc-preview-container" style="border: 1px solid #ddd; padding: 10px; margin-top: 20px;">
-			<iframe id="vkpdc-preview-iframe" style="width: 100%; height: 600px;" src="<?php echo esc_url( site_url() . '/?vkpdc_preview=true&rand=' . rand() ); ?>"></iframe>
+		<iframe id="vkpdc-preview-iframe" style="width: 100%; height: 600px;" src="<?php echo esc_url( site_url( '/pattern' ) ); ?>"></iframe>
 		</div>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				const form = document.querySelector('form');
+				const iframe = document.getElementById('vkpdc-preview-iframe');
+
+				// プレビューを更新する関数
+				const updatePreview = () => {
+					const formData = new FormData(form);
+					const params = new URLSearchParams();
+
+					// フォーム内のすべての値をクエリパラメータに追加
+					for (const [key, value] of formData.entries()) {
+						params.append(key, value);
+					}
+
+					// チェックボックスの値を手動で追加（未チェックの場合に対応）
+					form.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+						if (!formData.has(checkbox.name)) {
+							params.append(checkbox.name, '0');
+						}
+					});
+
+					// iframeのsrcを更新
+					iframe.src = `<?php echo esc_url(site_url()); ?>?vkpdc_preview=true&${params.toString()}`;
+				};
+
+				// 初期プレビュー表示
+				updatePreview();
+
+				// フォーム内の変更を検知してプレビューを更新
+				form.addEventListener('input', updatePreview);
+				form.addEventListener('change', updatePreview);
+			});
+		</script>
 
 	</div>
 	<?php
@@ -389,24 +397,19 @@ function vkpdc_register_shortcode_on_hook() {
 		// フックの実行時に既存のアクションをすべて削除
 		add_action( $hook_name, function() use ( $hook_name ) {
 			global $wp_filter;
-
+		
 			if ( isset( $wp_filter[ $hook_name ] ) ) {
-				$callbacks = $wp_filter[ $hook_name ]->callbacks;
-
-				// すべてのアクションを削除
-				foreach ( $callbacks as $priority => $actions ) {
+				foreach ( $wp_filter[ $hook_name ]->callbacks as $priority => $actions ) {
 					foreach ( $actions as $key => $action ) {
-						// ショートコードのアクションを例外にする
-						if (
-							is_string( $action['function'] ) && $action['function'] === 'vkpdc_execute_shortcode_on_hook'
-						) {
+						if ( is_string( $action['function'] ) && $action['function'] === 'vkpdc_execute_shortcode_on_hook' ) {
 							continue;
 						}
 						remove_action( $hook_name, $action['function'], $priority );
 					}
 				}
 			}
-		}, PHP_INT_MIN ); // 最低優先度で実行
+		}, PHP_INT_MIN );
+		
 
 		// ショートコードを実行
 		add_action( $hook_name, 'vkpdc_execute_shortcode_on_hook', PHP_INT_MAX ); // 最高優先度でショートコードを追加
@@ -416,6 +419,13 @@ add_action( 'init', 'vkpdc_register_shortcode_on_hook' );
 
 function vkpdc_execute_shortcode_on_hook() {
 	$options = vkpdc_get_default_options();
+
+	$saved_options = [];
+	// ショートコード属性で上書き
+	$attributes = shortcode_atts( $saved_options, [] );
+
+	error_log( 'Options in execute_shortcode_on_hook: ' . print_r( $options, true ) );
+
 	$shortcode = sprintf(
 		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
 		intval( $options['numberPosts'] ),
@@ -440,7 +450,7 @@ function vkpdc_execute_shortcode_on_hook() {
 		esc_attr( $options['gap'] ),
 		esc_attr( $options['gapRow'] )
 	);
-	echo do_shortcode( $shortcode ); // ショートコードの結果のみを出力
+	echo do_shortcode( $shortcode );
 }
 
 /**
@@ -448,51 +458,84 @@ function vkpdc_execute_shortcode_on_hook() {
  */
 function vkpdc_preview_output() {
 	if ( isset( $_GET['vkpdc_preview'] ) && $_GET['vkpdc_preview'] === 'true' ) {
-		// 必要な設定を取得
-		$options = [];
-		$defaults = vkpdc_get_default_options();
-		foreach ( $defaults as $key => $default ) {
-			$options[ $key ] = get_option( 'vkpdc_' . $key, $default );
-		}
+		// デフォルトオプションとクエリパラメータをマージ
+		$attributes = shortcode_atts(
+			vkpdc_get_default_options(), // デフォルトオプション
+			$_GET                                // URL クエリパラメータ
+		);
 
-		// ショートコードを出力
+		// 現在のページ番号を取得
+		$current_page = max( 1, get_query_var( 'paged', 1 ) );
+
+		// ヘッダー出力
 		echo '<!DOCTYPE html>
-		<html lang="en"style="margin: 0 !important; padding: 1.5rem;">
+		<html>
 		<head>
 			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<title>VK Patterns Preview</title>';
+			<title>' . __( 'Preview', 'vk-pattern-directory-creator' ) . '</title>';
 		wp_head();
 		echo '</head>
 		<body>';
 
-		echo do_shortcode( sprintf(
-			'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
-			intval( $options['numberPosts'] ),
-			esc_attr( $options['order'] ),
-			esc_attr( $options['orderby'] ),
-			intval( $options['display_new'] ),
-			intval( $options['display_taxonomies'] ),
-			intval( $options['pattern_id'] ),
-			intval( $options['display_date_publiched'] ),
-			intval( $options['display_date_modified'] ),
-			intval( $options['display_author'] ),
-			esc_attr( $options['display_image'] ),
-			esc_attr( $options['thumbnail_size'] ),
-			intval( $options['display_btn_view'] ),
-			intval( $options['display_btn_copy'] ),
-			esc_attr( $options['display_btn_view_text'] ),
-			intval( $options['new_date'] ),
-			esc_attr( $options['new_text'] ),
-			esc_attr( $options['colWidthMinMobile'] ),
-			esc_attr( $options['colWidthMinTablet'] ),
-			esc_attr( $options['colWidthMinPC'] ),
-			esc_attr( $options['gap'] ),
-			esc_attr( $options['gapRow'] )
-		) );
+		// 投稿リスト生成
+		$query_args = array(
+			'post_type'      => 'vk-patterns', // カスタム投稿タイプを指定
+			'posts_per_page' => intval( $attributes['numberPosts'] ),
+			'order'          => esc_attr( $attributes['order'] ),
+			'orderby'        => esc_attr( $attributes['orderby'] ),
+			'paged'          => $current_page,
+		);
 
+		$query = new WP_Query( $query_args );
+
+		// 投稿リストHTML出力
+		echo '<div class="vkpdc_posts" style="--col-width-min-mobile: ' . esc_attr( $attributes['colWidthMinMobile'] ) . '; --col-width-min-tablet: ' . esc_attr( $attributes['colWidthMinTablet'] ) . '; --col-width-min-pc: ' . esc_attr( $attributes['colWidthMinPC'] ) . '; --gap: ' . esc_attr( $attributes['gap'] ) . '; --gap-row: ' . esc_attr( $attributes['gapRow'] ) . ';">';
+
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+
+				// 各投稿のHTMLを取得
+				echo vkpdc_generate_single_page_html( get_post(), $attributes );
+			}
+		} else {
+			echo '<p>' . __( 'No patterns found.', 'vk-pattern-directory-creator' ) . '</p>';
+		}
+
+		echo '</div>';
+
+		// ページネーションの生成
+		if ( $query->max_num_pages > 1 ) {
+			$pagination = paginate_links( array(
+				'total'     => $query->max_num_pages,
+				'current'   => $current_page,
+				'format'    => '?paged=%#%',
+				'type'      => 'array',
+				'prev_text' => '&laquo;',
+				'next_text' => '&raquo;',
+			) );
+
+			if ( $pagination ) {
+				echo '<nav class="navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
+				echo '<h2 class="screen-reader-text">' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '</h2>';
+				echo '<div class="nav-links"><ul class="page-numbers">';
+
+				// ページリンクをリスト化
+				foreach ( $pagination as $link ) {
+					if ( strpos( $link, 'current' ) !== false ) {
+						echo '<li><span class="page-numbers current">' . strip_tags( $link ) . '</span></li>';
+					} else {
+						echo '<li>' . $link . '</li>';
+					}
+				}
+
+				echo '</ul></div></nav>';
+			}
+		}
+
+		// フッター出力
+		wp_footer();
 		echo '</body></html>';
-
 		exit;
 	}
 }
@@ -504,8 +547,8 @@ add_action( 'template_redirect', 'vkpdc_preview_output' );
 function add_shortcode_archive_settings_page() {
 	add_submenu_page(
 		'edit.php?post_type=vk-patterns',
-		__( 'Archive and Shortcode Setting', 'vk-pattern-directory-creator' ),
-		__( 'Archive and Shortcode Setting', 'vk-pattern-directory-creator' ),
+		__( 'Archive Setting', 'vk-pattern-directory-creator' ),
+		__( 'Archive Setting', 'vk-pattern-directory-creator' ),
 		'manage_options',
 		'vk-patterns-shortcode-archive-settings',
 		'vkpdc_render_settings_page_with_shortcode'
