@@ -59,6 +59,7 @@
 		gap: var(--gap, 1.5rem);
 		row-gap: var(--gap-row, 1.5rem);		
 		overflow: hidden;
+
 		> article {
 			display: grid;
 			grid-template-rows: auto auto 1fr auto auto;
@@ -71,6 +72,11 @@
 			border-radius: .25rem;
 			font-size: .85rem;
 			box-sizing: border-box;
+
+			&.placeholder-article {
+				padding: 0;
+				border: 0;
+			}
 			&:not(:has(.vkpdc_iframe-outer)),
 			&:not(:has(.vkpdc_post_info)),
 			&:not(:has(.vkpdc_post_entry_meta)),
