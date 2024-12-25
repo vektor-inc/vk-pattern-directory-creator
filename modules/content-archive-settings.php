@@ -113,32 +113,6 @@ function vkpdc_render_settings_page_with_shortcode() {
 		$options[ $key ] = get_option( 'vkpdc_' . $key, $default );
 	}
 
-	// ショートコードを生成
-	$generated_shortcode = sprintf(
-		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
-		intval( $options['numberPosts'] ),
-		esc_attr( $options['order'] ),
-		esc_attr( $options['orderby'] ),
-		intval( $options['display_new'] ),
-		intval( $options['display_taxonomies'] ),
-		intval( $options['pattern_id'] ),
-		intval( $options['display_date_publiched'] ),
-		intval( $options['display_date_modified'] ),
-		intval( $options['display_author'] ),
-		esc_attr( $options['display_image'] ),
-		esc_attr( $options['thumbnail_size'] ),
-		intval( $options['display_btn_view'] ),
-		intval( $options['display_btn_copy'] ),
-		esc_attr( $options['display_btn_view_text'] ),
-		intval( $options['new_date'] ),
-		esc_attr( $options['new_text'] ),
-		esc_attr( $options['colWidthMinMobile'] ),
-		esc_attr( $options['colWidthMinTablet'] ),
-		esc_attr( $options['colWidthMinPC'] ),
-		esc_attr( $options['gap'] ),
-		esc_attr( $options['gapRow'] )
-	);	
-
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Archive Setting', 'vk-pattern-directory-creator' ); ?></h1>
