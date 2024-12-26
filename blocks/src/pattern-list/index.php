@@ -91,7 +91,7 @@ function vkpdc_add_pattern_list_block() {
 				),
 				'display_paged' => array(
 					'type'    => 'boolean',
-					'default' => true,
+					'default' => false,
 				),
 				'display_image' => array(
 					'type'    => 'string',

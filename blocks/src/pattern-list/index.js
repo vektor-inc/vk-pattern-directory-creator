@@ -30,7 +30,7 @@ export const settings = {
 			pattern_id: true,
 			display_btn_view: true,
 			display_btn_copy: true,
-			display_paged: true,
+			display_paged: false,
 			display_image: 'featured',
 			thumbnail_size: 'large',
 			new_date: 7,

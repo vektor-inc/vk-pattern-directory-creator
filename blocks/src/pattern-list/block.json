@@ -52,7 +52,7 @@
 		},
 		"display_paged": {
 			"type": "boolean",
-			"default": true
+			"default": false
 		},
 		"display_image": {
 			"type": "string",

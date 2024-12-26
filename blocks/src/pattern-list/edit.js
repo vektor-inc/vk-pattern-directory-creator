@@ -52,7 +52,7 @@ export default function PostListEdit( props ) {
 		if (display_btn_view === undefined) setAttributes({ display_btn_view: true });
 		if (!display_btn_view_text) setAttributes({ display_btn_view_text: __('View', 'vk-pattern-directory-creator') });
 		if (display_btn_copy === undefined) setAttributes({ display_btn_copy: true });
-		if (display_paged === undefined) setAttributes({ display_paged: true });
+		if (display_paged === undefined) setAttributes({ display_paged: false });
 		if (display_image === undefined) setAttributes({ display_image: __('featured', 'vk-pattern-directory-creator') });
 		if (!thumbnail_size) setAttributes({ thumbnail_size: 'full' });
 		if (new_date === undefined || isNaN(new_date)) setAttributes({ new_date: 7 });
