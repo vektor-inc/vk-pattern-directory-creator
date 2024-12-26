@@ -9,7 +9,7 @@
  * テーマ切り替え時のフック名リセット
  */
 function vkpdc_reset_hook_name_on_theme_switch() {
-    update_option( 'vkpdc_hook_name', '' );
+	update_option( 'vkpdc_hook_name', '' );
 }
 add_action( 'after_switch_theme', 'vkpdc_reset_hook_name_on_theme_switch' );
 
@@ -19,11 +19,11 @@ add_action( 'after_switch_theme', 'vkpdc_reset_hook_name_on_theme_switch' );
  * @return bool
  */
 function vkpdc_is_block_theme() {
-    // WordPress 5.9 以降で導入された関数 wp_is_block_theme() を使用
-    if ( function_exists( 'wp_is_block_theme' ) ) {
-        return wp_is_block_theme();
-    }
-    return false;
+	// WordPress 5.9 以降で導入された関数 wp_is_block_theme() を使用
+	if ( function_exists( 'wp_is_block_theme' ) ) {
+		return wp_is_block_theme();
+	}
+	return false;
 }
 
 /**
@@ -137,11 +137,11 @@ function vkpdc_save_options() {
  * 設定のロード制御
  */
 function vkpdc_disable_features_if_block_theme() {
-    if ( vkpdc_is_block_theme() ) {
-        // フックや機能を無効化する
-        remove_action( 'init', 'vkpdc_register_shortcode_on_hook' );
-        remove_action( 'template_redirect', 'vkpdc_render_preview' );
-    }
+	if ( vkpdc_is_block_theme() ) {
+		// フックや機能を無効化する
+		remove_action( 'init', 'vkpdc_register_shortcode_on_hook' );
+		remove_action( 'template_redirect', 'vkpdc_render_preview' );
+	}
 }
 add_action( 'init', 'vkpdc_disable_features_if_block_theme', 20 );
 
@@ -151,8 +151,8 @@ add_action( 'init', 'vkpdc_disable_features_if_block_theme', 20 );
  */
 function vkpdc_register_shortcode_on_hook() {
 	if ( vkpdc_is_block_theme() ) {
-        return;
-    }
+		return;
+	}
 
 	$hook_name = get_option( 'vkpdc_hook_name', '' );
 	if ( ! empty( $hook_name ) ) {
@@ -223,16 +223,16 @@ function vkpdc_execute_shortcode_on_hook() {
  * Add Settings Page
  */
 function vkpdc_add_settings_page() {
-    if ( ! vkpdc_is_block_theme() ) {
-        add_submenu_page(
-            'edit.php?post_type=vk-patterns',
-            __( 'Archive Setting', 'vk-pattern-directory-creator' ),
-            __( 'Archive Setting', 'vk-pattern-directory-creator' ),
-            'manage_options',
-            'vk-patterns-shortcode-archive-settings',
-            'vkpdc_render_settings_page'
-        );
-    }
+	if ( ! vkpdc_is_block_theme() ) {
+		add_submenu_page(
+			'edit.php?post_type=vk-patterns',
+			__( 'Archive Setting', 'vk-pattern-directory-creator' ),
+			__( 'Archive Setting', 'vk-pattern-directory-creator' ),
+			'manage_options',
+			'vk-patterns-shortcode-archive-settings',
+			'vkpdc_render_settings_page'
+		);
+	}
 }
 add_action( 'admin_menu', 'vkpdc_add_settings_page' );
 
