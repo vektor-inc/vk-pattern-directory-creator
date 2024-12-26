@@ -126,6 +126,11 @@ function vkpdc_save_options() {
 		$current_value = get_option( 'vkpdc_' . $key );
 	}
 
+    // フック名の存在を検証
+    if ( ! empty( $hook_name ) && ! has_filter( $hook_name ) ) {
+        wp_die( __( 'The specified hook is not valid.', 'vk-pattern-directory-creator' ) );
+    }
+
 	$checkbox_fields = [
 		'display_new',
 		'display_taxonomies',
@@ -416,8 +421,10 @@ function vkpdc_render_settings_page() {
 						<th><label for="hook_name"><?php esc_html_e( 'Hook Name', 'vk-pattern-directory-creator' ); ?></label></th>
 						<td>
 							<input type="text" id="hook_name" name="hook_name" value="<?php echo esc_attr( $options['hook_name'] ); ?>">
-							<p class="description"><?php _e( 'Ex) lightning_extend_loop', 'vk-pattern-directory-creator' ); ?></p>
-						</td>
+							<p class="description"><?php _e( 'For example:lightning_extend_loop', 'vk-pattern-directory-creator' ); ?>
+							<p class="notice notice-warning"><i class="fa-solid fa-triangle-exclamation"></i><?php _e( 'Please proceed with caution! Setting an invalid or conflicting hook name can break the functionality of your theme or plugin. Use a valid WordPress hook name and test carefully before saving.', 'vk-pattern-directory-creator' ); ?></p>
+						</p>
+					</td>
 					</tr>
 					<tr>
 						<th><label for="shortcode_setting"><?php esc_html_e( 'Shortcode setting', 'vk-pattern-directory-creator' ); ?></label></th>
@@ -496,6 +503,33 @@ function vkpdc_render_settings_page() {
 					content.style.display = index === 0 ? 'block' : 'none'; // 最初のネストされたコンテンツだけ表示
 				});
 			});
+
+			document.addEventListener("DOMContentLoaded", () => {
+				const hookNameInput = document.getElementById("hook_name");
+				const submitButton = document.querySelector('input[type="submit"]');
+
+				// フック名の正規表現パターン
+				const validHookNamePattern = /^[a-zA-Z0-9_]+$/;
+
+				// 入力チェック関数
+				function validateHookName() {
+					const hookName = hookNameInput.value.trim();
+					if (validHookNamePattern.test(hookName)) {
+						hookNameInput.classList.remove("invalid");
+						submitButton.disabled = false; // 保存ボタンを有効化
+					} else {
+						hookNameInput.classList.add("invalid");
+						submitButton.disabled = true; // 保存ボタンを無効化
+					}
+				}
+
+				// 入力イベントでリアルタイム検証
+				hookNameInput.addEventListener("input", validateHookName);
+
+				// 初期状態で検証
+				validateHookName();
+			});
+
 		</script>
 
 		<h2><?php esc_html_e( 'Preview', 'vk-pattern-directory-creator' ); ?></h2>
