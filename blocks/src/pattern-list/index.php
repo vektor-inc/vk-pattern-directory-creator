@@ -91,7 +91,7 @@ function vkpdc_add_pattern_list_block() {
 				),
 				'display_paged' => array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				),
 				'display_image' => array(
 					'type'    => 'string',
@@ -143,16 +143,3 @@ function vkpdc_add_pattern_list_block() {
 	);
 }
 add_action( 'init', 'vkpdc_add_pattern_list_block', 9999 );
-
-/**
- * Enqueue styles for front-end and editor globally.
- */
-function vkpdc_enqueue_global_styles() {
-    wp_enqueue_style(
-        'vkpdc-global-style',
-        plugins_url( 'assets/build/css/style.css', __FILE__ ),
-        array(),
-        '0.1.0'
-    );
-}
-add_action( 'enqueue_block_assets', 'vkpdc_enqueue_global_styles' );
