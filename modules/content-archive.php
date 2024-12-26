@@ -36,8 +36,8 @@ function vkpdc_get_block_default_attributes() {
 		'thumbnail_size'         => 'full',
         'new_date'               => 7,
         'new_text'               => 'New!!',
-	'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
-	'colWidthMinMobile'            => '300px',
+		'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
+		'colWidthMinMobile'      => '300px',
         'colWidthMinTablet'      => '300px',
         'colWidthMinPC'          => '300px',
         'gap'                    => '1.5rem',
@@ -59,14 +59,14 @@ function vkpdc_get_shortcode_default_attributes() {
         'display_new'            => true,
         'display_taxonomies'     => true,
         'pattern_id'             => true,
-	'display_btn_view'       => true,
-	'display_btn_copy'       => true,
-	'display_image'          => 'featured',
-	'thumbnail_size'         => 'full',
+		'display_btn_view'       => true,
+		'display_btn_copy'       => true,
+		'display_image'          => 'featured',
+		'thumbnail_size'         => 'full',
         'new_date'               => 7,
         'new_text'               => 'New!!',
-	'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
-	'colWidthMinMobile'            => '300px',
+		'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
+		'colWidthMinMobile'      => '300px',
         'colWidthMinTablet'      => '300px',
         'colWidthMinPC'          => '300px',
         'gap'                    => '1.5rem',
@@ -75,7 +75,7 @@ function vkpdc_get_shortcode_default_attributes() {
 }
 
 /**
- * Generate Single Page HTML
+ * Generate Post Item HTML
  *
  * @param WP_Post $post 投稿オブジェクト.
  * @param array $attributes ブロックの属性.
