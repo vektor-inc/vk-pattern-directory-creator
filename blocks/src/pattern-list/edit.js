@@ -65,6 +65,40 @@ export default function PostListEdit( props ) {
 
 	}, []);
 
+	// リンクを無効にする関数
+	const disableLinks = () => {
+		const links = document.querySelectorAll(
+			'.vkpdc_post a, .vkpdc_pagination a'
+		);
+		links.forEach((link) => {
+			link.addEventListener('click', (event) => {
+				event.preventDefault();
+			});
+			link.style.cursor = 'default';
+			link.style.boxShadow = 'unset';
+
+			// ホバー効果を無効化
+			link.style.textDecorationColor = 'inherit';
+		});
+	};
+
+	useEffect(() => {
+		// MutationObserverでDOMの変化を監視
+		const observer = new MutationObserver(disableLinks);
+
+		// body全体を監視
+		const targetNode = document.querySelector('body');
+		observer.observe(targetNode, { childList: true, subtree: true });
+
+		// 初回およびattributesの変更時にリンクを無効化
+		disableLinks();
+
+		// クリーンアップ関数
+		return () => {
+			observer.disconnect(); // 監視を停止
+		};
+	}, [attributes]);
+
 	return (
 		<>
 			<InspectorControls>
