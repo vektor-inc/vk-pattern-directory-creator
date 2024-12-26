@@ -87,11 +87,12 @@ function vkpdc_initialize_default_options() {
 	}
 }
 register_activation_hook( __FILE__, 'vkpdc_initialize_default_options' );
+
 /**
  * 設定保存処理
  */
-function vkpdc_save_settings() {
-	check_admin_referer( 'vkpdc_save_settings', 'vkpdc_settings_nonce' );
+function vkpdc_save_options() {
+	check_admin_referer( 'vkpdc_save_options', 'vkpdc_settings_nonce' );
 	$defaults = vkpdc_get_default_options();
 
 	foreach ( vkpdc_get_default_options() as $key => $default ) {
@@ -135,14 +136,14 @@ function vkpdc_save_settings() {
 /**
  * 設定のロード制御
  */
-function vkpdc_maybe_disable_settings() {
+function vkpdc_disable_features_if_block_theme() {
     if ( vkpdc_is_block_theme() ) {
         // フックや機能を無効化する
         remove_action( 'init', 'vkpdc_register_shortcode_on_hook' );
-        remove_action( 'template_redirect', 'vkpdc_preview_output' );
+        remove_action( 'template_redirect', 'vkpdc_render_preview' );
     }
 }
-add_action( 'init', 'vkpdc_maybe_disable_settings', 20 );
+add_action( 'init', 'vkpdc_disable_features_if_block_theme', 20 );
 
 
 /**
@@ -221,7 +222,7 @@ function vkpdc_execute_shortcode_on_hook() {
 /**
  * Add Settings Page
  */
-function add_shortcode_archive_settings_page() {
+function vkpdc_add_settings_page() {
     if ( ! vkpdc_is_block_theme() ) {
         add_submenu_page(
             'edit.php?post_type=vk-patterns',
@@ -229,21 +230,21 @@ function add_shortcode_archive_settings_page() {
             __( 'Archive Setting', 'vk-pattern-directory-creator' ),
             'manage_options',
             'vk-patterns-shortcode-archive-settings',
-            'vkpdc_render_settings_page_with_shortcode'
+            'vkpdc_render_settings_page'
         );
     }
 }
-add_action( 'admin_menu', 'add_shortcode_archive_settings_page' );
+add_action( 'admin_menu', 'vkpdc_add_settings_page' );
 
 /**
  * Settings Page
  */
-function vkpdc_render_settings_page_with_shortcode() {
+function vkpdc_render_settings_page() {
 	if ( ! current_user_can( 'manage_options' ) ) return;
 
 	$message = '';
 	if ( isset( $_POST['vkpdc_settings_nonce'] ) ) {
-		$message = vkpdc_save_settings();
+		$message = vkpdc_save_options();
 	}
 
 	$defaults = vkpdc_get_default_options();
@@ -260,7 +261,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 			<div class="updated"><p><?php echo esc_html( $message ); ?></p></div>
 		<?php endif; ?>
 		<form method="POST">
-			<?php wp_nonce_field( 'vkpdc_save_settings', 'vkpdc_settings_nonce' ); ?>
+			<?php wp_nonce_field( 'vkpdc_save_options', 'vkpdc_settings_nonce' ); ?>
 			<h2 class="nav-tab-wrapper">
 				<a href="#pattern-list-settings" class="nav-tab nav-tab-active"><?php esc_html_e( 'Pattern List Settings', 'vk-pattern-directory-creator' ); ?></a>
 				<a href="#advanced-setting" class="nav-tab"><?php esc_html_e( 'Advanced Setting (Option)', 'vk-pattern-directory-creator' ); ?></a>
@@ -509,7 +510,7 @@ function vkpdc_render_settings_page_with_shortcode() {
 /**
  * プレビュー表示
  */
-function vkpdc_preview_output() {
+function vkpdc_render_preview() {
 	if ( isset( $_GET['vkpdc_preview'] ) && $_GET['vkpdc_preview'] === 'true' ) {
 		// デフォルトオプションとクエリパラメータをマージ
 		$attributes = shortcode_atts(
@@ -591,4 +592,4 @@ function vkpdc_preview_output() {
 		exit;
 	}
 }
-add_action( 'template_redirect', 'vkpdc_preview_output' );
+add_action( 'template_redirect', 'vkpdc_render_preview' );
