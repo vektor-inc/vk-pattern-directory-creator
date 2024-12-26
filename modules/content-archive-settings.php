@@ -9,7 +9,8 @@
  * テーマ切り替え時のフック名リセット
  */
 function vkpdc_reset_hook_name_on_theme_switch() {
-	update_option( 'vkpdc_hook_name', '' );
+    $default_hook_name = vkpdc_get_default_hook_name();
+	update_option( 'vkpdc_hook_name', $default_hook_name );
 }
 add_action( 'after_switch_theme', 'vkpdc_reset_hook_name_on_theme_switch' );
 
@@ -25,6 +26,31 @@ function vkpdc_is_block_theme() {
 	}
 	return false;
 }
+
+/**
+ * テーマ切り替え時の設定無効化
+ */
+function vkpdc_disable_settings_for_block_theme() {
+    // 現在のテーマがブロックテーマの場合
+    if ( vkpdc_is_block_theme() ) {
+        // 設定値をそのまま保持するが、無効化するフラグを追加
+        update_option( 'vkpdc_settings_disabled', true );
+    } else {
+        // クラシックテーマに戻った場合、設定を有効化
+        delete_option( 'vkpdc_settings_disabled' );
+    }
+}
+add_action( 'after_switch_theme', 'vkpdc_disable_settings_for_block_theme' );
+
+/**
+ * 設定が有効かどうかを確認
+ *
+ * @return bool
+ */
+function vkpdc_is_settings_enabled() {
+    return ! get_option( 'vkpdc_settings_disabled', false );
+}
+
 
 /**
  * デフォルトオプション取得
@@ -55,6 +81,7 @@ function vkpdc_get_default_options() {
 		'colWidthMinPC'         => '300px',
 		'gap'                   => '1.5rem',
 		'gapRow'                => '1.5rem',
+		'classname'			    => '',
 		'hook_name'             => vkpdc_get_default_hook_name(),
 	);
 
@@ -378,6 +405,13 @@ function vkpdc_render_settings_page() {
 			</div>
 			<div id="advanced-setting" class="tab-content" style="display:none;">
 				<table class="form-table">
+					<tr>
+						<th><label for="classname"><?php esc_html_e( 'Class Name', 'vk-pattern-directory-creator' ); ?></label></th>
+						<td>
+							<input type="text" id="classname" name="classname" value="<?php echo esc_attr( $options['classname'] ); ?>">
+							<p class="description"><?php _e( 'Add custom class for the container element.', 'vk-pattern-directory-creator' ); ?></p>
+						</td>
+					</tr>
 					<tr>
 						<th><label for="hook_name"><?php esc_html_e( 'Hook Name', 'vk-pattern-directory-creator' ); ?></label></th>
 						<td>

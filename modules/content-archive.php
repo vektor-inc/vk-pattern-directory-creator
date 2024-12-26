@@ -325,6 +325,10 @@ add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_patterns_archive_shortcode' );
 function vkpdc_generate_archive_html( $query, $attributes ) {
     $html = '';
 
+    // カスタムクラスを取得
+    $custom_class = get_option( 'vkpdc_classname', '' ); // 保存されたクラス名を取得
+    $class = 'vkpdc_posts ' . esc_attr( $custom_class );
+	
     // 動的スタイルを生成
     $styles = sprintf(
         '--col-width-min-mobile: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
@@ -336,7 +340,7 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
     );
 
     if ( $query->have_posts() ) {
-        $html .= '<div class="vkpdc_posts" style="' . esc_attr( $styles ) . '">';
+        $html .= '<div class="' . $class . '" style="' . esc_attr( $styles ) . '">';
 
         while ( $query->have_posts() ) {
             $query->the_post();
