@@ -34,7 +34,17 @@ function vkpdc_enqueue_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'vkpdc_enqueue_scripts' );
 
-function vkpdc_enqueue_block_editor_assets() {
-	wp_enqueue_style( 'vkpdc', VKPDC_PLUGIN_ROOT_URL . 'assets/build/css/style.css', array(), VKPDC_PLUGIN_VERSION );
+/**
+ * Enqueue Global Styles
+ */
+function vkpdc_enqueue_global_styles() {
+	if ( is_admin() ) {
+		wp_enqueue_style(
+			'vkpdc-global-style',
+			VKPDC_PLUGIN_ROOT_URL . 'assets/build/css/style.css',
+			array(),
+			VKPDC_PLUGIN_VERSION
+		);
+	}
 }
-add_action( 'enqueue_block_editor_assets', 'vkpdc_enqueue_scripts' );
+add_action( 'enqueue_block_assets', 'vkpdc_enqueue_global_styles' );
