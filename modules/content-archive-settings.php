@@ -6,12 +6,25 @@
  */
 
 /**
-* テーマ切り替え時にフック名をリセット
-*/
+ * テーマ切り替え時のフック名リセット
+ */
 function vkpdc_reset_hook_name_on_theme_switch() {
     update_option( 'vkpdc_hook_name', '' );
 }
 add_action( 'after_switch_theme', 'vkpdc_reset_hook_name_on_theme_switch' );
+
+/**
+ * 現在のテーマがブロックテーマかどうかを判定
+ *
+ * @return bool
+ */
+function vkpdc_is_block_theme() {
+    // WordPress 5.9 以降で導入された関数 wp_is_block_theme() を使用
+    if ( function_exists( 'wp_is_block_theme' ) ) {
+        return wp_is_block_theme();
+    }
+    return false;
+}
 
 /**
  * デフォルトオプション取得
@@ -68,7 +81,9 @@ function vkpdc_get_default_hook_name() {
 	return ''; // その他のテーマの場合は空
 }
 
-// デフォルトオプションを初期化
+/**
+ * デフォルトオプションの初期化
+ */
 function vkpdc_initialize_default_options() {
 	$defaults = vkpdc_get_default_options();
 	foreach ( $defaults as $key => $value ) {
@@ -78,7 +93,6 @@ function vkpdc_initialize_default_options() {
 	}
 }
 register_activation_hook( __FILE__, 'vkpdc_initialize_default_options' );
-
 /**
  * 設定保存処理
  */
@@ -127,7 +141,112 @@ function vkpdc_save_settings() {
 	}
 }
 
-// 設定ページをレンダリング
+/**
+ * 設定のロード制御
+ */
+function vkpdc_maybe_disable_settings() {
+    if ( vkpdc_is_block_theme() ) {
+        // フックや機能を無効化する
+        remove_action( 'init', 'vkpdc_register_shortcode_on_hook' );
+        remove_action( 'template_redirect', 'vkpdc_preview_output' );
+    }
+}
+add_action( 'init', 'vkpdc_maybe_disable_settings', 20 );
+
+
+/**
+ * フック設定
+ */
+function vkpdc_register_shortcode_on_hook() {
+	if ( vkpdc_is_block_theme() ) {
+        return;
+    }
+
+	$hook_name = get_option( 'vkpdc_hook_name', '' );
+	if ( ! empty( $hook_name ) ) {
+		// フックの実行時に既存のアクションをすべて削除
+		add_action( $hook_name, function() use ( $hook_name ) {
+			global $wp_filter;
+
+			if ( isset( $wp_filter[ $hook_name ] ) ) {
+				foreach ( $wp_filter[ $hook_name ]->callbacks as $priority => $actions ) {
+					foreach ( $actions as $key => $action ) {
+						if ( is_string( $action['function'] ) && $action['function'] === 'vkpdc_execute_shortcode_on_hook' ) {
+							continue;
+						}
+						remove_action( $hook_name, $action['function'], $priority );
+					}
+				}
+			}
+		}, PHP_INT_MIN );
+
+		// ショートコードを実行
+		add_action( $hook_name, 'vkpdc_execute_shortcode_on_hook', PHP_INT_MAX ); // 最高優先度でショートコードを追加
+
+		// フック名が `lightning_extend_loop` の場合、アーカイブページでのみフィルターを追加
+		add_action( 'template_redirect', function() {
+			$hook_name = get_option( 'vkpdc_hook_name', '' );
+			if ( $hook_name === 'lightning_extend_loop' && is_archive() && get_post_type() === 'vk-patterns' ) {
+				add_filter( 'lightning_is_extend_loop', '__return_true' );
+			}
+		} );		
+	}
+}
+add_action( 'init', 'vkpdc_register_shortcode_on_hook' );
+
+/**
+ * ショートコード実行
+ */
+function vkpdc_execute_shortcode_on_hook() {
+	$options = vkpdc_get_default_options();
+
+	$shortcode = sprintf(
+		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
+		intval( $options['numberPosts'] ),
+		esc_attr( $options['order'] ),
+		esc_attr( $options['orderby'] ),
+		intval( $options['display_new'] ),
+		intval( $options['display_taxonomies'] ),
+		intval( $options['pattern_id'] ),
+		intval( $options['display_date_publiched'] ),
+		intval( $options['display_date_modified'] ),
+		intval( $options['display_author'] ),
+		esc_attr( $options['display_image'] ),
+		esc_attr( $options['thumbnail_size'] ),
+		intval( $options['display_btn_view'] ),
+		intval( $options['display_btn_copy'] ),
+		esc_attr( $options['display_btn_view_text'] ),
+		intval( $options['new_date'] ),
+		esc_attr( $options['new_text'] ),
+		esc_attr( $options['colWidthMinMobile'] ),
+		esc_attr( $options['colWidthMinTablet'] ),
+		esc_attr( $options['colWidthMinPC'] ),
+		esc_attr( $options['gap'] ),
+		esc_attr( $options['gapRow'] )
+	);
+	echo do_shortcode( $shortcode );
+}
+
+/**
+ * Add Settings Page
+ */
+function add_shortcode_archive_settings_page() {
+    if ( ! vkpdc_is_block_theme() ) {
+        add_submenu_page(
+            'edit.php?post_type=vk-patterns',
+            __( 'Archive Setting', 'vk-pattern-directory-creator' ),
+            __( 'Archive Setting', 'vk-pattern-directory-creator' ),
+            'manage_options',
+            'vk-patterns-shortcode-archive-settings',
+            'vkpdc_render_settings_page_with_shortcode'
+        );
+    }
+}
+add_action( 'admin_menu', 'add_shortcode_archive_settings_page' );
+
+/**
+ * Settings Page
+ */
 function vkpdc_render_settings_page_with_shortcode() {
 	if ( ! current_user_can( 'manage_options' ) ) return;
 
@@ -397,78 +516,6 @@ function vkpdc_render_settings_page_with_shortcode() {
 }
 
 /**
- * フック設定
- */
-function vkpdc_register_shortcode_on_hook() {
-	$hook_name = get_option( 'vkpdc_hook_name', '' );
-	if ( ! empty( $hook_name ) ) {
-		// フックの実行時に既存のアクションをすべて削除
-		add_action( $hook_name, function() use ( $hook_name ) {
-			global $wp_filter;
-
-			if ( isset( $wp_filter[ $hook_name ] ) ) {
-				foreach ( $wp_filter[ $hook_name ]->callbacks as $priority => $actions ) {
-					foreach ( $actions as $key => $action ) {
-						if ( is_string( $action['function'] ) && $action['function'] === 'vkpdc_execute_shortcode_on_hook' ) {
-							continue;
-						}
-						remove_action( $hook_name, $action['function'], $priority );
-					}
-				}
-			}
-		}, PHP_INT_MIN );
-
-		// ショートコードを実行
-		add_action( $hook_name, 'vkpdc_execute_shortcode_on_hook', PHP_INT_MAX ); // 最高優先度でショートコードを追加
-
-		// フック名が `lightning_extend_loop` の場合、アーカイブページでのみフィルターを追加
-		add_action( 'template_redirect', function() {
-			$hook_name = get_option( 'vkpdc_hook_name', '' );
-			if ( $hook_name === 'lightning_extend_loop' && is_archive() && get_post_type() === 'vk-patterns' ) {
-				add_filter( 'lightning_is_extend_loop', '__return_true' );
-			}
-		} );		
-	}
-}
-add_action( 'init', 'vkpdc_register_shortcode_on_hook' );
-
-function vkpdc_execute_shortcode_on_hook() {
-	$options = vkpdc_get_default_options();
-
-	$saved_options = [];
-	// ショートコード属性で上書き
-	$attributes = shortcode_atts( $saved_options, [] );
-
-	error_log( 'Options in execute_shortcode_on_hook: ' . print_r( $options, true ) );
-
-	$shortcode = sprintf(
-		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
-		intval( $options['numberPosts'] ),
-		esc_attr( $options['order'] ),
-		esc_attr( $options['orderby'] ),
-		intval( $options['display_new'] ),
-		intval( $options['display_taxonomies'] ),
-		intval( $options['pattern_id'] ),
-		intval( $options['display_date_publiched'] ),
-		intval( $options['display_date_modified'] ),
-		intval( $options['display_author'] ),
-		esc_attr( $options['display_image'] ),
-		esc_attr( $options['thumbnail_size'] ),
-		intval( $options['display_btn_view'] ),
-		intval( $options['display_btn_copy'] ),
-		esc_attr( $options['display_btn_view_text'] ),
-		intval( $options['new_date'] ),
-		esc_attr( $options['new_text'] ),
-		esc_attr( $options['colWidthMinMobile'] ),
-		esc_attr( $options['colWidthMinTablet'] ),
-		esc_attr( $options['colWidthMinPC'] ),
-		esc_attr( $options['gap'] ),
-		esc_attr( $options['gapRow'] )
-	);
-	echo do_shortcode( $shortcode );
-}
-
-/**
  * プレビュー表示
  */
 function vkpdc_preview_output() {
@@ -554,18 +601,3 @@ function vkpdc_preview_output() {
 	}
 }
 add_action( 'template_redirect', 'vkpdc_preview_output' );
-
-/**
- * Add Settings Page
- */
-function add_shortcode_archive_settings_page() {
-	add_submenu_page(
-		'edit.php?post_type=vk-patterns',
-		__( 'Archive Setting', 'vk-pattern-directory-creator' ),
-		__( 'Archive Setting', 'vk-pattern-directory-creator' ),
-		'manage_options',
-		'vk-patterns-shortcode-archive-settings',
-		'vkpdc_render_settings_page_with_shortcode'
-	);
-}
-add_action( 'admin_menu', 'add_shortcode_archive_settings_page' );
