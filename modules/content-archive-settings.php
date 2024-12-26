@@ -503,7 +503,7 @@ function vkpdc_preview_output() {
 				$query->the_post();
 
 				// 各投稿のHTMLを取得
-				echo vkpdc_generate_single_page_html( get_post(), $attributes );
+				echo vkpdc_render_post_item( get_post(), $attributes );
 			}
 		} else {
 			echo '<p>' . __( 'No patterns found.', 'vk-pattern-directory-creator' ) . '</p>';

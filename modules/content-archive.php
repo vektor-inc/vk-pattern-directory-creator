@@ -8,18 +8,18 @@
 /**
  * Archive Loop
  */
-function vkpdc_adjust_query( $query ) {
+function vkpdc_modify_main_query( $query ) {
     if ( ! is_admin() && is_post_type_archive( 'vk-patterns' ) && $query->query_vars['post_type'] === 'vk-patterns' ) {
         $query->set( 'posts_per_page', get_option( 'vkpdc_numberPosts', 6 ) );
         $query->set( 'paged', get_query_var( 'paged', 1 ) );
     }
 }
-add_action( 'pre_get_posts', 'vkpdc_adjust_query', 20 );
+add_action( 'pre_get_posts', 'vkpdc_modify_main_query', 20 );
 
 /**
  * Get Block Default Attributes
  */
-function vkpdc_get_block_default_attributes() {
+function vkpdc_default_block_attributes() {
     return array(
         'numberPosts'            => 6,
         'order'                  => 'DESC',
@@ -36,8 +36,8 @@ function vkpdc_get_block_default_attributes() {
 		'thumbnail_size'         => 'full',
         'new_date'               => 7,
         'new_text'               => 'New!!',
-		'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
-		'colWidthMinMobile'      => '300px',
+	'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
+	'colWidthMinMobile'            => '300px',
         'colWidthMinTablet'      => '300px',
         'colWidthMinPC'          => '300px',
         'gap'                    => '1.5rem',
@@ -48,7 +48,7 @@ function vkpdc_get_block_default_attributes() {
 /* 
  * Get Shortcode Default Attributes
  */
-function vkpdc_get_shortcode_default_attributes() {
+function vkpdc_default_shortcode_attributes() {
     return array(
         'numberPosts'            => 6,
         'order'                  => 'DESC',
@@ -59,14 +59,14 @@ function vkpdc_get_shortcode_default_attributes() {
         'display_new'            => true,
         'display_taxonomies'     => true,
         'pattern_id'             => true,
-		'display_btn_view'       => true,
-		'display_btn_copy'       => true,
-		'display_image'          => 'featured',
-		'thumbnail_size'         => 'full',
+	'display_btn_view'       => true,
+	'display_btn_copy'       => true,
+	'display_image'          => 'featured',
+	'thumbnail_size'         => 'full',
         'new_date'               => 7,
         'new_text'               => 'New!!',
-		'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
-		'colWidthMinMobile'      => '300px',
+	'display_btn_view_text'  => __( 'Read More', 'vk-pattern-directory-creator' ),
+	'colWidthMinMobile'            => '300px',
         'colWidthMinTablet'      => '300px',
         'colWidthMinPC'          => '300px',
         'gap'                    => '1.5rem',
@@ -75,13 +75,13 @@ function vkpdc_get_shortcode_default_attributes() {
 }
 
 /**
- * Generate Post Item HTML
+ * Generate Single Page HTML
  *
  * @param WP_Post $post 投稿オブジェクト.
  * @param array $attributes ブロックの属性.
  * @return string HTMLコンテンツ.
  */
-function vkpdc_generate_post_item_html( $post = null, $attributes = [] ) {
+function vkpdc_render_post_item( $post = null, $attributes = [] ) {
 
 	$html    = '';
 	$post = ! empty( $post ) ? $post : get_post( get_the_ID() );
@@ -267,7 +267,7 @@ function vkpdc_generate_post_item_html( $post = null, $attributes = [] ) {
  */
 function vkpdc_get_patterns_archive_shortcode( $atts ) {
     // ショートコードのデフォルト値
-    $default_attributes = vkpdc_get_shortcode_default_attributes();
+    $default_attributes = vkpdc_default_shortcode_attributes();
 
     // 管理画面の保存値を取得してデフォルト値に統合
     foreach ( $default_attributes as $key => $default ) {
@@ -289,7 +289,7 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
 
     $query = new WP_Query( $query_args );
 
-    return vkpdc_generate_archive_html( $query, $attributes );
+    return vkpdc_render_archive( $query, $attributes );
 }
 add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_patterns_archive_shortcode' );
 
@@ -300,7 +300,7 @@ add_shortcode( 'vkpdc_archive_loop', 'vkpdc_get_patterns_archive_shortcode' );
  * @param array $attributes ブロックの属性.
  * @return string HTMLコンテンツ.
  */
-function vkpdc_generate_archive_html( $query, $attributes ) {
+function vkpdc_render_archive( $query, $attributes ) {
     $html = '';
 
     // 動的スタイルを生成
@@ -319,7 +319,7 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
         while ( $query->have_posts() ) {
             $query->the_post();
             $post  = get_post( get_the_ID() );
-            $html .= vkpdc_generate_post_item_html( $post, $attributes );
+            $html .= vkpdc_render_post_item( $post, $attributes );
         }
         
         $html .= vkpdc_add_placeholder_articles( $query, $attributes );
@@ -340,7 +340,7 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
  * 
  * @param string $query クエリ.
  */
-function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
+function vkpdc_render_archive_loop( $query = null, $attributes = [] ) {
 
 	global $wp_query;
 	$query = ! empty( $query ) ? $query : $wp_query;
@@ -355,7 +355,7 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			$post  = get_post( get_the_ID() );
-			$html .= vkpdc_generate_post_item_html( $post, $attributes );
+			$html .= vkpdc_render_post_item( $post, $attributes );
 		}
 		
         $html .= vkpdc_add_placeholder_articles( $query, $attributes );
@@ -381,7 +381,7 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
  * @return string
  */
 function vkpdc_render_pattern_list_callback( $attributes ) {
-    $default_attributes = vkpdc_get_block_default_attributes();
+    $default_attributes = vkpdc_default_block_attributes();
     $attributes = wp_parse_args( $attributes, $default_attributes );
 
     // 現在のページを取得
@@ -405,7 +405,7 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
     if ( $query->have_posts() ) {
         while ( $query->have_posts() ) {
             $query->the_post();
-			$html .= vkpdc_generate_post_item_html( get_post(), $attributes );
+			$html .= vkpdc_render_post_item( get_post(), $attributes );
         }
 
 		$html .= vkpdc_add_placeholder_articles( $query, $attributes );
