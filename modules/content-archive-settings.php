@@ -32,7 +32,6 @@ function vkpdc_is_block_theme() {
  * @return array
  */
 function vkpdc_get_default_options() {
-	error_log( 'vkpdc_get_default_options' );
 
 	$defaults = array(
 		'numberPosts'           => 6,
@@ -59,15 +58,10 @@ function vkpdc_get_default_options() {
 		'hook_name'             => vkpdc_get_default_hook_name(),
 	);
 
-	error_log( 'vkpdc_get_default_options array end' );
-
 	foreach ( $defaults as $key => $default ) {
 		$option_value = get_option( 'vkpdc_' . $key, $default );
-		error_log( "get_option for $key: " . print_r( $option_value, true ) );
 		$defaults[ $key ] = $option_value;
 	}
-
-	error_log( 'vkpdc_get_default_options end' );
 
 	return $defaults;
 }
@@ -102,7 +96,6 @@ function vkpdc_save_settings() {
 
 	foreach ( vkpdc_get_default_options() as $key => $default ) {
 		$current_value = get_option( 'vkpdc_' . $key );
-		error_log( "After save: $key = " . print_r( $current_value, true ) );
 	}
 
 	$checkbox_fields = [
@@ -124,19 +117,17 @@ function vkpdc_save_settings() {
 	} else {
 		foreach ( $checkbox_fields as $key ) {
 			$value = isset( $_POST[ $key ] ) ? 1 : 0;
-			error_log( "Saving checkbox field: {$key} with value: " . $value );
 			update_option( 'vkpdc_' . $key, $value );
 		}
 
 		foreach ( $defaults as $key => $default ) {
 			if ( ! in_array( $key, $checkbox_fields, true ) ) {
 				$value = isset( $_POST[ $key ] ) ? sanitize_text_field( $_POST[ $key ] ) : $default;
-				error_log( "Saving other field: {$key} with value: " . $value );
 				update_option( 'vkpdc_' . $key, $value );
 			}
 		}
 
-		wp_cache_flush(); // キャッシュをクリア
+		wp_cache_flush();
 		return __( 'Settings saved.', 'vk-pattern-directory-creator' );
 	}
 }
