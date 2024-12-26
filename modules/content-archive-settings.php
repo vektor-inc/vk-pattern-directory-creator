@@ -6,6 +6,14 @@
  */
 
 /**
+* テーマ切り替え時にフック名をリセット
+*/
+function vkpdc_reset_hook_name_on_theme_switch() {
+    update_option( 'vkpdc_hook_name', '' );
+}
+add_action( 'after_switch_theme', 'vkpdc_reset_hook_name_on_theme_switch' );
+
+/**
  * デフォルトオプション取得
  * 
  * @return array
