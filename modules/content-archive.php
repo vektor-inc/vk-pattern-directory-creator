@@ -13,7 +13,13 @@ function vkpdc_adjust_query( $query ) {
     if ( ! is_admin() && $query->is_main_query() && is_post_type_archive( 'vk-patterns' ) ) {
         // ブロックテーマかどうかを判定
         if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
-			return;
+			// ブロックテーマの場合
+			$number_posts = 1;
+			$paged = get_query_var( 'paged', 1 );
+
+			// クエリの設定
+			$query->set( 'posts_per_page', $number_posts );
+			$query->set( 'paged', $paged );
         } else {
             // クラシックテーマの場合
             $number_posts = get_option( 'vkpdc_numberPosts', 6 );
@@ -102,7 +108,7 @@ function vkpdc_render_post_item( $post = null, $attributes = [] ) {
 	$html    = '';
 	$post = ! empty( $post ) ? $post : get_post( get_the_ID() );
 
-	if ( ! empty( $post ) ) {
+	if ( ! empty( $post ) ) {        
 
 		/* iframe */
 		$iframe = vkpdc_get_iframe_content( $post->ID, 'archive' );
