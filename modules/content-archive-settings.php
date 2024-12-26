@@ -51,7 +51,6 @@ function vkpdc_is_settings_enabled() {
     return ! get_option( 'vkpdc_settings_disabled', false );
 }
 
-
 /**
  * デフォルトオプション取得
  * 
