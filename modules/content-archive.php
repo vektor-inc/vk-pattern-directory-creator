@@ -383,7 +383,7 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
     $attributes = wp_parse_args( $attributes, $default_attributes );
 
     // 現在のページを取得
-    $current_page = isset( $_GET['vkpdc_page'] ) ? intval( $_GET['vkpdc_page'] ) : 1;
+    $current_page = max( 1, get_query_var( 'paged', 1 ) );
 
     // クエリの設定
     $query_args = array(
@@ -414,33 +414,34 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
     $html .= '</div>';
 
     // ページネーションの生成
-    if ( $attributes['display_paged'] ) {
-        $pagination = paginate_links( array(
-            'total'     => $query->max_num_pages,
-            'current'   => $current_page,
-            'format'    => '?vkpdc_page=%#%',
-            'type'      => 'array',
-            'prev_text' => '&laquo;',
-            'next_text' => '&raquo;',
-        ) );
-
-        if ( $pagination ) {
-            $html .= '<nav class="vkpdc_pagination navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
-            $html .= '<h2 class="screen-reader-text">' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '</h2>';
-            $html .= '<div class="nav-links"><ul class="page-numbers">';
-
-            // ページリンクをリスト化
-            foreach ( $pagination as $link ) {
-                if ( strpos( $link, 'current' ) !== false ) {
-                    $html .= '<li><span class="page-numbers current">' . strip_tags( $link ) . '</span></li>';
-                } else {
-                    $html .= '<li>' . $link . '</li>';
-                }
-            }
-
-            $html .= '</ul></div></nav>';
-        }
-    }
+	if ( $attributes['display_paged'] ) {
+		$pagination = paginate_links( array(
+			'base'      => esc_url( get_pagenum_link( 1 ) ) . '%_%',
+			'format'    => 'page/%#%/',
+			'total'     => $query->max_num_pages,
+			'current'   => max( 1, get_query_var( 'paged', 1 ) ),
+			'type'      => 'array',
+			'prev_text' => '&laquo;',
+			'next_text' => '&raquo;',
+		) );
+	
+		if ( $pagination ) {
+			$html .= '<nav class="vkpdc_pagination navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
+			$html .= '<h2 class="screen-reader-text">' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '</h2>';
+			$html .= '<div class="nav-links"><ul class="page-numbers">';
+	
+			// ページリンクをリスト化
+			foreach ( $pagination as $link ) {
+				if ( strpos( $link, 'current' ) !== false ) {
+					$html .= '<li><span class="page-numbers current">' . strip_tags( $link ) . '</span></li>';
+				} else {
+					$html .= '<li>' . $link . '</li>';
+				}
+			}
+	
+			$html .= '</ul></div></nav>';
+		}
+	}	
 
     // 投稿データをリセット
     wp_reset_postdata();
