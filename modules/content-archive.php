@@ -326,7 +326,7 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
     $html = '';
 
     // カスタムクラスを取得
-    $custom_class = get_option( 'vkpdc_classname', '' ); // 保存されたクラス名を取得
+    $custom_class = get_option( 'vkpdc_classname', '' );
     $class = 'vkpdc_posts ' . esc_attr( $custom_class );
 	
     // 動的スタイルを生成
@@ -410,6 +410,20 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
     $default_attributes = vkpdc_get_block_default_attributes();
     $attributes = wp_parse_args( $attributes, $default_attributes );
 
+	// カスタムクラスを取得
+	$custom_class = get_option( 'vkpdc_classname', '' );
+	$class = 'vkpdc_posts ' . esc_attr( $custom_class );
+
+	// 動的スタイルを生成
+	$styles = sprintf(
+		'--col-width-min-mobile: %s; --col-width-min-tablet: %s; --col-width-min-pc: %s; --gap: %s; --gap-row: %s;',
+		esc_attr( $attributes['colWidthMinMobile'] ),
+		esc_attr( $attributes['colWidthMinTablet'] ),
+		esc_attr( $attributes['colWidthMinPC'] ),
+		esc_attr( $attributes['gap'] ),
+		esc_attr( $attributes['gapRow'] )
+	);
+
     // 現在のページを取得
     $current_page = max( 1, get_query_var( 'paged', 1 ) );
 
@@ -424,8 +438,9 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 
     $query = new WP_Query( $query_args );
 
+	$html = '';
     // 投稿リストのラッパーを開始
-    $html = '<div class="vkpdc_posts" style="--col-width-min-mobile: ' . esc_attr( $attributes['colWidthMinMobile'] ) . '; --col-width-min-tablet: ' . esc_attr( $attributes['colWidthMinTablet'] ) . '; --col-width-min-pc: ' . esc_attr( $attributes['colWidthMinPC'] ) . '; --gap: ' . esc_attr( $attributes['gap'] ) . '; --gap-row: ' . esc_attr( $attributes['gapRow'] ) . ';">';
+	$html .= '<div class="' . $class . '" style="' . esc_attr( $styles ) . '">';
 
     // 投稿ループ
     if ( $query->have_posts() ) {
