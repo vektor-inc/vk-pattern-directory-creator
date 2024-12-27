@@ -401,7 +401,7 @@ function vkpdc_get_archive_loop( $query = null, $attributes = [] ) {
 }
 
 /**
- * Post list render callback
+ * Pattern list render callback
  *
  * @param array $attributes Block attributes.
  * @return string
