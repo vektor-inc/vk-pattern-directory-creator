@@ -420,10 +420,10 @@ function vkpdc_render_settings_page() {
 						<th><label for="hook_name"><?php esc_html_e( 'Hook Name', 'vk-pattern-directory-creator' ); ?></label></th>
 						<td>
 							<input type="text" id="hook_name" name="hook_name" value="<?php echo esc_attr( $options['hook_name'] ); ?>">
-							<p class="description"><?php _e( 'For example:lightning_extend_loop', 'vk-pattern-directory-creator' ); ?>
+							<p class="description"><?php _e( 'For example:lightning_extend_loop', 'vk-pattern-directory-creator' ); ?></p>
 							<p class="notice notice-warning"><i class="fa-solid fa-triangle-exclamation"></i><?php _e( 'Please proceed with caution! Setting an invalid or conflicting hook name can break the functionality of your theme or plugin. Use a valid WordPress hook name and test carefully before saving.', 'vk-pattern-directory-creator' ); ?></p>
-						</p>
-					</td>
+						</td>
+					</tr>
 					</tr>
 					<tr>
 						<th><label for="shortcode_setting"><?php esc_html_e( 'Shortcode setting', 'vk-pattern-directory-creator' ); ?></label></th>
@@ -442,7 +442,7 @@ function vkpdc_render_settings_page() {
 				</table>
 			</div>
 			<div style="display: flex; gap: 1rem; align-items: center; margin: 1.5rem auto 2.6rem;">
-				<?php submit_button( __( 'Save Settings', 'vk-pattern-directory-creator' ), 'primary', '', false ); ?>
+				<?php submit_button( __( 'Save Settings', 'vk-pattern-directory-creator' ), 'primary', 'save_settings', false ); ?>
 				<input type="submit" name="reset" class="button button-secondary" value="<?php esc_attr_e( 'Reset to Default', 'vk-pattern-directory-creator' ); ?>">
 			</div>
 		</form>
@@ -501,34 +501,33 @@ function vkpdc_render_settings_page() {
 				nestedContents.forEach((content, index) => {
 					content.style.display = index === 0 ? 'block' : 'none'; // 最初のネストされたコンテンツだけ表示
 				});
-			});
 
-			document.addEventListener("DOMContentLoaded", () => {
+				// フック名入力フィールドとボタンの要素を取得
 				const hookNameInput = document.getElementById("hook_name");
-				const submitButton = document.querySelector('input[type="submit"]');
+				const submitButton = document.querySelector('input[name="save_settings"]'); // save_settingsボタンをターゲット
 
 				// フック名の正規表現パターン
 				const validHookNamePattern = /^[a-zA-Z0-9_]+$/;
 
+				// 初期状態でボタンを有効化（hook_nameが空の場合も有効）
+				submitButton.disabled = false;  // 初期状態では有効にしておく
+
 				// 入力チェック関数
 				function validateHookName() {
 					const hookName = hookNameInput.value.trim();
-					if (validHookNamePattern.test(hookName)) {
-						hookNameInput.classList.remove("invalid");
-						submitButton.disabled = false; // 保存ボタンを有効化
-					} else {
+
+					// フック名が空の場合は無効化しない
+					if (hookName !== "" && !validHookNamePattern.test(hookName)) {
 						hookNameInput.classList.add("invalid");
-						submitButton.disabled = true; // 保存ボタンを無効化
+						submitButton.disabled = true;
+					} else {
+						hookNameInput.classList.remove("invalid");
+						submitButton.disabled = false;
 					}
 				}
 
-				// 入力イベントでリアルタイム検証
 				hookNameInput.addEventListener("input", validateHookName);
-
-				// 初期状態で検証
-				validateHookName();
 			});
-
 		</script>
 
 		<h2><?php esc_html_e( 'Preview', 'vk-pattern-directory-creator' ); ?></h2>
