@@ -30,9 +30,6 @@ function vkpdc_adjust_query( $query ) {
             $query->set( 'paged', $paged );
         }
 
-        // デバッグログ
-        error_log( 'Theme Type: ' . ( wp_is_block_theme() ? 'Block Theme' : 'Classic Theme' ) );
-        error_log( 'Query Vars: ' . print_r( $query->query_vars, true ) );
     }
 }
 add_action( 'pre_get_posts', 'vkpdc_adjust_query', 20 );
