@@ -187,13 +187,5 @@ function vkpdc_switch_theme_for_iframe() {
 			error_log( 'Theme does not exist: ' . $selected_theme );
 		}
 	}
-
-	// テンプレートの表示処理をiframeに限定
-	add_filter( 'template_include', function( $template ) {
-		if ( isset( $_GET['view'] ) && $_GET['view'] === 'iframe' ) {
-			return locate_template( 'iframe-template.php' );
-		}
-		return $template;
-	});
 }
 add_action( 'setup_theme', 'vkpdc_switch_theme_for_iframe', 1 );
