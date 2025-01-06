@@ -9,7 +9,7 @@
  * テーマ切り替え時のフック名リセット
  */
 function vkpdc_reset_hook_name_on_theme_switch() {
-    $default_hook_name = vkpdc_get_default_hook_name();
+	$default_hook_name = vkpdc_get_default_hook_name();
 	update_option( 'vkpdc_hook_name', $default_hook_name );
 }
 add_action( 'after_switch_theme', 'vkpdc_reset_hook_name_on_theme_switch' );
@@ -31,14 +31,14 @@ function vkpdc_is_block_theme() {
  * テーマ切り替え時の設定無効化
  */
 function vkpdc_disable_settings_for_block_theme() {
-    // 現在のテーマがブロックテーマの場合
-    if ( vkpdc_is_block_theme() ) {
-        // 設定値をそのまま保持するが、無効化するフラグを追加
-        update_option( 'vkpdc_settings_disabled', true );
-    } else {
-        // クラシックテーマに戻った場合、設定を有効化
-        delete_option( 'vkpdc_settings_disabled' );
-    }
+	// 現在のテーマがブロックテーマの場合
+	if ( vkpdc_is_block_theme() ) {
+		// 設定値をそのまま保持するが、無効化するフラグを追加
+		update_option( 'vkpdc_settings_disabled', true );
+	} else {
+		// クラシックテーマに戻った場合、設定を有効化
+		delete_option( 'vkpdc_settings_disabled' );
+	}
 }
 add_action( 'after_switch_theme', 'vkpdc_disable_settings_for_block_theme' );
 
@@ -48,7 +48,7 @@ add_action( 'after_switch_theme', 'vkpdc_disable_settings_for_block_theme' );
  * @return bool
  */
 function vkpdc_is_settings_enabled() {
-    return ! get_option( 'vkpdc_settings_disabled', false );
+	return ! get_option( 'vkpdc_settings_disabled', false );
 }
 
 /**
@@ -125,10 +125,10 @@ function vkpdc_save_options() {
 		$current_value = get_option( 'vkpdc_' . $key );
 	}
 
-    // フック名の存在を検証
-    if ( ! empty( $hook_name ) && ! has_filter( $hook_name ) ) {
-        wp_die( __( 'The specified hook is not valid.', 'vk-pattern-directory-creator' ) );
-    }
+	// フック名の存在を検証
+	if ( ! empty( $hook_name ) && ! has_filter( $hook_name ) ) {
+		wp_die( __( 'The specified hook is not valid.', 'vk-pattern-directory-creator' ) );
+	}
 
 	$checkbox_fields = [
 		'display_new',

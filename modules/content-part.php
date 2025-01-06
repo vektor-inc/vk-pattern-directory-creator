@@ -43,31 +43,31 @@ function vkpdc_get_size_selector( $page_type = 'single' ) {
  */
 function vkpdc_get_iframe_content( $post_id, $page_type = 'single' ) {
 
-    $iframe_wrapper  = 'vkpdc_iframe-wrapper';
-    if ( ! empty( $page_type ) ) {
-        $iframe_wrapper .= ' vkpdc_iframe-wrapper--' . $page_type;
-    }
+	$iframe_wrapper  = 'vkpdc_iframe-wrapper';
+	if ( ! empty( $page_type ) ) {
+		$iframe_wrapper .= ' vkpdc_iframe-wrapper--' . $page_type;
+	}
 
-    // 表示するテーマを設定
+	// 表示するテーマを設定
 	$view = get_option( 'vkpdc_selected_theme', '' );
 
 	if ( empty( $view ) ) {
 		$view = vkpdc_iframe_view_theme();
 	}
 
-    // Iframe の href に指定する url.
-    $url = get_permalink( $post_id ) . '?view=iframe';
-    if ( $view !== 'default' ) {
-        $url .= '&theme=' . urlencode( $view );
-    }
+	// Iframe の href に指定する url.
+	$url = get_permalink( $post_id ) . '?view=iframe';
+	if ( $view !== 'default' ) {
+		$url .= '&theme=' . urlencode( $view );
+	}
 
 	// Iframe で表示する要素の HTML.
-    $iframe_content  = '<div class="' . esc_attr( $iframe_wrapper ) . '">';
-    $iframe_content .= '<iframe class="vkpdc_iframe" src="' . esc_url( $url ) . '"></iframe>';
-    $iframe_content .= '</div>';
+	$iframe_content  = '<div class="' . esc_attr( $iframe_wrapper ) . '">';
+	$iframe_content .= '<iframe class="vkpdc_iframe" src="' . esc_url( $url ) . '"></iframe>';
+	$iframe_content .= '</div>';
 
 	// iframe 化した コンテンツを返す.
-    return $iframe_content;
+	return $iframe_content;
 }
 
 /**
