@@ -145,9 +145,9 @@ add_filter( 'template_redirect', 'vkpdc_load_iframe_template', 2147483647 );
  * iframe内 のテーマを切り替える関数
  */
 function vkpdc_switch_theme_for_iframe() {
+
 	// iframe 判定 (URL パラメータ)
 	if ( ! isset( $_GET['view'] ) || sanitize_text_field( $_GET['view'] ) !== 'iframe' ) {
-		error_log( 'Not an iframe view. Exiting.' );
 		return;
 	}
 
@@ -156,7 +156,6 @@ function vkpdc_switch_theme_for_iframe() {
 	if ( $selected_theme !== 'default' ) {
 		$theme = wp_get_theme( $selected_theme );
 		if ( $theme->exists() ) {
-			error_log( 'Switching to theme: ' . $theme->get( 'Name' ) );
 
 			// テーマ切り替えをiframe内に限定
 			add_filter( 'template_directory', function() use ( $theme ) {
@@ -183,8 +182,6 @@ function vkpdc_switch_theme_for_iframe() {
 					wp_enqueue_script( 'iframe-theme-script', $theme->get_stylesheet_directory_uri() . '/js/main.js', array(), null, true );
 				}
 			}, 20 );
-		} else {
-			error_log( 'Theme does not exist: ' . $selected_theme );
 		}
 	}
 }
