@@ -75,7 +75,7 @@ add_action( 'after_setup_theme', 'vkpdc_theme_support' );
  * @param 
  */
 function vkpdc_delete_pattern_description( $content ) {
-	
+
 	// 投稿タイプが vk-patterns でない場合は処理を中断
 	if ( 'vk-patterns' !== get_post_type() ) {
 		return $content;
