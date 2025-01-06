@@ -42,25 +42,26 @@ function vkpdc_get_size_selector( $page_type = 'single' ) {
  * @return string $iframe_content : Iframe で表示する内容
  */
 function vkpdc_get_iframe_content( $post_id, $page_type = 'single' ) {
+    $iframe_wrapper  = 'vkpdc_iframe-wrapper';
+    if ( ! empty( $page_type ) ) {
+        $iframe_wrapper .= ' vkpdc_iframe-wrapper--' . $page_type;
+    }
 
-	$iframe_wrapper  = 'vkpdc_iframe-wrapper';
-	if ( ! empty( $page_type ) ) {
-		$iframe_wrapper .= ' vkpdc_iframe-wrapper--' . $page_type;
-	}
+    // 選択されたテーマを取得
+    $selected_theme = get_option( 'vkpdc_selected_theme', 'default' );
 
-	// 表示するテーマを設定
-	$view = vkpdc_iframe_view_theme();
+    // iframe の URL を生成
+    $url = get_permalink( $post_id ) . '?view=iframe';
+    if ( $selected_theme !== 'default' ) {
+        $url .= '&theme=' . urlencode( $selected_theme );
+    }
 
-	// Iframe の href に指定する url.
-	$url = get_permalink( $post_id ) . '?view=' . $view . '&reload=true';
+    // iframe の HTML を生成
+    $iframe_content  = '<div class="' . esc_attr( $iframe_wrapper ) . '">';
+    $iframe_content .= '<iframe class="vkpdc_iframe" src="' . esc_url( $url ) . '"></iframe>';
+    $iframe_content .= '</div>';
 
-	// Iframe で表示する要素の HTML.
-	$iframe_content  = '<div class="' . $iframe_wrapper . '">';
-	$iframe_content .= '<iframe class="vkpdc_iframe" src="' . $url . '"></iframe>';
-	$iframe_content .= '</div>';
-
-	// iframe 化した コンテンツを返す.
-	return $iframe_content;
+    return $iframe_content;
 }
 
 /**
