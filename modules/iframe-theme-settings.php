@@ -31,6 +31,7 @@ function vkpdc_render_iframe_settings_page() {
     ?>
     <div class="wrap">
         <h1><?php _e( 'Iframe Theme Settings', 'vk-pattern-directory-creator' ); ?></h1>
+        <p><?php _e( 'This setting allows you to select a theme to be applied within the iframe view. Use this when you want to display a theme different from the one currently active on your site.', 'vk-pattern-directory-creator' ); ?></p>
         <form method="post" action="">
             <?php wp_nonce_field( 'vkpdc_save_iframe_settings' ); ?>
             <table class="form-table">
