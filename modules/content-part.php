@@ -49,7 +49,11 @@ function vkpdc_get_iframe_content( $post_id, $page_type = 'single' ) {
     }
 
     // 表示するテーマを設定
-    $view = get_option( 'vkpdc_selected_theme', 'default' );
+	$view = get_option( 'vkpdc_selected_theme', '' );
+
+	if ( empty( $view ) ) {
+		$view = vkpdc_iframe_view_theme();
+	}
 
     // Iframe の href に指定する url.
     $url = get_permalink( $post_id ) . '?view=iframe';
