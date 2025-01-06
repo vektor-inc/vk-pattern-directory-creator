@@ -75,7 +75,7 @@ add_action( 'after_setup_theme', 'vkpdc_theme_support' );
  * @param 
  */
 function vkpdc_delete_pattern_description( $content ) {
-    
+	
 	// 投稿タイプが vk-patterns でない場合は処理を中断
 	if ( 'vk-patterns' !== get_post_type() ) {
 		return $content;
@@ -87,7 +87,6 @@ function vkpdc_delete_pattern_description( $content ) {
 	return $content;
 
 }
-
 
 /**
  * Iframe 時に専用のテンプレートに切り替え
@@ -141,3 +140,60 @@ function vkpdc_load_iframe_template() {
 	exit;
 }
 add_filter( 'template_redirect', 'vkpdc_load_iframe_template', 2147483647 );
+
+/**
+ * iframe内 のテーマを切り替える関数
+ */
+function vkpdc_switch_theme_for_iframe() {
+	// iframe 判定 (URL パラメータ)
+	if ( ! isset( $_GET['view'] ) || sanitize_text_field( $_GET['view'] ) !== 'iframe' ) {
+		error_log( 'Not an iframe view. Exiting.' );
+		return;
+	}
+
+	// 選択されたテーマを取得
+	$selected_theme = isset( $_GET['theme'] ) ? sanitize_text_field( $_GET['theme'] ) : 'default';
+	if ( $selected_theme !== 'default' ) {
+		$theme = wp_get_theme( $selected_theme );
+		if ( $theme->exists() ) {
+			error_log( 'Switching to theme: ' . $theme->get( 'Name' ) );
+
+			// テーマ切り替えをiframe内に限定
+			add_filter( 'template_directory', function() use ( $theme ) {
+				return $theme->get_template_directory();
+			});
+
+			add_filter( 'stylesheet_directory', function() use ( $theme ) {
+				return $theme->get_stylesheet_directory();
+			});
+
+			add_filter( 'stylesheet', function() use ( $theme ) {
+				return $theme->get_stylesheet();
+			});
+
+			add_filter( 'template', function() use ( $theme ) {
+				return $theme->get_template();
+			});
+
+			// テーマ固有のリソース（スタイル・スクリプト）を登録
+			add_action( 'wp_enqueue_scripts', function() use ( $theme ) {
+				wp_enqueue_style( 'iframe-theme-style', $theme->get_stylesheet_directory_uri() . '/style.css', array(), null );
+
+				if ( file_exists( $theme->get_stylesheet_directory() . '/js/main.js' ) ) {
+					wp_enqueue_script( 'iframe-theme-script', $theme->get_stylesheet_directory_uri() . '/js/main.js', array(), null, true );
+				}
+			}, 20 );
+		} else {
+			error_log( 'Theme does not exist: ' . $selected_theme );
+		}
+	}
+
+	// テンプレートの表示処理をiframeに限定
+	add_filter( 'template_include', function( $template ) {
+		if ( isset( $_GET['view'] ) && $_GET['view'] === 'iframe' ) {
+			return locate_template( 'iframe-template.php' );
+		}
+		return $template;
+	});
+}
+add_action( 'setup_theme', 'vkpdc_switch_theme_for_iframe', 1 );
