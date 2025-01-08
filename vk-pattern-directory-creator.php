@@ -54,5 +54,8 @@ require_once $vkpdc_modules_path . 'content-archive-settings.php';
 // Iframe テーマ設定
 require_once $vkpdc_modules_path . 'iframe-theme-settings.php';
 
+// カスタムフィールド
+require_once $vkpdc_modules_path . 'custom-fields.php';
+
 // ブロック
 require_once $vkpdc_modules_path . 'blocks.php';
