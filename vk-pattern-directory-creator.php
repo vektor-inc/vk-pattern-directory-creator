@@ -27,35 +27,35 @@ define( 'VKPDC_PLUGIN_VERSION', $vkpdc_plugin_data['version'] );
 // 共通パスを定義.
 $vkpdc_modules_path = dirname( __FILE__ ) . '/modules/';
 
-// Iframe のサイズを読み込み.
-require_once $vkpdc_modules_path . 'iframe-sizes.php';
-
 // カスタム投稿タイプを作成.
 require_once $vkpdc_modules_path . 'register-post-type.php';
 
-// パターンディレクトリのパーツを読み込み.
-require_once $vkpdc_modules_path . 'content-part.php';
+// カスタムフィールド.
+require_once $vkpdc_modules_path . 'custom-fields.php';
 
-// スクリプトとスタイルを読み込み.
-require_once $vkpdc_modules_path . 'enquque-scripts.php';
+// アーカイブページ設定.
+require_once $vkpdc_modules_path . 'content-archive-settings.php';
 
-// Iframe の表示部分を読み込み.
-require_once $vkpdc_modules_path . 'iframe-view.php';
+// アーカイブページ.
+require_once $vkpdc_modules_path . 'content-archive.php';
 
 // 投稿ページを変更.
 require_once $vkpdc_modules_path . 'content-single.php';
 
-// アーカイブページ
-require_once $vkpdc_modules_path . 'content-archive.php';
+// パターンディレクトリのパーツを読み込み.
+require_once $vkpdc_modules_path . 'content-part.php';
 
-// アーカイブページ設定
-require_once $vkpdc_modules_path . 'content-archive-settings.php';
+// Iframe のサイズを読み込み.
+require_once $vkpdc_modules_path . 'iframe-sizes.php';
 
-// Iframe テーマ設定
+// Iframe の表示部分を読み込み.
+require_once $vkpdc_modules_path . 'iframe-view.php';
+
+// Iframe テーマ設定.
 require_once $vkpdc_modules_path . 'iframe-theme-settings.php';
 
-// カスタムフィールド
-require_once $vkpdc_modules_path . 'custom-fields.php';
+// スクリプトとスタイルを読み込み.
+require_once $vkpdc_modules_path . 'enquque-scripts.php';
 
-// ブロック
+// ブロック.
 require_once $vkpdc_modules_path . 'blocks.php';
