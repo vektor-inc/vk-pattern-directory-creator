@@ -122,7 +122,8 @@ function save_custom_taxonomies() {
 	}
 
 	update_option( 'custom_taxonomies', $taxonomies );
-	echo '<div class="updated"><p>' . __( 'Taxonomies saved.', 'vk-pattern-directory-creator' ) . '</p></div>';
+	echo '<div class="updated"><p>' . __( 'Taxonomies saved. Please remember to go to <a href="options-permalink.php"><strong>Permalink Settings</strong></a> and save the settings there to ensure the changes take effect.
+', 'vk-pattern-directory-creator' ) . '</p></div>';
 }
 
 /**
