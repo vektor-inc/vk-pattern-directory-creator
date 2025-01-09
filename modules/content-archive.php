@@ -9,6 +9,8 @@
  * Archive Loop
  */
 function vkpdc_adjust_query( $query ) {
+	error_log( 'start vkpdc_adjust_query' );
+	
 	// 管理画面ではなく、`vk-patterns` のアーカイブでのみ処理
 	if ( ! is_admin() && $query->is_main_query() && is_post_type_archive( 'vk-patterns' ) ) {
 		// ブロックテーマかどうかを判定
@@ -29,11 +31,16 @@ function vkpdc_adjust_query( $query ) {
 			$query->set( 'posts_per_page', $number_posts );
 			$query->set( 'paged', $paged );
 		}
-
+	}
+	
+	if ( ! is_admin() && $query->is_main_query() && is_tax( 'test_cat' ) ) {
+			$query->set( 'post_type', 'vk-patterns' );
+			$query->set( 'posts_per_page', 1 );
+			$query->set( 'paged', max( 1, get_query_var( 'paged', 1 ) ) );
+			error_log( 'Query Vars: ' . print_r( $query->query_vars, true ) );
 	}
 }
-add_action( 'pre_get_posts', 'vkpdc_adjust_query', 20 );
-
+add_action( 'pre_get_posts', 'vkpdc_adjust_query', 99 );
 
 /**
  * Get Block Default Attributes
@@ -297,6 +304,21 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
 	// ショートコード引数を適用（引数が優先される）
 	$attributes = shortcode_atts( $default_attributes, $atts );
 
+    // 現在のクエリ情報を取得
+    $queried_object = get_queried_object();
+    $tax_query = array();
+
+    // タクソノミー情報がある場合
+    if ( is_tax() && isset( $queried_object->taxonomy, $queried_object->slug ) ) {
+        $tax_query = array(
+            array(
+                'taxonomy' => $queried_object->taxonomy,
+                'field'    => 'slug',
+                'terms'    => $queried_object->slug,
+            ),
+        );
+    }
+	
 	// WP_Query 引数を生成
 	$query_args = array(
 		'post_type'      => 'vk-patterns',
@@ -304,6 +326,7 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
 		'order'          => $attributes['order'],
 		'orderby'        => $attributes['orderby'],
 		'paged'          => get_query_var( 'paged', 1 ),
+        'tax_query'      => $tax_query,
 	);
 
 	$query = new WP_Query( $query_args );
@@ -354,8 +377,37 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
 		$html .= '</div>';
 	}
 
-	wp_reset_postdata();
-	return $html;
+    // ページネーションの生成
+    if ( $attributes['display_paged'] ) {
+        $pagination = paginate_links( array(
+            'base'      => trailingslashit( get_pagenum_link( 1 ) ) . 'page/%#%/',
+            'format'    => 'page/%#%/',
+            'total'     => $query->max_num_pages,
+            'current'   => max( 1, get_query_var( 'paged', 1 ) ),
+            'type'      => 'array',
+            'prev_text' => '&laquo;',
+            'next_text' => '&raquo;',
+        ) );
+
+        if ( $pagination ) {
+            $html .= '<nav class="vkpdc_pagination navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
+            $html .= '<h2 class="screen-reader-text">' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '</h2>';
+            $html .= '<div class="nav-links"><ul class="page-numbers">';
+
+            foreach ( $pagination as $link ) {
+                if ( strpos( $link, 'current' ) !== false ) {
+                    $html .= '<li><span class="page-numbers current">' . strip_tags( $link ) . '</span></li>';
+                } else {
+                    $html .= '<li>' . $link . '</li>';
+                }
+            }
+
+            $html .= '</ul></div></nav>';
+        }
+    }
+
+    wp_reset_postdata();
+    return $html;
 }
 
 /**
@@ -421,6 +473,21 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 		esc_attr( $attributes['gapRow'] )
 	);
 
+    // 現在のクエリ情報を取得
+    $queried_object = get_queried_object();
+    $tax_query = array();
+
+    // タクソノミー情報がある場合
+    if ( is_tax() && isset( $queried_object->taxonomy, $queried_object->slug ) ) {
+        $tax_query = array(
+            array(
+                'taxonomy' => $queried_object->taxonomy,
+                'field'    => 'slug',
+                'terms'    => $queried_object->slug,
+            ),
+        );
+    }
+
 	// 現在のページを取得
 	$current_page = max( 1, get_query_var( 'paged', 1 ) );
 
@@ -431,6 +498,7 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 		'order'          => $attributes['order'],
 		'orderby'        => $attributes['orderby'],
 		'paged'          => $current_page,
+		'tax_query'      => $tax_query,
 	);
 
 	$query = new WP_Query( $query_args );
