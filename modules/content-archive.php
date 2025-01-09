@@ -9,10 +9,17 @@
  * Archive Loop
  */
 function vkpdc_adjust_query( $query ) {
-	error_log( 'start vkpdc_adjust_query' );
 	
 	// 管理画面ではなく、`vk-patterns` のアーカイブでのみ処理
-	if ( ! is_admin() && $query->is_main_query() && is_post_type_archive( 'vk-patterns' ) ) {
+	if (
+		! is_admin() &&
+		$query->is_main_query() &&
+		( 
+			is_archive( 'vk-patterns' ) || 
+			is_archive( 'vk-patterns' ) && is_tax() || 
+			is_front_page() 
+		)
+	) {
 		// ブロックテーマかどうかを判定
 		if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
 			// ブロックテーマの場合
@@ -33,12 +40,6 @@ function vkpdc_adjust_query( $query ) {
 		}
 	}
 	
-	if ( ! is_admin() && $query->is_main_query() && is_tax( 'test_cat' ) ) {
-			$query->set( 'post_type', 'vk-patterns' );
-			$query->set( 'posts_per_page', 1 );
-			$query->set( 'paged', max( 1, get_query_var( 'paged', 1 ) ) );
-			error_log( 'Query Vars: ' . print_r( $query->query_vars, true ) );
-	}
 }
 add_action( 'pre_get_posts', 'vkpdc_adjust_query', 99 );
 
