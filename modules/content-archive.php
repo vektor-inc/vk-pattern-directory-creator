@@ -16,8 +16,7 @@ function vkpdc_adjust_query( $query ) {
 		$query->is_main_query() &&
 		( 
 			is_archive( 'vk-patterns' ) || 
-			is_archive( 'vk-patterns' ) && is_tax() || 
-			is_front_page() 
+			is_archive( 'vk-patterns' ) && is_tax()
 		)
 	) {
 		// ブロックテーマかどうかを判定
@@ -491,7 +490,9 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 
 	// 現在のページを取得
 	$current_page = max( 1, get_query_var( 'paged', 1 ) );
-
+	if ( is_front_page() ) {
+		$current_page = get_query_var( 'page', 1 ); // フロントページでは 'page' を使用
+	}
 	// クエリの設定
 	$query_args = array(
 		'post_type'      => 'vk-patterns',
@@ -529,7 +530,7 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 			'base'      => esc_url( get_pagenum_link( 1 ) ) . '%_%',
 			'format'    => 'page/%#%/',
 			'total'     => $query->max_num_pages,
-			'current'   => max( 1, get_query_var( 'paged', 1 ) ),
+			'current'   => $current_page,
 			'type'      => 'array',
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
