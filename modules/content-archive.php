@@ -491,8 +491,9 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 	// 現在のページを取得
 	$current_page = max( 1, get_query_var( 'paged', 1 ) );
 	if ( is_front_page() ) {
-		$current_page = get_query_var( 'page', 1 ); // フロントページでは 'page' を使用
+		$current_page = get_query_var( 'page', 1 );
 	}
+
 	// クエリの設定
 	$query_args = array(
 		'post_type'      => 'vk-patterns',
