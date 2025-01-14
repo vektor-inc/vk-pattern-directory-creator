@@ -6,6 +6,9 @@
 	}
 	&_iframe-outer {
 		// padding: 0 1.25rem; Full Widthに対応するためにコメントアウト
+		&--archive {
+			padding: 0 1.25rem; 
+		}
 		&--single {
 			margin: 0 calc( 50% - 50vw );
 		}
