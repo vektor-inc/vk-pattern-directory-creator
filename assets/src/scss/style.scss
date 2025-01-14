@@ -27,7 +27,6 @@ body:has(.vkpdc){
 		}	
 	
 		&--single {
-			width: calc(100% - 15px); //横スクロールバーの幅をマイナス
 			height: 720px;
 			margin:2rem auto 0;
 			padding-bottom: 2rem;
