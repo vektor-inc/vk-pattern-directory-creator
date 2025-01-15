@@ -57,5 +57,8 @@ require_once $vkpdc_modules_path . 'iframe-theme-settings.php';
 // スクリプトとスタイルを読み込み.
 require_once $vkpdc_modules_path . 'enquque-scripts.php';
 
+// SmaVeksive カスタマイズの読み込み
+require_once $vkpdc_modules_path . 'smaveksive/init.php';
+
 // ブロック.
 require_once $vkpdc_modules_path . 'blocks.php';
