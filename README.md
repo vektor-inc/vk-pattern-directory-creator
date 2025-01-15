@@ -41,6 +41,8 @@
 | **`register-post-type.php`**  | カスタム投稿タイプ「Block Patterns」の登録ロジックを実装し、独自投稿タイプを作成。                     |
 | **`register-custom-taxonomies.php`** | カスタム投稿タイプ「Block Patterns」のタクソノミー登録画面を実装し、独自カスタムタクソノミーを作成。 |
 
+また、テーマ「SmaVeksive」用にiframeの幅処理が必要なため、smaveksiveフォルダにまとめています。
+
 ### blocks
 
 | ブロック名                  | 説明                                                                                   |
