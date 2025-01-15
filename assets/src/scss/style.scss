@@ -48,6 +48,7 @@ body:has(.vkpdc){
 			}
 			iframe {
 				width: 400%;
+				max-width: inherit;
 				height:800px;
 				transform: scale(0.25);
 				transform-origin: 0 0;
