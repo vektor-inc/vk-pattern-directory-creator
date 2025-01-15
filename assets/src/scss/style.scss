@@ -48,11 +48,13 @@ body:has(.vkpdc){
 			}
 			iframe {
 				width: 400%;
-				max-width: inherit;
-				height:800px;
+				height: 800px;
 				transform: scale(0.25);
 				transform-origin: 0 0;
 				pointer-events: none;
+				&.vkpdc_iframe { // このクラスをつけないとテーマのmax-widthが優先されてしまう
+					max-width: inherit;
+				}
 			}
 		}
 	
