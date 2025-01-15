@@ -378,7 +378,13 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
 	}
 
     // ページネーションの生成
-    if ( $attributes['display_paged'] ) {
+    if (isset($attributes['display_paged'])) {
+        $display_paged = $attributes['display_paged'];
+    } else {
+        $display_paged = false;
+    }
+
+    if ( $display_paged ) {
         $pagination = paginate_links( array(
             'base'      => trailingslashit( get_pagenum_link( 1 ) ) . 'page/%#%/',
             'format'    => 'page/%#%/',
@@ -526,7 +532,13 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 	$html .= '</div>';
 
 	// ページネーションの生成
-	if ( $attributes['display_paged'] ) {
+	if (isset($attributes['display_paged'])) {
+		$display_paged = $attributes['display_paged'];
+	} else {
+		$display_paged = false;
+	}
+
+	if ( $display_paged ) {
 		$pagination = paginate_links( array(
 			'base'      => esc_url( get_pagenum_link( 1 ) ) . '%_%',
 			'format'    => 'page/%#%/',
