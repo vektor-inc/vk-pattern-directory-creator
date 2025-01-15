@@ -231,18 +231,12 @@ function vkpdc_render_post_item( $post = null, $attributes = [] ) {
 			if ( $attributes['display_image'] === 'featured' ) {
 				if ( has_post_thumbnail() ) {
 					$size = ! empty( $attributes['thumbnail_size'] ) ? $attributes['thumbnail_size'] : 'full';
-					$html .= '<div class="vkpdc_iframe-wrapper vkpdc_iframe-wrapper--archive">';
 					$html .= get_the_post_thumbnail( $post->ID, $size );
-					$html .= '</div>';
 				} else {
-					$html .= '<div class="vkpdc_iframe-wrapper vkpdc_iframe-wrapper--archive">';
 					$html .= $iframe . apply_filters( 'vkpdc_single_post_iframe_after', '' );
-					$html .= '</div>';
 				}
 			} elseif ( $attributes['display_image'] === 'iframe' ) {
-				$html .= '<div class="vkpdc_iframe-wrapper vkpdc_iframe-wrapper--archive">';
 				$html .= $iframe . apply_filters( 'vkpdc_single_post_iframe_after', '' );
-				$html .= '</div>';
 			}
 			$html .= '</a>';
 			$html .= '</div>';
