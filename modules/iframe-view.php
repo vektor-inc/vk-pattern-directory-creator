@@ -103,6 +103,11 @@ function vkpdc_load_iframe_template() {
 	// パターンの説明を削除
 	add_filter( 'the_content', 'vkpdc_delete_pattern_description', 0 );
 
+	// ページトップボタンを削除
+	if (function_exists('veu_add_pagetop')) {
+		remove_action('wp_footer', 'veu_add_pagetop');
+	}
+
 	// 管理バーを削除
 	add_filter( 'show_admin_bar', '__return_false');
 	add_action( 'wp_enqueue_scripts', 'vkpdc_admin_scripts', 2147483646 );
