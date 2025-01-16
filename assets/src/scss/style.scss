@@ -121,7 +121,7 @@ body:has(.vkpdc){
 		}
 		&_title {
 			line-height: 1.4;
-			font-size: .9rem;
+			font-size: 1rem;
 			font-weight: bold;
 			&_new {
 				margin-left: .4em;
@@ -207,6 +207,7 @@ body:has(.vkpdc){
 		border: 1px solid transparent;
 		border-radius: .25rem;
 		text-align: center;
+		font-size: .875rem;
 		place-content: center;
 		text-decoration: none;
 
