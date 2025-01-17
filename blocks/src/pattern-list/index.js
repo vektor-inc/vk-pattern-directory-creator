@@ -27,6 +27,7 @@ export const settings = {
 			display_date_modified: false,
 			display_new: true,
 			display_taxonomies: true,
+			excluded_taxonomies: [],
 			pattern_id: true,
 			display_btn_view: true,
 			display_btn_copy: true,
