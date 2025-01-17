@@ -89,7 +89,7 @@ body:has(.vkpdc){
 			&:not(:has(.vkpdc_post_info)),
 			&:not(:has(.vkpdc_post_entry_meta)),
 			&:not(:has(.vkpdc_buttons)) {
-				grid-template-rows: auto 1fr auto auto;
+				grid-template-rows: auto auto 1fr auto;
 			}
 			&:not(:has(.vkpdc_iframe-outer, .vkpdc_post_info)),
 			&:not(:has(.vkpdc_iframe-outer, .vkpdc_post_entry_meta)),
@@ -125,7 +125,7 @@ body:has(.vkpdc){
 			font-weight: bold;
 			&_new {
 				margin-left: .4em;
-				font-size: .8em;
+				font-size: .75em;
 				white-space: nowrap;
 				color: red;
 			}
