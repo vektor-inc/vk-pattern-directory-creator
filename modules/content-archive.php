@@ -123,18 +123,17 @@ function vkpdc_render_post_item( $post = null, $attributes = [] ) {
 		$has_pattern_id = ! empty( $attributes['pattern_id'] );
 
 		if ( $has_taxonomies ) {
-			// タクソノミーの取得.
+			// タクソノミーの取得
 			$args       = array(
 				'template'      => '<dt class="vkpdc_post_taxonomy_title"><span class="vkpdc_post_taxonomy_title_inner">%s</span></dt><dd class="vkpdc_post_taxonomy_contents">%l</dd>',
 				'term_template' => '<a href="%1$s">%2$s</a>',
 			);
 			$taxonomies = get_the_taxonomies( $post->ID, $args );
 
-			// 除外するタクソノミー.
-			$exclusion = array( 'product_type', 'language' );
-			$exclusion = apply_filters( 'vkpdc_archive_display_taxonomies_exclusion', $exclusion );
+			// 除外するタクソノミー
+			$exclusion = apply_filters( 'vkpdc_archive_display_taxonomies_exclusion', $attributes['excluded_taxonomies'] );
 
-			// 除外するタクソノミーを削除.
+			// 除外するタクソノミーを削除
 			if ( is_array( $exclusion ) ) {
 				foreach ( $exclusion as $key => $value ) {
 					unset( $taxonomies[ $value ] );
