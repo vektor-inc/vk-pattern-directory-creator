@@ -188,14 +188,16 @@ export default function PostListEdit( props ) {
 						checked={display_taxonomies}
 						onChange={handleDisplayTaxonomiesChange}
 					/>
-					{display_taxonomies && taxonomies.map((taxonomy) => (
-						<CheckboxControl
-							key={taxonomy.slug}
-							label={taxonomy.label}
-							checked={!excluded_taxonomies.includes(taxonomy.slug)}
-							onChange={() => handleTaxonomyChange(taxonomy.slug)}
-						/>
-					))}
+					<div style={{ paddingLeft: '1.5rem', marginBottom: '16px' }}>
+						{display_taxonomies && taxonomies.map((taxonomy) => (
+							<CheckboxControl
+								key={taxonomy.slug}
+								label={taxonomy.label}
+								checked={!excluded_taxonomies.includes(taxonomy.slug)}
+								onChange={() => handleTaxonomyChange(taxonomy.slug)}
+							/>
+						))}
+					</div>
 					<CheckboxControl
 						label={__('Pattern ID', 'vk-pattern-directory-creator')}
 						checked={pattern_id}
