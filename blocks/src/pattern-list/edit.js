@@ -9,9 +9,10 @@ import {
 	RangeControl,
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import ServerSideRender from '@wordpress/server-side-render';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import apiFetch from '@wordpress/api-fetch';
 
 export default function PostListEdit( props ) {
 	const { attributes, setAttributes } = props;
@@ -19,20 +20,21 @@ export default function PostListEdit( props ) {
 		numberPosts,
 		order,
 		orderby,
-		display_author, //eslint-disable-line camelcase
-		display_date_publiched, //eslint-disable-line camelcase
-		display_date_modified, //eslint-disable-line camelcase
-		display_new, //eslint-disable-line camelcase
-		display_taxonomies, //eslint-disable-line camelcase
-		pattern_id, //eslint-disable-line camelcase
-		display_btn_view, //eslint-disable-line camelcase
-		display_btn_view_text, //eslint-disable-line camelcase
-		display_btn_copy, //eslint-disable-line camelcase
-		display_paged, //eslint-disable-line camelcase
-		display_image, //eslint-disable-line camelcase
-		thumbnail_size, //eslint-disable-line camelcase
-		new_date, //eslint-disable-line camelcase
-		new_text, //eslint-disable-line camelcase
+		display_author,
+		display_date_publiched,
+		display_date_modified,
+		display_new,
+		display_taxonomies,
+		excluded_taxonomies,
+		pattern_id,
+		display_btn_view,
+		display_btn_view_text,
+		display_btn_copy,
+		display_paged,
+		display_image,
+		thumbnail_size,
+		new_date,
+		new_text,
 		colWidthMinMobile,
 		colWidthMinTablet,
 		colWidthMinPC,
@@ -41,6 +43,7 @@ export default function PostListEdit( props ) {
 	} = attributes;
 
 	const blockProps = useBlockProps();
+	const [taxonomies, setTaxonomies] = useState([]);
 
 	useEffect(() => {
 		if (display_new === undefined) setAttributes({ display_new: true });
@@ -62,8 +65,42 @@ export default function PostListEdit( props ) {
 		if (!colWidthMinPC) setAttributes({ colWidthMinPC: '300px' });
 		if (!gap) setAttributes({ gap: '1.5rem' });
 		if (!gapRow) setAttributes({ gapRow: '1.5rem' });
+		if (!excluded_taxonomies) setAttributes({ excluded_taxonomies: [] });
 
+		// Fetch taxonomies for vk-patterns
+		apiFetch({ path: '/wp/v2/taxonomies?type=vk-patterns' }).then((data) => {
+			const taxonomyList = Object.keys(data).map((key) => ({
+				slug: key,
+				label: data[key].name,
+			}));
+			setTaxonomies(taxonomyList);
+		});
 	}, []);
+
+	useEffect(() => {
+		// すべてのタクソノミーが除外された場合、display_taxonomies のチェックを外す
+		if (excluded_taxonomies.length === taxonomies.length) {
+			setAttributes({ display_taxonomies: false });
+		}
+	}, [excluded_taxonomies, taxonomies]);
+
+	const handleTaxonomyChange = (taxonomySlug) => {
+		const newExclusions = excluded_taxonomies.includes(taxonomySlug)
+			? excluded_taxonomies.filter((item) => item !== taxonomySlug)
+			: [...excluded_taxonomies, taxonomySlug];
+		setAttributes({ excluded_taxonomies: newExclusions });
+	};
+
+	const handleDisplayTaxonomiesChange = (checked) => {
+		setAttributes({ display_taxonomies: checked });
+		if (checked) {
+			// チェックがつけられたとき、すべてのタクソノミーを表示
+			setAttributes({ excluded_taxonomies: [] });
+		} else {
+			// チェックが外されたとき、すべてのタクソノミーを除外
+			setAttributes({ excluded_taxonomies: taxonomies.map(t => t.slug) });
+		}
+	};
 
 	return (
 		<>
@@ -149,8 +186,16 @@ export default function PostListEdit( props ) {
 					<CheckboxControl
 						label={__('Taxonomies(all)', 'vk-pattern-directory-creator')}
 						checked={display_taxonomies}
-						onChange={(checked) => setAttributes({ display_taxonomies: checked })}
+						onChange={handleDisplayTaxonomiesChange}
 					/>
+					{display_taxonomies && taxonomies.map((taxonomy) => (
+						<CheckboxControl
+							key={taxonomy.slug}
+							label={taxonomy.label}
+							checked={!excluded_taxonomies.includes(taxonomy.slug)}
+							onChange={() => handleTaxonomyChange(taxonomy.slug)}
+						/>
+					))}
 					<CheckboxControl
 						label={__('Pattern ID', 'vk-pattern-directory-creator')}
 						checked={pattern_id}
@@ -220,7 +265,7 @@ export default function PostListEdit( props ) {
 							'Number of days to display the new post mark',
 							'vk-pattern-directory-creator'
 						)}
-						value={new_date} //eslint-disable-line camelcase
+						value={new_date}
 						onChange={(value) =>
 							setAttributes({ new_date: parseInt(value) })
 						}
@@ -228,7 +273,7 @@ export default function PostListEdit( props ) {
 					/>
 					<TextControl
 						label={__('New post mark', 'vk-pattern-directory-creator')}
-						value={new_text} //eslint-disable-line camelcase
+						value={new_text}
 						onChange={(value) => setAttributes({ new_text: value })}
 					/>
 					<h4>{__('View Button Text', 'vk-pattern-directory-creator')}</h4>
