@@ -64,6 +64,7 @@ function vkpdc_get_default_options() {
 		'orderby'               => __( 'date', 'vk-pattern-directory-creator' ),
 		'display_new'           => 1,
 		'display_taxonomies'    => 1,
+		'excluded_taxonomies'   => [],
 		'pattern_id'            => 1,
 		'display_date_publiched'=> 1,
 		'display_date_modified' => 1,
@@ -121,15 +122,12 @@ function vkpdc_save_options() {
 	check_admin_referer( 'vkpdc_save_options', 'vkpdc_settings_nonce' );
 	$defaults = vkpdc_get_default_options();
 
+	// 既存のオプションを取得
 	foreach ( vkpdc_get_default_options() as $key => $default ) {
 		$current_value = get_option( 'vkpdc_' . $key );
 	}
 
-	// フック名の存在を検証
-	if ( ! empty( $hook_name ) && ! has_filter( $hook_name ) ) {
-		wp_die( __( 'The specified hook is not valid.', 'vk-pattern-directory-creator' ) );
-	}
-
+	// チェックボックスの処理
 	$checkbox_fields = [
 		'display_new',
 		'display_taxonomies',
@@ -141,27 +139,29 @@ function vkpdc_save_options() {
 		'display_btn_copy',
 	];
 
-	if ( isset( $_POST['reset'] ) ) {
-		foreach ( $defaults as $key => $value ) {
-			update_option( 'vkpdc_' . $key, $value );
-		}
-		return __( 'Settings reset to default.', 'vk-pattern-directory-creator' );
-	} else {
-		foreach ( $checkbox_fields as $key ) {
-			$value = isset( $_POST[ $key ] ) ? 1 : 0;
-			update_option( 'vkpdc_' . $key, $value );
-		}
-
-		foreach ( $defaults as $key => $default ) {
-			if ( ! in_array( $key, $checkbox_fields, true ) ) {
-				$value = isset( $_POST[ $key ] ) ? sanitize_text_field( $_POST[ $key ] ) : $default;
-				update_option( 'vkpdc_' . $key, $value );
-			}
-		}
-
-		wp_cache_flush();
-		return __( 'Settings saved.', 'vk-pattern-directory-creator' );
+	foreach ( $checkbox_fields as $key ) {
+		$value = isset( $_POST[ $key ] ) ? 1 : 0;
+		update_option( 'vkpdc_' . $key, $value );
 	}
+
+	// excluded_taxonomies の処理
+	if ( isset( $_POST['excluded_taxonomies'] ) ) {
+		$excluded_taxonomies = array_map( 'sanitize_text_field', $_POST['excluded_taxonomies'] );
+		update_option( 'vkpdc_excluded_taxonomies', $excluded_taxonomies );
+	} else {
+		update_option( 'vkpdc_excluded_taxonomies', [] ); // チェックが外された場合は空配列を保存
+	}
+
+	// その他のオプションの保存
+	foreach ( $defaults as $key => $default ) {
+		if ( ! in_array( $key, $checkbox_fields, true ) ) {
+			$value = isset( $_POST[ $key ] ) ? sanitize_text_field( $_POST[ $key ] ) : $default;
+			update_option( 'vkpdc_' . $key, $value );
+		}
+	}
+
+	wp_cache_flush();
+	return __( 'Settings saved.', 'vk-pattern-directory-creator' );
 }
 
 /**
@@ -224,12 +224,13 @@ function vkpdc_execute_shortcode_on_hook() {
 	$options = vkpdc_get_default_options();
 
 	$shortcode = sprintf(
-		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
+		'[vkpdc_archive_loop numberPosts="%d" order="%s" orderby="%s" display_new="%d" display_taxonomies="%d" excluded_taxonomies="%s" pattern_id="%d" display_date_publiched="%d" display_date_modified="%d" display_author="%d" display_image="%s" thumbnail_size="%s" display_btn_view="%d" display_btn_copy="%d" display_btn_view_text="%s" new_date="%d" new_text="%s" colWidthMinMobile="%s" colWidthMinMobileTablet="%s" colWidthMinMobilePC="%s" gap="%s" gapRow="%s"]',
 		intval( $options['numberPosts'] ),
 		esc_attr( $options['order'] ),
 		esc_attr( $options['orderby'] ),
 		intval( $options['display_new'] ),
 		intval( $options['display_taxonomies'] ),
+		esc_attr( $options['excluded_taxonomies'] ),
 		intval( $options['pattern_id'] ),
 		intval( $options['display_date_publiched'] ),
 		intval( $options['display_date_modified'] ),
@@ -283,6 +284,9 @@ function vkpdc_render_settings_page() {
 	foreach ( $defaults as $key => $default ) {
 		$options[ $key ] = get_option( 'vkpdc_' . $key, $default );
 	}
+
+	// タクソノミーの取得
+	$taxonomies = get_taxonomies( array( 'object_type' => array( 'vk-patterns' ) ), 'objects' );
 
 	?>
 	<div class="wrap">
@@ -344,6 +348,15 @@ function vkpdc_render_settings_page() {
 								</td>
 							</tr>
 						<?php endforeach; ?>
+						<tr>
+							<th><?php esc_html_e( 'Exclude Taxonomies', 'vk-pattern-directory-creator' ); ?></th>
+							<td style="padding-left: 1.5rem;">
+								<?php foreach ( $taxonomies as $taxonomy ) : ?>
+									<input type="checkbox" id="excluded_taxonomy_<?php echo esc_attr( $taxonomy->name ); ?>" name="excluded_taxonomies[]" value="<?php echo esc_attr( $taxonomy->name ); ?>" <?php checked( in_array( $taxonomy->name, (array) get_option( 'vkpdc_excluded_taxonomies', [] ) ) ); ?> />
+									<label for="excluded_taxonomy_<?php echo esc_attr( $taxonomy->name ); ?>"><?php echo esc_html( $taxonomy->label ); ?></label><br />
+								<?php endforeach; ?>
+							</td>
+						</tr>
 						<tr>
 							<th><label for="display_image"><?php esc_html_e( 'Display Image', 'vk-pattern-directory-creator' ); ?></label></th>
 							<td>
