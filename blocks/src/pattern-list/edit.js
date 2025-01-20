@@ -188,16 +188,6 @@ export default function PostListEdit( props ) {
 						checked={display_taxonomies}
 						onChange={handleDisplayTaxonomiesChange}
 					/>
-					<div style={{ paddingLeft: '1.5rem', marginBottom: '16px' }}>
-						{display_taxonomies && taxonomies.map((taxonomy) => (
-							<CheckboxControl
-								key={taxonomy.slug}
-								label={taxonomy.label}
-								checked={!excluded_taxonomies.includes(taxonomy.slug)}
-								onChange={() => handleTaxonomyChange(taxonomy.slug)}
-							/>
-						))}
-					</div>
 					<CheckboxControl
 						label={__('Pattern ID', 'vk-pattern-directory-creator')}
 						checked={pattern_id}
@@ -261,7 +251,17 @@ export default function PostListEdit( props ) {
 								]}
 							/>
 						</BaseControl>
-					)}					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
+					)}
+					<h4>{__('Exclude Taxonomies', 'vk-pattern-directory-creator')}</h4>
+					{display_taxonomies && taxonomies.map((taxonomy) => (
+						<CheckboxControl
+							key={taxonomy.slug}
+							label={taxonomy.label}
+							checked={excluded_taxonomies.includes(taxonomy.slug)}
+							onChange={() => handleTaxonomyChange(taxonomy.slug)}
+						/>
+					))}
+					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
 					<TextControl
 						label={__(
 							'Number of days to display the new post mark',
