@@ -124,7 +124,10 @@ function vkpdc_render_post_item( $post = null, $attributes = [] ) {
 
 		// 除外するタクソノミー
 		$excluded_taxonomies = get_option( 'vkpdc_excluded_taxonomies', [] ); // 除外するタクソノミーを取得
-		$exclusion = apply_filters( 'vkpdc_archive_display_taxonomies_exclusion', $excluded_taxonomies );
+		$exclusion = apply_filters( 'vkpdc_archive_display_taxonomies_exclusion', 
+			vkpdc_is_block_theme() ? $attributes['excluded_taxonomies'] : 
+			(empty($attributes['excluded_taxonomies']) ? $excluded_taxonomies : $attributes['excluded_taxonomies'])
+		);
 
 		// タクソノミーの取得
 		$args = array(
