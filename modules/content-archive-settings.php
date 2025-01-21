@@ -361,7 +361,7 @@ function vkpdc_render_settings_page() {
 						<?php endforeach; ?>
 						<tr>
 							<th><?php esc_html_e( 'Exclude Taxonomies', 'vk-pattern-directory-creator' ); ?></th>
-							<td style="padding-left: 1.5rem;">
+							<td>
 								<?php foreach ( $taxonomies as $taxonomy ) : ?>
 									<input type="checkbox" id="excluded_taxonomy_<?php echo esc_attr( $taxonomy->name ); ?>" name="excluded_taxonomies[]" value="<?php echo esc_attr( $taxonomy->name ); ?>" <?php checked( in_array( $taxonomy->name, (array) $saved_excluded_taxonomies, true ) ); ?> />
 									<label for="excluded_taxonomy_<?php echo esc_attr( $taxonomy->name ); ?>"><?php echo esc_html( $taxonomy->label ); ?></label><br />
