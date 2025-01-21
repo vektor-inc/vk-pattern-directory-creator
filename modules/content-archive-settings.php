@@ -122,10 +122,21 @@ function vkpdc_save_options() {
 	check_admin_referer( 'vkpdc_save_options', 'vkpdc_settings_nonce' );
 	$defaults = vkpdc_get_default_options();
 
-	// 既存のオプションを取得
-	foreach ( vkpdc_get_default_options() as $key => $default ) {
-		$current_value = get_option( 'vkpdc_' . $key );
+	// excluded_taxonomies の処理
+	if ( isset( $_POST['excluded_taxonomies'] ) ) {
+		$excluded_taxonomies = $_POST['excluded_taxonomies']; // そのまま保存
+		update_option( 'vkpdc_excluded_taxonomies', $excluded_taxonomies );
+		// デバッグ用にログ出力
+		error_log( 'Excluded taxonomies saved: ' . print_r( $excluded_taxonomies, true ) );
+	} else {
+		update_option( 'vkpdc_excluded_taxonomies', [] ); // チェックが外された場合は空配列を保存
+		// デバッグ用にログ出力
+		error_log( 'Excluded taxonomies set to empty array.' );
 	}
+
+	// 保存後にデータベースから取得して確認
+	$saved_excluded_taxonomies = get_option( 'vkpdc_excluded_taxonomies', [] );
+	error_log( 'Current excluded taxonomies: ' . print_r( $saved_excluded_taxonomies, true ) );
 
 	// チェックボックスの処理
 	$checkbox_fields = [
@@ -138,18 +149,10 @@ function vkpdc_save_options() {
 		'display_btn_view',
 		'display_btn_copy',
 	];
-
+	
 	foreach ( $checkbox_fields as $key ) {
 		$value = isset( $_POST[ $key ] ) ? 1 : 0;
 		update_option( 'vkpdc_' . $key, $value );
-	}
-
-	// excluded_taxonomies の処理
-	if ( isset( $_POST['excluded_taxonomies'] ) ) {
-		$excluded_taxonomies = array_map( 'sanitize_text_field', $_POST['excluded_taxonomies'] );
-		update_option( 'vkpdc_excluded_taxonomies', $excluded_taxonomies );
-	} else {
-		update_option( 'vkpdc_excluded_taxonomies', [] ); // チェックが外された場合は空配列を保存
 	}
 
 	// その他のオプションの保存
@@ -159,6 +162,11 @@ function vkpdc_save_options() {
 			update_option( 'vkpdc_' . $key, $value );
 		}
 	}
+
+	update_option('vkpdc_excluded_taxonomies', $excluded_taxonomies, false);
+	$excluded_taxonomies = get_option( 'vkpdc_excluded_taxonomies', [] );
+
+
 
 	wp_cache_flush();
 	return __( 'Settings saved.', 'vk-pattern-directory-creator' );
@@ -288,6 +296,9 @@ function vkpdc_render_settings_page() {
 	// タクソノミーの取得
 	$taxonomies = get_taxonomies( array( 'object_type' => array( 'vk-patterns' ) ), 'objects' );
 
+	// 保存された excluded_taxonomies を取得
+	$saved_excluded_taxonomies = get_option( 'vkpdc_excluded_taxonomies', [] );
+
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Archive Setting', 'vk-pattern-directory-creator' ); ?></h1>
@@ -352,7 +363,7 @@ function vkpdc_render_settings_page() {
 							<th><?php esc_html_e( 'Exclude Taxonomies', 'vk-pattern-directory-creator' ); ?></th>
 							<td style="padding-left: 1.5rem;">
 								<?php foreach ( $taxonomies as $taxonomy ) : ?>
-									<input type="checkbox" id="excluded_taxonomy_<?php echo esc_attr( $taxonomy->name ); ?>" name="excluded_taxonomies[]" value="<?php echo esc_attr( $taxonomy->name ); ?>" <?php checked( in_array( $taxonomy->name, (array) get_option( 'vkpdc_excluded_taxonomies', [] ) ) ); ?> />
+									<input type="checkbox" id="excluded_taxonomy_<?php echo esc_attr( $taxonomy->name ); ?>" name="excluded_taxonomies[]" value="<?php echo esc_attr( $taxonomy->name ); ?>" <?php checked( in_array( $taxonomy->name, (array) $saved_excluded_taxonomies, true ) ); ?> />
 									<label for="excluded_taxonomy_<?php echo esc_attr( $taxonomy->name ); ?>"><?php echo esc_html( $taxonomy->label ); ?></label><br />
 								<?php endforeach; ?>
 							</td>
