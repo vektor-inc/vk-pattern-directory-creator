@@ -65,7 +65,7 @@ export default function PostListEdit( props ) {
 		if (!colWidthMinPC) setAttributes({ colWidthMinPC: '300px' });
 		if (!gap) setAttributes({ gap: '1.5rem' });
 		if (!gapRow) setAttributes({ gapRow: '1.5rem' });
-		if (!excluded_taxonomies) setAttributes({ excluded_taxonomies: [] });
+		if (excluded_taxonomies) setAttributes({ excluded_taxonomies: [] });
 
 		// Fetch taxonomies for vk-patterns
 		apiFetch({ path: '/wp/v2/taxonomies?type=vk-patterns' }).then((data) => {
@@ -181,14 +181,6 @@ export default function PostListEdit( props ) {
 						checked={display_taxonomies}
 						onChange={handleDisplayTaxonomiesChange}
 					/>
-					{display_taxonomies && taxonomies.map((taxonomy) => (
-						<CheckboxControl
-							key={taxonomy.slug}
-							label={taxonomy.label}
-							checked={!excluded_taxonomies.includes(taxonomy.slug)}
-							onChange={() => handleTaxonomyChange(taxonomy.slug)}
-						/>
-					))}
 					<CheckboxControl
 						label={__('Pattern ID', 'vk-pattern-directory-creator')}
 						checked={pattern_id}
@@ -252,7 +244,21 @@ export default function PostListEdit( props ) {
 								]}
 							/>
 						</BaseControl>
-					)}					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
+					)}
+					{display_taxonomies && (
+						<>
+							<h4>{__('Exclude Taxonomies', 'vk-pattern-directory-creator')}</h4>
+							{taxonomies.map((taxonomy) => (
+								<CheckboxControl
+									key={taxonomy.slug}
+									label={taxonomy.label}
+									checked={excluded_taxonomies.includes(taxonomy.slug)}
+									onChange={() => handleTaxonomyChange(taxonomy.slug)}
+								/>
+							))}
+						</>
+					)}
+					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
 					<TextControl
 						label={__(
 							'Number of days to display the new post mark',
