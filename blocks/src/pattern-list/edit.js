@@ -77,13 +77,6 @@ export default function PostListEdit( props ) {
 		});
 	}, []);
 
-	useEffect(() => {
-		// すべてのタクソノミーが除外された場合、display_taxonomies のチェックを外す
-		if (excluded_taxonomies.length === taxonomies.length) {
-			setAttributes({ display_taxonomies: false });
-		}
-	}, [excluded_taxonomies, taxonomies]);
-
 	const handleTaxonomyChange = (taxonomySlug) => {
 		const newExclusions = excluded_taxonomies.includes(taxonomySlug)
 			? excluded_taxonomies.filter((item) => item !== taxonomySlug)
@@ -188,6 +181,14 @@ export default function PostListEdit( props ) {
 						checked={display_taxonomies}
 						onChange={handleDisplayTaxonomiesChange}
 					/>
+					{display_taxonomies && taxonomies.map((taxonomy) => (
+						<CheckboxControl
+							key={taxonomy.slug}
+							label={taxonomy.label}
+							checked={!excluded_taxonomies.includes(taxonomy.slug)}
+							onChange={() => handleTaxonomyChange(taxonomy.slug)}
+						/>
+					))}
 					<CheckboxControl
 						label={__('Pattern ID', 'vk-pattern-directory-creator')}
 						checked={pattern_id}
@@ -251,17 +252,7 @@ export default function PostListEdit( props ) {
 								]}
 							/>
 						</BaseControl>
-					)}
-					<h4>{__('Exclude Taxonomies', 'vk-pattern-directory-creator')}</h4>
-					{display_taxonomies && taxonomies.map((taxonomy) => (
-						<CheckboxControl
-							key={taxonomy.slug}
-							label={taxonomy.label}
-							checked={excluded_taxonomies.includes(taxonomy.slug)}
-							onChange={() => handleTaxonomyChange(taxonomy.slug)}
-						/>
-					))}
-					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
+					)}					<h4>{__('New mark option', 'vk-pattern-directory-creator')}</h4>
 					<TextControl
 						label={__(
 							'Number of days to display the new post mark',
