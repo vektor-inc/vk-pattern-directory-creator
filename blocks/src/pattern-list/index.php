@@ -66,6 +66,13 @@ function vkpdc_add_pattern_list_block() {
 					'type'    => 'boolean',
 					'default' => true,
 				),
+				'excluded_taxonomies' => array(
+					'type'    => 'array',
+					'default' => array(),
+					'items'   => array(
+						'type' => 'string',
+					),
+				),
 				'pattern_id' => array(
 					'type'    => 'boolean',
 					'default' => true,

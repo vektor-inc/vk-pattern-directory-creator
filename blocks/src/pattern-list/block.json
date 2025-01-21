@@ -38,6 +38,13 @@
 			"type": "boolean",
 			"default": true
 		},
+		"excluded_taxonomies": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "string"
+			}
+		},
 		"pattern_id": {
 			"type": "boolean",
 			"default": true
