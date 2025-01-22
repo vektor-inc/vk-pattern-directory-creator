@@ -5,6 +5,10 @@
  * @package VK Pattern Directory Creator
  */
 
+if ( wp_get_theme()->get('Name') !== 'SmaVeksive' ) {
+    return;
+}
+
 // SmaVeksive用の関数を読み込む
 require_once plugin_dir_path( __FILE__ ) . 'functions.php';
 
