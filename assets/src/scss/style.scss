@@ -130,13 +130,17 @@ body:has(.vkpdc){
 				color: red;
 			}
 		}
+		&_taxonomies {
+			display: grid;
+			gap: .375rem;
+			margin-bottom: .375rem;
+		}
 		&_taxonomy,
 		&_id {
 			display: flex;
 			flex-direction: row;
 			margin: 0;
 			padding: 0;
-			margin-bottom: .375rem;
 			gap: .375rem;
 			&_title {
 				margin: 0;
