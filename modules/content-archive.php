@@ -123,11 +123,13 @@ function vkpdc_render_post_item( $post = null, $attributes = [] ) {
 		$has_pattern_id = ! empty( $attributes['pattern_id'] );
 
 		// 除外するタクソノミー
-		$excluded_taxonomies = get_option( 'vkpdc_excluded_taxonomies', [] ); // 除外するタクソノミーを取得
-		$exclusion = apply_filters( 'vkpdc_archive_display_taxonomies_exclusion', 
-			vkpdc_is_block_theme() ? $attributes['excluded_taxonomies'] : 
-			(empty($attributes['excluded_taxonomies']) ? $excluded_taxonomies : $attributes['excluded_taxonomies'])
-		);
+		$excluded_taxonomies = get_option( 'vkpdc_excluded_taxonomies', [] );
+
+		if ( isset( $attributes['excluded_taxonomies'] ) ) {
+			$exclusion = $attributes['excluded_taxonomies'];
+		} else {
+			$exclusion = apply_filters( 'vkpdc_archive_display_taxonomies_exclusion', $excluded_taxonomies );
+		}
 
 		// タクソノミーの取得
 		$args = array(
@@ -301,20 +303,20 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
 	// ショートコード引数を適用（引数が優先される）
 	$attributes = shortcode_atts( $default_attributes, $atts );
 
-    // 現在のクエリ情報を取得
-    $queried_object = get_queried_object();
-    $tax_query = array();
+	// 現在のクエリ情報を取得
+	$queried_object = get_queried_object();
+	$tax_query = array();
 
-    // タクソノミー情報がある場合
-    if ( is_tax() && isset( $queried_object->taxonomy, $queried_object->slug ) ) {
-        $tax_query = array(
-            array(
-                'taxonomy' => $queried_object->taxonomy,
-                'field'    => 'slug',
-                'terms'    => $queried_object->slug,
-            ),
-        );
-    }
+	// タクソノミー情報がある場合
+	if ( is_tax() && isset( $queried_object->taxonomy, $queried_object->slug ) ) {
+		$tax_query = array(
+			array(
+				'taxonomy' => $queried_object->taxonomy,
+				'field'    => 'slug',
+				'terms'    => $queried_object->slug,
+			),
+		);
+	}
 	
 	// WP_Query 引数を生成
 	$query_args = array(
@@ -323,7 +325,7 @@ function vkpdc_get_patterns_archive_shortcode( $atts ) {
 		'order'          => $attributes['order'],
 		'orderby'        => $attributes['orderby'],
 		'paged'          => get_query_var( 'paged', 1 ),
-        'tax_query'      => $tax_query,
+		'tax_query'      => $tax_query,
 	);
 
 	$query = new WP_Query( $query_args );
@@ -374,43 +376,43 @@ function vkpdc_generate_archive_html( $query, $attributes ) {
 		$html .= '</div>';
 	}
 
-    // ページネーションの生成
-    if (isset($attributes['display_paged'])) {
-        $display_paged = $attributes['display_paged'];
-    } else {
-        $display_paged = false;
-    }
+	// ページネーションの生成
+	if (isset($attributes['display_paged'])) {
+		$display_paged = $attributes['display_paged'];
+	} else {
+		$display_paged = false;
+	}
 
-    if ( $display_paged ) {
-        $pagination = paginate_links( array(
-            'base'      => trailingslashit( get_pagenum_link( 1 ) ) . 'page/%#%/',
-            'format'    => 'page/%#%/',
-            'total'     => $query->max_num_pages,
-            'current'   => max( 1, get_query_var( 'paged', 1 ) ),
-            'type'      => 'array',
-            'prev_text' => '&laquo;',
-            'next_text' => '&raquo;',
-        ) );
+	if ( $display_paged ) {
+		$pagination = paginate_links( array(
+			'base'      => trailingslashit( get_pagenum_link( 1 ) ) . 'page/%#%/',
+			'format'    => 'page/%#%/',
+			'total'     => $query->max_num_pages,
+			'current'   => max( 1, get_query_var( 'paged', 1 ) ),
+			'type'      => 'array',
+			'prev_text' => '&laquo;',
+			'next_text' => '&raquo;',
+		) );
 
-        if ( $pagination ) {
-            $html .= '<nav class="vkpdc_pagination navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
-            $html .= '<h2 class="screen-reader-text">' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '</h2>';
-            $html .= '<div class="nav-links"><ul class="page-numbers">';
+		if ( $pagination ) {
+			$html .= '<nav class="vkpdc_pagination navigation pagination" aria-label="' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '">';
+			$html .= '<h2 class="screen-reader-text">' . __( 'Posts pagination', 'vk-pattern-directory-creator' ) . '</h2>';
+			$html .= '<div class="nav-links"><ul class="page-numbers">';
 
-            foreach ( $pagination as $link ) {
-                if ( strpos( $link, 'current' ) !== false ) {
-                    $html .= '<li><span class="page-numbers current">' . strip_tags( $link ) . '</span></li>';
-                } else {
-                    $html .= '<li>' . $link . '</li>';
-                }
-            }
+			foreach ( $pagination as $link ) {
+				if ( strpos( $link, 'current' ) !== false ) {
+					$html .= '<li><span class="page-numbers current">' . strip_tags( $link ) . '</span></li>';
+				} else {
+					$html .= '<li>' . $link . '</li>';
+				}
+			}
 
-            $html .= '</ul></div></nav>';
-        }
-    }
+			$html .= '</ul></div></nav>';
+		}
+	}
 
-    wp_reset_postdata();
-    return $html;
+	wp_reset_postdata();
+	return $html;
 }
 
 /**
@@ -476,20 +478,20 @@ function vkpdc_render_pattern_list_callback( $attributes ) {
 		esc_attr( $attributes['gapRow'] )
 	);
 
-    // 現在のクエリ情報を取得
-    $queried_object = get_queried_object();
-    $tax_query = array();
+	// 現在のクエリ情報を取得
+	$queried_object = get_queried_object();
+	$tax_query = array();
 
-    // タクソノミー情報がある場合
-    if ( is_tax() && isset( $queried_object->taxonomy, $queried_object->slug ) ) {
-        $tax_query = array(
-            array(
-                'taxonomy' => $queried_object->taxonomy,
-                'field'    => 'slug',
-                'terms'    => $queried_object->slug,
-            ),
-        );
-    }
+	// タクソノミー情報がある場合
+	if ( is_tax() && isset( $queried_object->taxonomy, $queried_object->slug ) ) {
+		$tax_query = array(
+			array(
+				'taxonomy' => $queried_object->taxonomy,
+				'field'    => 'slug',
+				'terms'    => $queried_object->slug,
+			),
+		);
+	}
 
 	// 現在のページを取得
 	$current_page = max( 1, get_query_var( 'paged', 1 ) );
