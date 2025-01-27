@@ -1,5 +1,5 @@
 {
-	"apiVersion": 2,
+	"apiVersion": 3,
 	"name": "vkpdc/pattern-list",
 	"category": "vk-pattern-directory-creator",
 	"title": "VK Pattern List",
