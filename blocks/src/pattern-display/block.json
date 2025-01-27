@@ -1,0 +1,27 @@
+{
+	"apiVersion": 3,
+	"name": "vkpdc/pattern-display",
+	"title": "VK Pattern Display",
+	"category": "vk-pattern-directory-creator",
+	"description": "Display post on VK Patterns",
+	"textdomain": "vk-pattern-directory-creator",
+	"attributes": {
+		"postUrl": {
+			"type": "string"
+		},
+		"selectButton": {
+			"type": "boolean",
+			"default": true
+		},
+		"copyButton": {
+			"type": "boolean",
+			"default": true
+		},
+		"className": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"className": true
+	}
+}

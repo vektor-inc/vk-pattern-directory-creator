@@ -1,0 +1,112 @@
+{
+	"apiVersion": 3,
+	"name": "vkpdc/pattern-list",
+	"category": "vk-pattern-directory-creator",
+	"title": "VK Pattern List",
+	"description": "Displays the list of Patterns, classification, and number of posts to display.",
+	"textdomain": "vk-pattern-directory-creator",
+	"attributes": {
+		"numberPosts": {
+			"type": "number",
+			"default": 6
+		},
+		"order": {
+			"type": "string",
+			"default": "DESC"
+		},
+		"orderby": {
+			"type": "string",
+			"default": "date"
+		},
+		"display_author": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_date_publiched": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_date_modified": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_new": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_taxonomies": {
+			"type": "boolean",
+			"default": true
+		},
+		"excluded_taxonomies": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "string"
+			}
+		},
+		"pattern_id": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_btn_view": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_btn_copy": {
+			"type": "boolean",
+			"default": true
+		},
+		"display_paged": {
+			"type": "boolean",
+			"default": false
+		},
+		"display_image": {
+			"type": "string",
+			"default": "featured"
+		},
+		"thumbnail_size": {
+			"type": "string",
+			"default": "large"
+		},
+		"new_date": {
+			"type": "number",
+			"default": 7
+		},
+		"new_text": {
+			"type": "string",
+			"default": "NEW!!"
+		},
+		"display_btn_view_text": {
+			"type": "string",
+			"default": "Read More"
+		},
+		"colWidthMinMobile": {
+			"type": "string",
+			"default": "300px"
+		},
+		"colWidthMinTablet": {
+			"type": "string",
+			"default": "300px"
+		},
+		"colWidthMinPC": {
+			"type": "string",
+			"default": "300px"
+		},
+		"gap": {
+			"type": "string",
+			"default": "1.5rem"
+		},
+		"gapRow": {
+			"type": "string",
+			"default": "1.5rem"
+		},
+		"className": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"className": true
+	}
+}

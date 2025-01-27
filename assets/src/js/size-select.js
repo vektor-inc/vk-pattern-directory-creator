@@ -1,0 +1,42 @@
+const SelectSizeAll = document.querySelectorAll( '.vkpdc_select--size' );
+// eslint-disable-next-line no-undef
+const SizeList = vkPatternsSizeSelect.sizeList;
+let WindowSize = document.body.clientWidth;
+const iframeContainer = document.querySelector( '.vkpdc_iframe-wrapper' );
+
+function updateSizeOptionsAndIframe( selectSizeElement ) {
+	const sizeOption = selectSizeElement.querySelectorAll( 'option' );
+	let selectFlag = false;
+
+	SizeList.forEach( ( size ) => {
+		sizeOption.forEach( ( option ) => {
+			if ( size.value === option.value ) {
+				if ( parseInt( size.value ) > WindowSize ) {
+					option.style.display = 'none';
+				} else {
+					option.style.display = 'block';
+				}
+			}
+		} );
+	} );
+}
+
+SelectSizeAll.forEach( ( selectSize ) => {
+	// 初期設定としてオプションとiframeの幅を更新
+	updateSizeOptionsAndIframe( selectSize );
+
+	// セレクトボックス変更時のイベントリスナー
+	selectSize.onchange = () => {
+		if ( selectSize.value === '100%' ) {
+			iframeContainer.style.width = '100%';
+		} else {
+			iframeContainer.style.width = (parseInt(selectSize.value) + 2) + 'px';
+		}
+	};
+});
+
+// ウィンドウリサイズ時のイベントリスナー
+window.addEventListener( 'resize', () => {
+	WindowSize = document.body.clientWidth;
+	SelectSizeAll.forEach( updateSizeOptionsAndIframe );
+} );

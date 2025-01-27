@@ -1,5 +1,4 @@
 node_modules/
-build/
 dist/
 temp/
 vendor/
@@ -8,3 +7,5 @@ vendor/
 /test-results/
 /playwright-report/
 /playwright/.cache/
+**/build/**
+.phpunit.result.cache

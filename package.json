@@ -8,7 +8,10 @@
 		"wp-env": "wp-env",
 		"update": "npx ncu -u && rm -rf node_modules package-lock.json && npm install",
 		"format": "wp-scripts format",
-		"phpunit": "composer install && bash bin/install-theme.sh && npx wp-env run phpunit \"phpunit -c /var/www/html/wp-content/plugins/vk-pattern-directory-creator/.phpunit.xml --testsuite default --verbose\""
+		"build": "npm run build:block && gulp build",
+		"lint": "wp-scripts format && wp-scripts lint-js --fix",
+		"build:block": "wp-scripts build --webpack-copy-php --webpack-src-dir=./blocks/src/ --output-path=./blocks/build/ --webpack-config=./webpack.config.js",
+		"phpunit": "composer install && bash bin/install-theme.sh && wp-env run tests-cli --env-cwd='wp-content/plugins/vk-pattern-directory-creator' vendor/bin/phpunit -c .phpunit.xml --verbose"
 	},
 	"repository": {
 		"type": "git",
@@ -21,10 +24,15 @@
 	},
 	"homepage": "https://github.com/vektor-inc/vk-pattern-directory-creator#readme",
 	"devDependencies": {
-		"@playwright/test": "^1.39.0",
-		"@wordpress/env": "^8.11.0",
-		"@wordpress/scripts": "^26.16.0",
-		"npm-check-updates": "^16.14.6"
+		"@playwright/test": "^1.49.0",
+		"@wordpress/env": "10.13.0",
+		"@wordpress/icons": "^10.13.0",
+		"@wordpress/scripts": "^30.6.0",
+		"gulp": "^5.0.0",
+		"gulp-sass": "^6.0.0",
+		"gulp-uglify": "^3.0.2",
+		"npm-check-updates": "^17.1.11",
+		"sass": "^1.82.0"
 	},
 	"volta": {
 		"node": "20.9.0"
