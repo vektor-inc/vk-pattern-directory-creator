@@ -1,18 +1,18 @@
 <?php
 /**
- * Register Post Type
+ * Register Post Type and Taxonomy
  *
  * @package VK Pattern Directory Creator
  */
 
 /**
- * Register Post Type
+ * Register Post Type and Taxonomy
  */
 function vkpdc_register_post_type() {
 	register_post_type(
 		'vk-patterns',
 		array(
-			'labels'       => array(
+			'labels'          => array(
 				'name'                     => _x( 'Block Pattern', 'post type general name', 'vk-pattern-directory-creator' ),
 				'singular_name'            => _x( 'Block Pattern', 'post type singular name', 'vk-pattern-directory-creator' ),
 				'add_new'                  => _x( 'Add New', 'block pattern', 'vk-pattern-directory-creator' ),
@@ -38,16 +38,14 @@ function vkpdc_register_post_type() {
 				'item_scheduled'           => __( 'Block pattern scheduled.', 'vk-pattern-directory-creator' ),
 				'item_updated'             => __( 'Block pattern updated.', 'vk-pattern-directory-creator' ),
 			),
-			'description'  => 'Stores publicly shared Block Patterns (predefined block layouts, ready to insert and tweak).',
-			'public'       => true,
-			'show_in_rest' => true,
-			'has_archive'  => true,
-			'menu_icon'    => 'dashicons-screenoptions',
-			'rewrite'      => array( 'slug' => 'pattern' ),
-			'supports'     => array( 'title', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'editor' ),
+			'description'     => 'Stores publicly shared Block Patterns (predefined block layouts, ready to insert and tweak).',
+			'public'          => true,
+			'show_in_rest'    => true,
+			'has_archive'     => true,
+			'menu_icon'       => 'dashicons-screenoptions',
+			'rewrite'         => array( 'slug' => 'pattern' ),
+			'supports'        => array( 'title', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'editor' ),
 		)
 	);
 }
 add_action( 'init', 'vkpdc_register_post_type', 0 );
-
-require_once plugin_dir_path( __FILE__ ) . 'register-taxonomies.php';

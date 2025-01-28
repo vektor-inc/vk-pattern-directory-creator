@@ -1,7 +1,6 @@
 .git/
 .github/
 bin/
-blocks/src/
 dist/
 docs/
 node_modules/
@@ -15,9 +14,6 @@ vendor/
 .node-version
 .phpcs.xml
 .phpunit.xml
-.prettierignore
-.stylelintignore
-.stylelintrc.js
 .wp-env.json
 babel.config.js
 composer.json
