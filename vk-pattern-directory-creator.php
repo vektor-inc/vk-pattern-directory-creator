@@ -30,35 +30,4 @@ $vkpdc_modules_path = dirname( __FILE__ ) . '/modules/';
 // カスタム投稿タイプを作成.
 require_once $vkpdc_modules_path . 'register-post-type.php';
 
-// カスタムフィールド.
-require_once $vkpdc_modules_path . 'custom-fields.php';
 
-// アーカイブページ設定.
-require_once $vkpdc_modules_path . 'content-archive-settings.php';
-
-// アーカイブページ.
-require_once $vkpdc_modules_path . 'content-archive.php';
-
-// 投稿ページを変更.
-require_once $vkpdc_modules_path . 'content-single.php';
-
-// パターンディレクトリのパーツを読み込み.
-require_once $vkpdc_modules_path . 'content-part.php';
-
-// Iframe のサイズを読み込み.
-require_once $vkpdc_modules_path . 'iframe-sizes.php';
-
-// Iframe の表示部分を読み込み.
-require_once $vkpdc_modules_path . 'iframe-view.php';
-
-// Iframe テーマ設定.
-require_once $vkpdc_modules_path . 'iframe-theme-settings.php';
-
-// スクリプトとスタイルを読み込み.
-require_once $vkpdc_modules_path . 'enquque-scripts.php';
-
-// SmaVeksive カスタマイズの読み込み
-require_once $vkpdc_modules_path . 'smaveksive/init.php';
-
-// ブロック.
-require_once $vkpdc_modules_path . 'blocks.php';

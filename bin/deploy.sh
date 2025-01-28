@@ -9,10 +9,9 @@ CURRENT_VERSION=$(cat "${PLUGIN_DIR}/vk-pattern-directory-creator.php"|grep -i '
 dist_dir="${PLUGIN_DIR}/dist"
 src_dir="${dist_dir}/${PLUGIN_NAME}"
 ZIPBALL="${dist_dir}/${PLUGIN_NAME}_v${CURRENT_VERSION}.zip"
-rm -rf "${dist_dir}"
+
 [[ -e "${dist_dir}" ]] || mkdir "${dist_dir}"
 [[ -e "${ZIPBALL}" ]] && rm -r "${ZIPBALL}"
-
 
 rsync -av "${PLUGIN_DIR}/" "${src_dir}/" --exclude="dist/" --exclude-from='.distignore'
 
