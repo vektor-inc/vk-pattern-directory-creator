@@ -6,7 +6,10 @@
 		&_post {
 			&_taxonomy,
 			&_id {
-				margin-bottom: .375rem;
+				margin-bottom: 0;
+				dt {
+					margin-bottom: 0;
+				}
 			}
 			a {
 				pointer-events: none;
