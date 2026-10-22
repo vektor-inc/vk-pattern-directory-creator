@@ -29,13 +29,10 @@ jobs:
                     MYSQL_PASSWORD: wordpress
         steps:
             - uses: actions/checkout@v3
-            - name: Read .node-version
-              run: echo "{NODEVERSION}={$(cat .node-version)}" >> $GITHUB_OUTPUT
-              id: nodenv
-            - name: Setup Node.js (.node-version)
-              uses: actions/setup-node@v3
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
               with:
-                  node-version: '${{ steps.nodenv.outputs.NODEVERSION }}'
+                  node-version: '24.x'
             - name: Cache multiple paths
               uses: actions/cache@v3
               with:
@@ -57,7 +54,7 @@ jobs:
             - name: Install Theme
               run: bash bin/install-theme.sh
             - name: Install several WordPress version by wp-env.override.json
-              run: WP_ENV_PHP_VERSION=${{ matrix.php-versions }} WP_ENV_CORE=WordPress/WordPress#${{ matrix.wp-versions }} npm run wp-env start --update
+              run: WP_ENV_PHP_VERSION=${{ matrix.php-versions }} WP_ENV_CORE=WordPress/WordPress#${{ matrix.wp-versions }} npm run wp-env -- start --update
             - name: Check WordPress Version
               run: npm run wp-env run cli wp core version
             - name: Start Environment
