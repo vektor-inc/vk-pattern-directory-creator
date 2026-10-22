@@ -7,7 +7,8 @@ set -ex
 # -s 進捗を非表示、-S エラーは表示 / Hide progress but still show errors.
 # -o 実行結果をファイルへ出力 / Write the result to a file.
 rm -rf temp
-curl -fsSL https://downloads.wordpress.org/theme/lightning.zip -o theme.zip
+# --proto-redir =https リダイレクト先を https に限る / Allow only https as the redirect target.
+curl -fsSL --proto-redir =https https://downloads.wordpress.org/theme/lightning.zip -o theme.zip
 # -d 指定したディレクトリに展開 / Extract into the given directory.
 mkdir ./temp/
 unzip theme.zip -d ./temp/themes

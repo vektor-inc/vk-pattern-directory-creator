@@ -8,7 +8,7 @@
 		"wp-env": "wp-env",
 		"update": "npx ncu -u && rm -rf node_modules package-lock.json && npm install",
 		"format": "wp-scripts format",
-		"phpunit": "composer install && bash bin/install-theme.sh && npx wp-env run tests-cli --env-cwd=wp-content/plugins/$(basename \"$PWD\") vendor/bin/phpunit -c .phpunit.xml --testsuite default --verbose"
+		"phpunit": "composer install && bash bin/install-theme.sh && npx wp-env run tests-cli --env-cwd=\"wp-content/plugins/$(basename \"$PWD\")\" vendor/bin/phpunit -c .phpunit.xml --testsuite default --verbose"
 	},
 	"repository": {
 		"type": "git",
