@@ -1,15 +1,15 @@
-
 #!/usr/bin/env bash
 
 set -ex
 
-# -o 実行結果をファイルへ出力
-# -s ファイル出力時の進捗状況を非表示にする(エラーも非表示)
-# curl -s $WP_THEME -o theme.zip
+# -f HTTP エラー時に失敗として終了する / Fail with a non-zero exit code on HTTP errors.
+# -L 302 などのリダイレクトを追う（付けないと 0 バイトの zip になる） / Follow redirects (without it the zip is 0 bytes).
+# -s 進捗を非表示、-S エラーは表示 / Hide progress but still show errors.
+# -o 実行結果をファイルへ出力 / Write the result to a file.
 rm -rf temp
-curl -s https://downloads.wordpress.org/theme/lightning.zip -o theme.zip
-# -d 指定したディレクトリに展開
+curl -fsSL https://downloads.wordpress.org/theme/lightning.zip -o theme.zip
+# -d 指定したディレクトリに展開 / Extract into the given directory.
 mkdir ./temp/
 unzip theme.zip -d ./temp/themes
-# 展開したのでもとのzipファイルを削除 -f はエラーメッセージを表示しない
+# 展開したので元の zip ファイルを削除 / Remove the zip after extracting.
 rm -f theme.zip
